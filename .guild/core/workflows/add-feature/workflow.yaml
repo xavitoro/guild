@@ -87,7 +87,22 @@ steps:
   gates: []
   optional: true
   condition: when the feature is primarily a web-experience/frontend change
-- id: add-feature-07-review-schema
+- id: add-feature-07-maintain-component-catalog
+  name: Maintain the component catalog
+  responsible_profile: web-experience-engineer
+  invoked_skill: maintain-component-catalog
+  required_input_artifacts:
+  - Implemented or changed UI components
+  expected_output_artifacts:
+  - Component catalog entry per new or changed component
+  preconditions: []
+  completion_criteria:
+  - The catalog builds and runs in isolation from the full application.
+  gates: []
+  optional: true
+  condition: when the interface includes reusable UI components worth developing, reviewing or visually
+    verifying independently of the full application
+- id: add-feature-08-review-schema
   name: Review the schema change
   responsible_profile: database-engineer
   invoked_skill: review-schema-change
@@ -102,7 +117,7 @@ steps:
   gates: []
   optional: true
   condition: when the feature touches the database schema
-- id: add-feature-08-implement-integration
+- id: add-feature-09-implement-integration
   name: Implement the integration
   responsible_profile: integration-engineer
   invoked_skill: implement-integration
@@ -116,7 +131,7 @@ steps:
   gates: []
   optional: true
   condition: when the feature touches an external integration
-- id: add-feature-09-instrument-analytics
+- id: add-feature-10-instrument-analytics
   name: Instrument analytics
   responsible_profile: data-analytics-engineer
   invoked_skill: instrument-analytics
@@ -131,7 +146,7 @@ steps:
   gates: []
   optional: true
   condition: when the feature requires new analytics events
-- id: add-feature-10-regression-review
+- id: add-feature-11-regression-review
   name: Run the regression review
   responsible_profile: quality-assurance-engineer
   invoked_skill: run-regression-review
@@ -147,8 +162,9 @@ steps:
   - Every acceptance criterion has an explicit verification outcome.
   gates:
   - qa_gate_pass
-  on_return: Return to whichever implementation step (05-09) the failing behavior traces to.
-- id: add-feature-11-threat-model
+  on_return: Return to whichever implementation step (05-06, 08-10) the failing behavior traces to, or
+    add-feature-07-maintain-component-catalog if the catalog itself fails to build.
+- id: add-feature-12-threat-model
   name: Review security impact
   responsible_profile: product-security-engineer
   invoked_skill: create-threat-model
@@ -166,7 +182,7 @@ steps:
     the gate.
   optional: true
   condition: when the feature touches authentication, authorization, secrets, payments or personal data
-- id: add-feature-12-prepare-pull-request
+- id: add-feature-13-prepare-pull-request
   name: Prepare the pull request
   responsible_profile: product-software-engineer
   invoked_skill: prepare-pull-request
@@ -176,12 +192,12 @@ steps:
   expected_output_artifacts:
   - Pull request
   preconditions:
-  - add-feature-10-regression-review passed, and add-feature-11-threat-model has no open critical/high
+  - add-feature-11-regression-review passed, and add-feature-12-threat-model has no open critical/high
     finding when it ran.
   completion_criteria:
   - The PR links the requirement, the change and the verification evidence.
   gates: []
-- id: add-feature-13-human-approval-merge
+- id: add-feature-14-human-approval-merge
   name: Approve merge to a protected branch
   responsible_profile: human
   invoked_skill: grant-human-approval
@@ -196,7 +212,7 @@ steps:
   - merge_protected_branch
   optional: true
   condition: when the target branch is protected
-- id: add-feature-14-human-approval-deploy
+- id: add-feature-15-human-approval-deploy
   name: Approve production deployment
   responsible_profile: human
   invoked_skill: grant-human-approval
@@ -211,7 +227,7 @@ steps:
   - deploy_production
   optional: true
   condition: when this workflow includes a production deployment
-- id: add-feature-15-deploy
+- id: add-feature-16-deploy
   name: Deploy the change
   responsible_profile: cloud-devops-engineer
   invoked_skill: plan-and-execute-deployment
@@ -221,13 +237,13 @@ steps:
   - Deployment/rollback plan
   - Deployment execution record
   preconditions:
-  - Any required human approval (add-feature-14) is recorded when the target is production.
+  - Any required human approval (add-feature-15) is recorded when the target is production.
   completion_criteria:
   - The change is live with a documented rollback path.
   gates: []
   optional: true
   condition: when this workflow includes a deployment
-- id: add-feature-16-consolidate-knowledge
+- id: add-feature-17-consolidate-knowledge
   name: Consolidate knowledge
   responsible_profile: workflow-knowledge-orchestrator
   invoked_skill: consolidate-knowledge

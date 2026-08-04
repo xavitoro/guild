@@ -59,9 +59,9 @@ is the canonical source of truth; everything below is generated from it. This pr
 own knowledge, planning and run history live in `.guild/state/`, untouched by Guild
 upgrades.
 
-- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (22 skills)
+- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (23 skills)
 - Claude Code subagents: `.claude/agents/<profile-id>.md` (14 profiles)
-- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (22 skills)
+- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (23 skills)
 - Generic / single-assistant clients: read `.guild/core/agents/`, `.guild/core/skills/`
   and `.guild/core/workflows/` directly — see
   `.guild/core/workflows/EXECUTION_MODES.md` mode 1.

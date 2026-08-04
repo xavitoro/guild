@@ -38,13 +38,15 @@ steps:
   - Code change / pull request (example)
 - step_id: add-feature-06-implement-frontend
   status: skipped
-- step_id: add-feature-07-review-schema
+- step_id: add-feature-07-maintain-component-catalog
   status: skipped
-- step_id: add-feature-08-implement-integration
+- step_id: add-feature-08-review-schema
   status: skipped
-- step_id: add-feature-09-instrument-analytics
+- step_id: add-feature-09-implement-integration
   status: skipped
-- step_id: add-feature-10-regression-review
+- step_id: add-feature-10-instrument-analytics
+  status: skipped
+- step_id: add-feature-11-regression-review
   status: completed
   started_at: '2026-08-04'
   completed_at: '2026-08-04'
@@ -52,15 +54,15 @@ steps:
   - Test results (example)
   gate_results:
   - 'qa_gate_pass: pass (example)'
-- step_id: add-feature-11-threat-model
+- step_id: add-feature-12-threat-model
   status: skipped
-- step_id: add-feature-12-prepare-pull-request
+- step_id: add-feature-13-prepare-pull-request
   status: completed
   started_at: '2026-08-04'
   completed_at: '2026-08-04'
   artifacts_produced:
   - Pull request (example)
-- step_id: add-feature-13-human-approval-merge
+- step_id: add-feature-14-human-approval-merge
   status: completed
   started_at: '2026-08-04'
   completed_at: '2026-08-04'
@@ -68,9 +70,9 @@ steps:
   - Approval record / gate result (example)
   gate_results:
   - 'merge_protected_branch: pass (example)'
-- step_id: add-feature-14-human-approval-deploy
+- step_id: add-feature-15-human-approval-deploy
   status: skipped
-- step_id: add-feature-15-deploy
+- step_id: add-feature-16-deploy
   status: skipped
-- step_id: add-feature-16-consolidate-knowledge
+- step_id: add-feature-17-consolidate-knowledge
   status: skipped

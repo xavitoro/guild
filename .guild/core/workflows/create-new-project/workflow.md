@@ -22,27 +22,29 @@ flowchart TD
     new-project-04-design-experience{{"Design the initial experience"}}
     new-project-05-write-copy{{"Write initial interface copy"}}
     new-project-06-scaffold-project["Scaffold the project skeleton"]
-    new-project-07-review-schema{{"Review the initial schema"}}
-    new-project-08-implement-integration{{"Implement the initial integration"}}
-    new-project-09-baseline-threat-model{{"Assess baseline security posture"}}
-    new-project-10-regression-review["Verify the scaffold"]
-    new-project-11-prepare-pull-request["Prepare the initial pull request"]
-    new-project-12-human-approval-provision{{"Approve production provisioning"}}
-    new-project-13-initial-deployment{{"Deploy the initial environment"}}
-    new-project-14-consolidate-knowledge["Consolidate initial project knowledge"]
+    new-project-07-maintain-component-catalog{{"Maintain the component catalog"}}
+    new-project-08-review-schema{{"Review the initial schema"}}
+    new-project-09-implement-integration{{"Implement the initial integration"}}
+    new-project-10-baseline-threat-model{{"Assess baseline security posture"}}
+    new-project-11-regression-review["Verify the scaffold"]
+    new-project-12-prepare-pull-request["Prepare the initial pull request"]
+    new-project-13-human-approval-provision{{"Approve production provisioning"}}
+    new-project-14-initial-deployment{{"Deploy the initial environment"}}
+    new-project-15-consolidate-knowledge["Consolidate initial project knowledge"]
     new-project-01-triage --> new-project-02-define-vision
     new-project-02-define-vision --> new-project-03-define-requirements
     new-project-03-define-requirements --> new-project-04-design-experience
     new-project-04-design-experience --> new-project-05-write-copy
     new-project-05-write-copy --> new-project-06-scaffold-project
-    new-project-06-scaffold-project --> new-project-07-review-schema
-    new-project-07-review-schema --> new-project-08-implement-integration
-    new-project-08-implement-integration --> new-project-09-baseline-threat-model
-    new-project-09-baseline-threat-model --> new-project-10-regression-review
-    new-project-10-regression-review --> new-project-11-prepare-pull-request
-    new-project-11-prepare-pull-request --> new-project-12-human-approval-provision
-    new-project-12-human-approval-provision --> new-project-13-initial-deployment
-    new-project-13-initial-deployment --> new-project-14-consolidate-knowledge
+    new-project-06-scaffold-project --> new-project-07-maintain-component-catalog
+    new-project-07-maintain-component-catalog --> new-project-08-review-schema
+    new-project-08-review-schema --> new-project-09-implement-integration
+    new-project-09-implement-integration --> new-project-10-baseline-threat-model
+    new-project-10-baseline-threat-model --> new-project-11-regression-review
+    new-project-11-regression-review --> new-project-12-prepare-pull-request
+    new-project-12-prepare-pull-request --> new-project-13-human-approval-provision
+    new-project-13-human-approval-provision --> new-project-14-initial-deployment
+    new-project-14-initial-deployment --> new-project-15-consolidate-knowledge
 ```
 
 ## Steps
@@ -55,14 +57,15 @@ flowchart TD
 | `new-project-04-design-experience` | Design the initial experience *(optional — when the new project has a user-facing interface)* | product-experience-designer | `design-experience` | — |
 | `new-project-05-write-copy` | Write initial interface copy *(optional — when the new project has a user-facing interface)* | ux-content-designer | `write-interface-copy` | — |
 | `new-project-06-scaffold-project` | Scaffold the project skeleton | product-software-engineer | `implement-feature` | — |
-| `new-project-07-review-schema` | Review the initial schema *(optional — when the new project requires a persistent data store)* | database-engineer | `review-schema-change` | — |
-| `new-project-08-implement-integration` | Implement the initial integration *(optional — when the new project requires an external API/service integration from day one)* | integration-engineer | `implement-integration` | — |
-| `new-project-09-baseline-threat-model` | Assess baseline security posture *(optional — when the project will handle authentication, payments, secrets or personal data)* | product-security-engineer | `create-threat-model` | — |
-| `new-project-10-regression-review` | Verify the scaffold | quality-assurance-engineer | `run-regression-review` | qa_gate_pass |
-| `new-project-11-prepare-pull-request` | Prepare the initial pull request | product-software-engineer | `prepare-pull-request` | — |
-| `new-project-12-human-approval-provision` | Approve production provisioning *(optional — when this workflow provisions production infrastructure or deploys the new project to production)* | human | `grant-human-approval` | deploy_production, provision_material_cost |
-| `new-project-13-initial-deployment` | Deploy the initial environment *(optional — when this workflow includes provisioning a live environment)* | cloud-devops-engineer | `plan-and-execute-deployment` | — |
-| `new-project-14-consolidate-knowledge` | Consolidate initial project knowledge | workflow-knowledge-orchestrator | `consolidate-knowledge` | — |
+| `new-project-07-maintain-component-catalog` | Maintain the component catalog *(optional — when the interface includes reusable UI components worth developing, reviewing or visually verifying independently of the full application)* | web-experience-engineer | `maintain-component-catalog` | — |
+| `new-project-08-review-schema` | Review the initial schema *(optional — when the new project requires a persistent data store)* | database-engineer | `review-schema-change` | — |
+| `new-project-09-implement-integration` | Implement the initial integration *(optional — when the new project requires an external API/service integration from day one)* | integration-engineer | `implement-integration` | — |
+| `new-project-10-baseline-threat-model` | Assess baseline security posture *(optional — when the project will handle authentication, payments, secrets or personal data)* | product-security-engineer | `create-threat-model` | — |
+| `new-project-11-regression-review` | Verify the scaffold | quality-assurance-engineer | `run-regression-review` | qa_gate_pass |
+| `new-project-12-prepare-pull-request` | Prepare the initial pull request | product-software-engineer | `prepare-pull-request` | — |
+| `new-project-13-human-approval-provision` | Approve production provisioning *(optional — when this workflow provisions production infrastructure or deploys the new project to production)* | human | `grant-human-approval` | deploy_production, provision_material_cost |
+| `new-project-14-initial-deployment` | Deploy the initial environment *(optional — when this workflow includes provisioning a live environment)* | cloud-devops-engineer | `plan-and-execute-deployment` | — |
+| `new-project-15-consolidate-knowledge` | Consolidate initial project knowledge | workflow-knowledge-orchestrator | `consolidate-knowledge` | — |
 
 ## Failure paths
 

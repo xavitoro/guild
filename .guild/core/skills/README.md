@@ -17,6 +17,7 @@ several skills across different workflow steps.
 | [Implement a feature](implement-feature/SKILL.md) | `implement-feature` | product-software-engineer, web-experience-engineer |
 | [Diagnose a root cause](diagnose-root-cause/SKILL.md) | `diagnose-root-cause` | product-software-engineer, web-experience-engineer, database-engineer, integration-engineer |
 | [Implement a fix](implement-fix/SKILL.md) | `implement-fix` | product-software-engineer, web-experience-engineer, database-engineer, integration-engineer |
+| [Maintain a component catalog](maintain-component-catalog/SKILL.md) | `maintain-component-catalog` | web-experience-engineer |
 | [Review a schema change](review-schema-change/SKILL.md) | `review-schema-change` | database-engineer |
 | [Implement or review an integration](implement-integration/SKILL.md) | `implement-integration` | integration-engineer |
 | [Reproduce a defect](reproduce-defect/SKILL.md) | `reproduce-defect` | quality-assurance-engineer |

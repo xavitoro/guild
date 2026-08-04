@@ -85,7 +85,22 @@ steps:
   completion_criteria:
   - The skeleton builds, boots and has a baseline automated test in place.
   gates: []
-- id: new-project-07-review-schema
+- id: new-project-07-maintain-component-catalog
+  name: Maintain the component catalog
+  responsible_profile: web-experience-engineer
+  invoked_skill: maintain-component-catalog
+  required_input_artifacts:
+  - Implemented or changed UI components
+  expected_output_artifacts:
+  - Component catalog entry per new or changed component
+  preconditions: []
+  completion_criteria:
+  - The catalog builds and runs in isolation from the full application.
+  gates: []
+  optional: true
+  condition: when the interface includes reusable UI components worth developing, reviewing or visually
+    verifying independently of the full application
+- id: new-project-08-review-schema
   name: Review the initial schema
   responsible_profile: database-engineer
   invoked_skill: review-schema-change
@@ -100,7 +115,7 @@ steps:
   gates: []
   optional: true
   condition: when the new project requires a persistent data store
-- id: new-project-08-implement-integration
+- id: new-project-09-implement-integration
   name: Implement the initial integration
   responsible_profile: integration-engineer
   invoked_skill: implement-integration
@@ -114,7 +129,7 @@ steps:
   gates: []
   optional: true
   condition: when the new project requires an external API/service integration from day one
-- id: new-project-09-baseline-threat-model
+- id: new-project-10-baseline-threat-model
   name: Assess baseline security posture
   responsible_profile: product-security-engineer
   invoked_skill: create-threat-model
@@ -128,7 +143,7 @@ steps:
   gates: []
   optional: true
   condition: when the project will handle authentication, payments, secrets or personal data
-- id: new-project-10-regression-review
+- id: new-project-11-regression-review
   name: Verify the scaffold
   responsible_profile: quality-assurance-engineer
   invoked_skill: run-regression-review
@@ -146,7 +161,7 @@ steps:
   - qa_gate_pass
   on_return: Return to new-project-06-scaffold-project, or the relevant specialist step, with failure
     details.
-- id: new-project-11-prepare-pull-request
+- id: new-project-12-prepare-pull-request
   name: Prepare the initial pull request
   responsible_profile: product-software-engineer
   invoked_skill: prepare-pull-request
@@ -156,11 +171,11 @@ steps:
   expected_output_artifacts:
   - Pull request
   preconditions:
-  - new-project-10-regression-review passed.
+  - new-project-11-regression-review passed.
   completion_criteria:
   - The PR links the vision, requirements and verification evidence.
   gates: []
-- id: new-project-12-human-approval-provision
+- id: new-project-13-human-approval-provision
   name: Approve production provisioning
   responsible_profile: human
   invoked_skill: grant-human-approval
@@ -176,7 +191,7 @@ steps:
   - provision_material_cost
   optional: true
   condition: when this workflow provisions production infrastructure or deploys the new project to production
-- id: new-project-13-initial-deployment
+- id: new-project-14-initial-deployment
   name: Deploy the initial environment
   responsible_profile: cloud-devops-engineer
   invoked_skill: plan-and-execute-deployment
@@ -186,13 +201,13 @@ steps:
   - Deployment/rollback plan
   - Deployment execution record
   preconditions:
-  - Any required human approval (new-project-12) is recorded when the target is production.
+  - Any required human approval (new-project-13) is recorded when the target is production.
   completion_criteria:
   - The environment is live with a documented rollback path.
   gates: []
   optional: true
   condition: when this workflow includes provisioning a live environment
-- id: new-project-14-consolidate-knowledge
+- id: new-project-15-consolidate-knowledge
   name: Consolidate initial project knowledge
   responsible_profile: workflow-knowledge-orchestrator
   invoked_skill: consolidate-knowledge

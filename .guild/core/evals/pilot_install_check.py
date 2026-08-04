@@ -37,8 +37,10 @@ from pathlib import Path
 CORE_ROOT = Path(__file__).resolve().parents[1]  # .guild/core/
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
-EXPECTED_AGENT_COUNT = 14
-EXPECTED_SKILL_COUNT = 22
+# Derived from canonical sources rather than hardcoded, so this check never
+# goes stale as agents/skills are added or removed.
+EXPECTED_AGENT_COUNT = len(list((CORE_ROOT / "agents").glob("*/manifest.yaml")))
+EXPECTED_SKILL_COUNT = len(list((CORE_ROOT / "skills").glob("*/SKILL.yaml")))
 
 OTHER_CHECKS = [
     "validate_guild.py",

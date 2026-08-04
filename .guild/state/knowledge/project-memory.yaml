@@ -1,6 +1,6 @@
 schema: guild.project-memory/v1
 project: guild
-version: 7
+version: 8
 updated_at: 2026-08-04
 updated_by: workflow-knowledge-orchestrator
 
@@ -144,3 +144,27 @@ entries:
       - .guild/core/spec/GUILD_MASTER_SPEC.md
       - .guild/state/knowledge/decisions/DEC-001-core-state-split.yaml
       - .guild/core/evals/pilot_install_check.py
+  - id: MEM-009
+    category: architecture
+    status: verified
+    statement: >
+      A gap was identified: no workflow asked whether a project needs an
+      isolated component catalog/visualization tool for UI components
+      (deliberately provider-neutral — no specific tool is named, per
+      design principle 2). Added skill maintain-component-catalog
+      (web-experience-engineer / Ranger) and an optional step invoking it
+      in create-new-project (new-project-07) and add-feature
+      (add-feature-07), condition "when the interface includes reusable UI
+      components worth developing, reviewing or visually verifying
+      independently of the full application". Inserting the step required
+      renumbering later steps in both workflows and updating the
+      add-feature example run record and cross-referencing prose
+      (on_return ranges, precondition text) accordingly; the pilot install
+      check caught two stale hardcoded skill/agent counts in
+      pilot_install_check.py during verification, since fixed to derive
+      those counts from canonical sources instead of literals.
+    evidence:
+      - .guild/core/skills/maintain-component-catalog/
+      - .guild/core/workflows/create-new-project/workflow.yaml
+      - .guild/core/workflows/add-feature/workflow.yaml
+      - .guild/state/runs/run-example-add-feature-001.yaml
