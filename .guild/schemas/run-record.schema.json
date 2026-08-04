@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/run-record/v1",
+  "guildSchemaId": "guild.run-record/v1",
+  "title": "Guild Run Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "workflow_id",
+    "status",
+    "started_at",
+    "initiated_by",
+    "steps"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.run-record/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "initiated_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "status"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "in_progress",
+              "completed",
+              "failed",
+              "skipped"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "artifacts_produced": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "gate_results": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

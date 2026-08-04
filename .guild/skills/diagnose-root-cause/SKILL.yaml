@@ -1,0 +1,17 @@
+schema: guild.skill-manifest/v1
+id: diagnose-root-cause
+name: Diagnose a root cause
+goal: Identify the root cause of a reproduced defect and propose a fix plan.
+applicable_profiles:
+- product-software-engineer
+- web-experience-engineer
+- database-engineer
+- integration-engineer
+inputs:
+- Reproduction steps and observed vs. expected behavior
+outputs:
+- Root-cause analysis and fix plan
+steps:
+- Trace the reproduction to the responsible code path.
+- State the root cause, not just the symptom.
+- Propose a fix plan and flag which profile should implement it.

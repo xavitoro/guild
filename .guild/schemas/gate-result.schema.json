@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/gate-result/v1",
+  "guildSchemaId": "guild.gate-result/v1",
+  "title": "Guild Gate Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "gate_name",
+    "workflow_id",
+    "step_id",
+    "status",
+    "evaluated_by",
+    "evaluated_at",
+    "requires_human_approval"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.gate-result/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gate_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "blocked",
+        "waived"
+      ]
+    },
+    "evaluated_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Profile id, tool name, or 'human' that evaluated this gate."
+    },
+    "evaluated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "requires_human_approval": {
+      "type": "boolean"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

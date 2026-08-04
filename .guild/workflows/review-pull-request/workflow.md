@@ -1,0 +1,57 @@
+# Review a pull request
+
+*Canonical workflow id: `review-pull-request`*
+
+Source of truth: [`workflow.yaml`](workflow.yaml) (schema `guild.workflow/v1`).
+See [`../EXECUTION_MODES.md`](../EXECUTION_MODES.md) for how this definition maps to a single
+assistant switching roles, native subagents, or a future external runtime.
+
+## Description
+
+Independently review a pull request — whether produced by another Guild workflow or submitted directly — for correctness, schema/integration risk and security, with an explicit human approval point before any protected-branch merge.
+
+## Diagram
+
+Diamond-shaped nodes are optional/conditional steps; see the step table for their condition.
+
+```mermaid
+flowchart TD
+    review-pr-01-triage["Triage the review request"]
+    review-pr-02-review-code["Review code correctness and coverage"]
+    review-pr-03-review-schema{{"Review a schema change in the PR"}}
+    review-pr-04-review-integration{{"Review an integration change in the PR"}}
+    review-pr-05-threat-model{{"Review security impact"}}
+    review-pr-06-human-approval-merge{{"Approve merge to a protected branch"}}
+    review-pr-07-consolidate-knowledge{{"Consolidate knowledge"}}
+    review-pr-01-triage --> review-pr-02-review-code
+    review-pr-02-review-code --> review-pr-03-review-schema
+    review-pr-03-review-schema --> review-pr-04-review-integration
+    review-pr-04-review-integration --> review-pr-05-threat-model
+    review-pr-05-threat-model --> review-pr-06-human-approval-merge
+    review-pr-06-human-approval-merge --> review-pr-07-consolidate-knowledge
+```
+
+## Steps
+
+| Step id | Name | Responsible profile | Invoked skill | Gates |
+|---|---|---|---|---|
+| `review-pr-01-triage` | Triage the review request | workflow-knowledge-orchestrator | `triage-request` | — |
+| `review-pr-02-review-code` | Review code correctness and coverage | quality-assurance-engineer | `review-code` | qa_gate_pass |
+| `review-pr-03-review-schema` | Review a schema change in the PR *(optional — when the pull request touches the database schema or a migration)* | database-engineer | `review-schema-change` | — |
+| `review-pr-04-review-integration` | Review an integration change in the PR *(optional — when the pull request touches an external integration)* | integration-engineer | `implement-integration` | — |
+| `review-pr-05-threat-model` | Review security impact *(optional — when the pull request touches a security-sensitive surface (authentication, authorization, secrets, payments or personal data))* | product-security-engineer | `create-threat-model` | security_gate_clean |
+| `review-pr-06-human-approval-merge` | Approve merge to a protected branch *(optional — when the target branch is protected)* | human | `grant-human-approval` | merge_protected_branch |
+| `review-pr-07-consolidate-knowledge` | Consolidate knowledge *(optional — when the review surfaced a reusable pattern or decision)* | workflow-knowledge-orchestrator | `consolidate-knowledge` | — |
+
+## Failure paths
+
+- A failing code review returns to the author with specific comments rather than proceeding toward merge.
+- An open critical/high security finding blocks merge approval until resolved and re-reviewed.
+
+## Return paths
+
+- Review comments that require rework return to the author (via the DM when the author is external to Guild).
+
+## Escalation paths
+
+- Merging to a protected branch always escalates to the human before proceeding.

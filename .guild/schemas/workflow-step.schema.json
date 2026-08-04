@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/workflow-step/v1",
+  "guildSchemaId": "guild.workflow-step/v1",
+  "title": "Guild Workflow Step",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "responsible_profile",
+    "invoked_skill",
+    "required_input_artifacts",
+    "expected_output_artifacts",
+    "preconditions",
+    "completion_criteria",
+    "gates"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "responsible_profile": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical profile id responsible for this step."
+    },
+    "invoked_skill": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical skill id invoked by this step."
+    },
+    "required_input_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "expected_output_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "completion_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "on_failure": {
+      "type": "string",
+      "description": "Step id or terminal outcome to move to on failure."
+    },
+    "on_return": {
+      "type": "string",
+      "description": "Step id to return to when rework is required."
+    },
+    "escalation": {
+      "type": "string",
+      "description": "Profile id or human-approval gate to escalate to."
+    },
+    "optional": {
+      "type": "boolean",
+      "description": "Optional. True when this step is a conditional branch rather than always executed."
+    },
+    "condition": {
+      "type": "string",
+      "description": "Optional. The condition under which an optional step applies, e.g. 'when the change touches the database schema'."
+    }
+  }
+}

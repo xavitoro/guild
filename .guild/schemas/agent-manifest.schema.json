@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/agent-manifest/v1",
+  "guildSchemaId": "guild.agent-manifest/v1",
+  "title": "Guild Agent Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "alias",
+    "mission",
+    "responsibilities",
+    "non_responsibilities",
+    "required_inputs",
+    "produced_outputs",
+    "allowed_capabilities",
+    "forbidden_capabilities",
+    "quality_gates",
+    "escalation_conditions"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.agent-manifest/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "description": "Canonical profile id, e.g. product-software-engineer."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "alias": {
+      "type": "string",
+      "minLength": 1,
+      "description": "D&D mnemonic alias, e.g. Artificer."
+    },
+    "mission": {
+      "type": "string",
+      "minLength": 1
+    },
+    "responsibilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "non_responsibilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "produced_outputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "forbidden_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "quality_gates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "escalation_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional. Observable outcomes indicating this profile is doing its job well."
+    },
+    "collaboration": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional. Handoff and collaboration rules with other profiles."
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

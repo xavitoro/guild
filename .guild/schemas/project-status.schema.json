@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/project-status/v1",
+  "guildSchemaId": "guild.project-status/v1",
+  "title": "Guild Project Status",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "project",
+    "updated_at",
+    "overall_status",
+    "current_objective",
+    "ready_work",
+    "planned_next",
+    "open_decisions"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.project-status/v1"
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "overall_status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ready_work": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Work item ids that are ready to start."
+    },
+    "planned_next": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Ordered, human-readable description of upcoming steps."
+    },
+    "open_decisions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

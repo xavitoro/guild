@@ -1,0 +1,15 @@
+schema: guild.skill-manifest/v1
+id: reproduce-defect
+name: Reproduce a defect
+goal: Reproduce a reported defect deterministically before any fix is attempted.
+applicable_profiles:
+- quality-assurance-engineer
+inputs:
+- Defect report
+outputs:
+- Confirmed reproduction steps
+- Observed vs. expected behavior
+steps:
+- Attempt the reported steps in a controlled environment.
+- Record the minimal steps that reliably reproduce the defect.
+- If it cannot be reproduced, document exactly what was tried.

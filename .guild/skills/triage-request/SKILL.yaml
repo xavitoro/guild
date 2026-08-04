@@ -1,0 +1,17 @@
+schema: guild.skill-manifest/v1
+id: triage-request
+name: Triage a request
+goal: Confirm scope, urgency and the applicable workflow for an incoming request before any other profile
+  acts.
+applicable_profiles:
+- workflow-knowledge-orchestrator
+inputs:
+- Incoming request or work item
+outputs:
+- Scoped brief
+- Selected workflow id
+steps:
+- Read the request and any linked work item.
+- Identify which of the six canonical workflows applies.
+- Confirm scope boundaries and flag missing information back to the requester.
+- Record the selection as the first step of the workflow run.

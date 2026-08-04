@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/artifact-envelope/v1",
+  "guildSchemaId": "guild.artifact-envelope/v1",
+  "title": "Guild Artifact Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "type",
+    "version",
+    "status",
+    "project",
+    "created_at",
+    "created_by",
+    "source_artifacts",
+    "evidence",
+    "content"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.artifact-envelope/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The kind of artifact carried in content, e.g. requirements, design, test-plan."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "planned",
+        "ready",
+        "in_progress",
+        "blocked",
+        "in_review",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "content": {
+      "description": "The artifact's own structured payload; shape depends on type."
+    }
+  }
+}

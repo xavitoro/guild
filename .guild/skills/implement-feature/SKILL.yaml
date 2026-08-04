@@ -1,0 +1,16 @@
+schema: guild.skill-manifest/v1
+id: implement-feature
+name: Implement a feature
+goal: Implement new product functionality that satisfies a defined set of acceptance criteria.
+applicable_profiles:
+- product-software-engineer
+- web-experience-engineer
+inputs:
+- Requirements and acceptance criteria
+- Applicable UX/copy artifacts
+outputs:
+- Code change / pull request
+steps:
+- Implement the change on a branch.
+- Cover the change with automated tests where practical.
+- Note any technical decision that isn't obvious from the diff.

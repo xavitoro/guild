@@ -1,0 +1,15 @@
+schema: guild.skill-manifest/v1
+id: rollback-deployment
+name: Roll back a deployment
+goal: Revert a deployment that has failed or regressed, using its documented rollback path.
+applicable_profiles:
+- cloud-devops-engineer
+inputs:
+- Deployment execution record
+- Observed failure/regression
+outputs:
+- Rollback execution record
+steps:
+- Confirm the failure against monitoring/alerting evidence.
+- Execute the documented rollback path.
+- Record the rollback outcome and notify the DM.

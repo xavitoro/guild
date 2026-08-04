@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/task/v1",
+  "guildSchemaId": "guild.task/v1",
+  "title": "Guild Task / Work Item",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "status",
+    "milestone",
+    "assigned_profile",
+    "weight"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.task/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-[0-9]+$",
+      "description": "e.g. WI-001."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "planned",
+        "ready",
+        "in_progress",
+        "blocked",
+        "in_review",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "milestone": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assigned_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "weight": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/project/v1",
+  "guildSchemaId": "guild.project/v1",
+  "title": "Guild Project Descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "type",
+    "status",
+    "canonical_root",
+    "language_policy"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.project/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language_policy": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

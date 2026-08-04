@@ -1,0 +1,16 @@
+schema: guild.skill-manifest/v1
+id: run-regression-review
+name: Run a regression review
+goal: Verify a change against its acceptance criteria and check for regressions.
+applicable_profiles:
+- quality-assurance-engineer
+inputs:
+- Code change / pull request
+- Acceptance criteria or original reproduction steps
+outputs:
+- Test results
+- 'Gate result: pass or fail'
+steps:
+- Derive or reuse a test plan from the acceptance criteria.
+- Run automated and, where warranted, exploratory checks.
+- Record a pass/fail gate result referencing each criterion.

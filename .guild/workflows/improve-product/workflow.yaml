@@ -1,0 +1,291 @@
+schema: guild.workflow/v1
+id: improve-product
+name: Improve the product
+description: 'A data-driven improvement cycle: evidence, hypothesis, prioritization, implementation, verification
+  and outcome measurement, closing the loop back to evidence.'
+status: ready
+steps:
+- id: improve-product-01-triage
+  name: Triage the improvement request
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: triage-request
+  required_input_artifacts:
+  - Improvement request or observed signal
+  expected_output_artifacts:
+  - Scoped brief
+  preconditions: []
+  completion_criteria:
+  - Scope is confirmed.
+  gates: []
+- id: improve-product-02-analyze-data
+  name: Analyze product data
+  responsible_profile: product-data-analyst
+  invoked_skill: analyze-product-data
+  required_input_artifacts:
+  - Analytics data and events
+  - The question under evaluation
+  expected_output_artifacts:
+  - Evidence-backed improvement hypothesis
+  preconditions: []
+  completion_criteria:
+  - The hypothesis cites evidence and its known limitations.
+  gates: []
+- id: improve-product-03-evaluate-hypothesis
+  name: Evaluate the hypothesis against product vision
+  responsible_profile: product-owner
+  invoked_skill: define-product-vision
+  required_input_artifacts:
+  - Evidence-backed improvement hypothesis
+  expected_output_artifacts:
+  - 'Decision: pursue, defer or reject, with rationale'
+  preconditions: []
+  completion_criteria:
+  - The decision and its rationale are recorded.
+  gates: []
+- id: improve-product-04-define-requirements
+  name: Define requirements
+  responsible_profile: business-analyst
+  invoked_skill: define-requirements
+  required_input_artifacts:
+  - Accepted hypothesis
+  expected_output_artifacts:
+  - Requirements artifact
+  - User stories with acceptance criteria
+  preconditions:
+  - The Product Manager accepted the hypothesis at improve-product-03-evaluate-hypothesis.
+  completion_criteria:
+  - Acceptance criteria are testable without interpretation.
+  gates: []
+- id: improve-product-05-design-experience
+  name: Design the experience
+  responsible_profile: product-experience-designer
+  invoked_skill: design-experience
+  required_input_artifacts:
+  - Requirements and acceptance criteria
+  expected_output_artifacts:
+  - Wireframes and screen-state specifications
+  preconditions: []
+  completion_criteria:
+  - Every screen state referenced in requirements has a wireframe or interaction spec.
+  gates: []
+  optional: true
+  condition: when the change has a user-facing interface
+- id: improve-product-06-write-copy
+  name: Write interface copy
+  responsible_profile: ux-content-designer
+  invoked_skill: write-interface-copy
+  required_input_artifacts:
+  - Wireframes and screen-state specifications
+  expected_output_artifacts:
+  - Copy deck
+  preconditions: []
+  completion_criteria:
+  - Every screen, error and empty state has corresponding copy.
+  gates: []
+  optional: true
+  condition: when the change has a user-facing interface
+- id: improve-product-07-implement-backend
+  name: Implement backend/domain logic
+  responsible_profile: product-software-engineer
+  invoked_skill: implement-feature
+  required_input_artifacts:
+  - Requirements and acceptance criteria
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - The implementation satisfies every acceptance criterion in scope for this step.
+  gates: []
+  optional: true
+  condition: when the change touches domain logic, application flow or an API
+- id: improve-product-08-implement-frontend
+  name: Implement the web experience
+  responsible_profile: web-experience-engineer
+  invoked_skill: implement-feature
+  required_input_artifacts:
+  - Requirements, wireframes and copy deck
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - The implementation matches the approved flow, copy and accessibility bar.
+  gates: []
+  optional: true
+  condition: when the change is primarily a web-experience/frontend change
+- id: improve-product-09-review-schema
+  name: Review the schema change
+  responsible_profile: database-engineer
+  invoked_skill: review-schema-change
+  required_input_artifacts:
+  - Proposed schema/migration change
+  expected_output_artifacts:
+  - Reviewed schema/migration
+  - Migration risk assessment
+  preconditions: []
+  completion_criteria:
+  - The migration has a documented rollback path.
+  gates: []
+  optional: true
+  condition: when the change touches the database schema
+- id: improve-product-10-implement-integration
+  name: Implement the integration change
+  responsible_profile: integration-engineer
+  invoked_skill: implement-integration
+  required_input_artifacts:
+  - Integration requirement
+  expected_output_artifacts:
+  - Integration contract and implementation
+  preconditions: []
+  completion_criteria:
+  - Provider auth, retries and failure handling are implemented and documented.
+  gates: []
+  optional: true
+  condition: when the change touches an external integration
+- id: improve-product-11-instrument-analytics
+  name: Instrument analytics for the outcome measurement
+  responsible_profile: data-analytics-engineer
+  invoked_skill: instrument-analytics
+  required_input_artifacts:
+  - Analytics requirement tied to the hypothesis
+  expected_output_artifacts:
+  - Event/property taxonomy
+  - Instrumentation / pipeline code change
+  preconditions: []
+  completion_criteria:
+  - The instrumentation covers the metric the hypothesis will be evaluated against.
+  gates: []
+  optional: true
+  condition: when measuring the outcome requires new or changed analytics events
+- id: improve-product-12-regression-review
+  name: Run the regression review
+  responsible_profile: quality-assurance-engineer
+  invoked_skill: run-regression-review
+  required_input_artifacts:
+  - Code change(s)
+  - Acceptance criteria
+  expected_output_artifacts:
+  - Test results
+  - 'Gate result: pass or fail'
+  preconditions:
+  - At least one implementation step is complete.
+  completion_criteria:
+  - Every acceptance criterion has an explicit verification outcome.
+  gates:
+  - qa_gate_pass
+  on_return: Return to whichever implementation step (07-11) the failing behavior traces to.
+- id: improve-product-13-threat-model
+  name: Review security impact
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - Code change(s)
+  expected_output_artifacts:
+  - Threat model or security review report
+  - Classified findings
+  preconditions: []
+  completion_criteria:
+  - No open critical or high-severity finding remains.
+  gates:
+  - security_gate_clean
+  optional: true
+  condition: when the change touches authentication, authorization, secrets, payments or personal data
+- id: improve-product-14-prepare-pull-request
+  name: Prepare the pull request
+  responsible_profile: product-software-engineer
+  invoked_skill: prepare-pull-request
+  required_input_artifacts:
+  - Verified code change(s)
+  - Passing gate results
+  expected_output_artifacts:
+  - Pull request
+  preconditions:
+  - improve-product-12-regression-review passed.
+  completion_criteria:
+  - The PR links the hypothesis, the change and the verification evidence.
+  gates: []
+- id: improve-product-15-human-approval-merge
+  name: Approve merge to a protected branch
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Pull request
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions: []
+  completion_criteria:
+  - The human has explicitly approved or rejected the merge.
+  gates:
+  - merge_protected_branch
+  optional: true
+  condition: when the target branch is protected
+- id: improve-product-16-human-approval-deploy
+  name: Approve production deployment
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Deployment plan
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions: []
+  completion_criteria:
+  - The human has explicitly approved or rejected the deployment.
+  gates:
+  - deploy_production
+  optional: true
+  condition: when this workflow includes a production deployment
+- id: improve-product-17-deploy
+  name: Deploy the change
+  responsible_profile: cloud-devops-engineer
+  invoked_skill: plan-and-execute-deployment
+  required_input_artifacts:
+  - Verified, approved change
+  expected_output_artifacts:
+  - Deployment/rollback plan
+  - Deployment execution record
+  preconditions:
+  - Any required human approval (improve-product-16) is recorded when the target is production.
+  completion_criteria:
+  - The change is live with a documented rollback path.
+  gates: []
+  optional: true
+  condition: when this workflow includes a deployment
+- id: improve-product-18-evaluate-outcome
+  name: Evaluate the outcome
+  responsible_profile: product-data-analyst
+  invoked_skill: analyze-product-data
+  required_input_artifacts:
+  - Post-release usage/conversion/error data
+  - The original hypothesis
+  expected_output_artifacts:
+  - 'Outcome evaluation: hypothesis confirmed, inconclusive, or rejected'
+  preconditions:
+  - The change has been live for the agreed measurement window.
+  completion_criteria:
+  - The outcome is evaluated against the baseline metric with cited evidence.
+  gates: []
+  on_return: If the outcome is inconclusive or negative, return to improve-product-02-analyze-data for
+    re-analysis, or escalate to the Product Manager for a scope decision.
+- id: improve-product-19-consolidate-knowledge
+  name: Consolidate knowledge
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: consolidate-knowledge
+  required_input_artifacts:
+  - Outcome evaluation
+  expected_output_artifacts:
+  - Updated project-memory entries
+  - Updated planning/status artifacts
+  preconditions:
+  - The outcome has been evaluated with evidence.
+  completion_criteria:
+  - A verified pattern is recorded only when the hypothesis was confirmed with evidence.
+  gates: []
+failure_paths:
+- A failing regression review returns to the implementing step rather than proceeding to review or deployment.
+- An open critical/high security finding blocks pull-request preparation until resolved and re-reviewed.
+return_paths:
+- If the Product Manager rejects the hypothesis at improve-product-03-evaluate-hypothesis, the workflow
+  ends there without implementation — a valid negative decision, not a failure.
+- An inconclusive or negative outcome at improve-product-18-evaluate-outcome returns to analysis or escalates
+  to the Product Manager for a scope decision.
+escalation_paths:
+- Merging to a protected branch and any production deployment always escalate to the human before proceeding.

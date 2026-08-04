@@ -1,0 +1,215 @@
+schema: guild.workflow/v1
+id: create-new-project
+name: Create a new project
+description: Bootstrap a brand-new project under Guild governance, from vision through an initial, verified,
+  optionally-deployed skeleton.
+status: ready
+steps:
+- id: new-project-01-triage
+  name: Triage the new-project request
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: triage-request
+  required_input_artifacts:
+  - New-project request
+  expected_output_artifacts:
+  - Scoped brief
+  preconditions: []
+  completion_criteria:
+  - Scope and constraints are confirmed.
+  gates: []
+- id: new-project-02-define-vision
+  name: Define the product vision
+  responsible_profile: product-owner
+  invoked_skill: define-product-vision
+  required_input_artifacts:
+  - Business goals / stakeholder input
+  expected_output_artifacts:
+  - Vision statement and initial roadmap
+  preconditions: []
+  completion_criteria:
+  - The vision is stated in outcome terms and traceable to a stakeholder goal.
+  gates: []
+- id: new-project-03-define-requirements
+  name: Define initial requirements
+  responsible_profile: business-analyst
+  invoked_skill: define-requirements
+  required_input_artifacts:
+  - Vision statement and initial roadmap
+  expected_output_artifacts:
+  - Initial requirements and stories for the first milestone
+  preconditions:
+  - The vision statement exists.
+  completion_criteria:
+  - Acceptance criteria are testable without interpretation.
+  gates: []
+  on_return: If a requirement depends on an undocumented domain fact, return to the Product Manager for
+    clarification.
+- id: new-project-04-design-experience
+  name: Design the initial experience
+  responsible_profile: product-experience-designer
+  invoked_skill: design-experience
+  required_input_artifacts:
+  - Initial requirements
+  expected_output_artifacts:
+  - Wireframes and screen-state specifications
+  preconditions: []
+  completion_criteria:
+  - Every first-milestone screen state has a wireframe or interaction spec.
+  gates: []
+  optional: true
+  condition: when the new project has a user-facing interface
+- id: new-project-05-write-copy
+  name: Write initial interface copy
+  responsible_profile: ux-content-designer
+  invoked_skill: write-interface-copy
+  required_input_artifacts:
+  - Wireframes and screen-state specifications
+  expected_output_artifacts:
+  - Copy deck
+  preconditions: []
+  completion_criteria:
+  - Every screen state in scope has corresponding copy.
+  gates: []
+  optional: true
+  condition: when the new project has a user-facing interface
+- id: new-project-06-scaffold-project
+  name: Scaffold the project skeleton
+  responsible_profile: product-software-engineer
+  invoked_skill: implement-feature
+  required_input_artifacts:
+  - Initial requirements
+  - UX/copy artifacts, if produced
+  expected_output_artifacts:
+  - Initial project skeleton and architecture notes
+  preconditions: []
+  completion_criteria:
+  - The skeleton builds, boots and has a baseline automated test in place.
+  gates: []
+- id: new-project-07-review-schema
+  name: Review the initial schema
+  responsible_profile: database-engineer
+  invoked_skill: review-schema-change
+  required_input_artifacts:
+  - Proposed initial schema
+  expected_output_artifacts:
+  - Reviewed schema/migration
+  - Migration risk assessment
+  preconditions: []
+  completion_criteria:
+  - The schema has documented constraints, indexes and a rollback path.
+  gates: []
+  optional: true
+  condition: when the new project requires a persistent data store
+- id: new-project-08-implement-integration
+  name: Implement the initial integration
+  responsible_profile: integration-engineer
+  invoked_skill: implement-integration
+  required_input_artifacts:
+  - Integration requirement
+  expected_output_artifacts:
+  - Integration contract and implementation
+  preconditions: []
+  completion_criteria:
+  - Provider auth, retries and failure handling are implemented and documented.
+  gates: []
+  optional: true
+  condition: when the new project requires an external API/service integration from day one
+- id: new-project-09-baseline-threat-model
+  name: Assess baseline security posture
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - Project skeleton and architecture notes
+  expected_output_artifacts:
+  - Baseline threat model
+  preconditions: []
+  completion_criteria:
+  - Any critical or high baseline finding is explicitly recorded.
+  gates: []
+  optional: true
+  condition: when the project will handle authentication, payments, secrets or personal data
+- id: new-project-10-regression-review
+  name: Verify the scaffold
+  responsible_profile: quality-assurance-engineer
+  invoked_skill: run-regression-review
+  required_input_artifacts:
+  - Project skeleton
+  - Baseline acceptance criteria
+  expected_output_artifacts:
+  - Test results
+  - 'Gate result: pass or fail'
+  preconditions:
+  - The scaffold step is complete.
+  completion_criteria:
+  - The scaffold builds and its baseline tests pass.
+  gates:
+  - qa_gate_pass
+  on_return: Return to new-project-06-scaffold-project, or the relevant specialist step, with failure
+    details.
+- id: new-project-11-prepare-pull-request
+  name: Prepare the initial pull request
+  responsible_profile: product-software-engineer
+  invoked_skill: prepare-pull-request
+  required_input_artifacts:
+  - Verified project skeleton
+  - Passing gate results
+  expected_output_artifacts:
+  - Pull request
+  preconditions:
+  - new-project-10-regression-review passed.
+  completion_criteria:
+  - The PR links the vision, requirements and verification evidence.
+  gates: []
+- id: new-project-12-human-approval-provision
+  name: Approve production provisioning
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Proposed production deployment or infrastructure provisioning
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions: []
+  completion_criteria:
+  - The human has explicitly approved or rejected the action.
+  gates:
+  - deploy_production
+  - provision_material_cost
+  optional: true
+  condition: when this workflow provisions production infrastructure or deploys the new project to production
+- id: new-project-13-initial-deployment
+  name: Deploy the initial environment
+  responsible_profile: cloud-devops-engineer
+  invoked_skill: plan-and-execute-deployment
+  required_input_artifacts:
+  - Verified project skeleton
+  expected_output_artifacts:
+  - Deployment/rollback plan
+  - Deployment execution record
+  preconditions:
+  - Any required human approval (new-project-12) is recorded when the target is production.
+  completion_criteria:
+  - The environment is live with a documented rollback path.
+  gates: []
+  optional: true
+  condition: when this workflow includes provisioning a live environment
+- id: new-project-14-consolidate-knowledge
+  name: Consolidate initial project knowledge
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: consolidate-knowledge
+  required_input_artifacts:
+  - Outcome of this workflow run
+  expected_output_artifacts:
+  - Updated project-memory entries
+  - Updated planning/status artifacts
+  preconditions: []
+  completion_criteria:
+  - Every new memory entry cites verifiable evidence.
+  gates: []
+failure_paths:
+- If the scaffold fails verification, the workflow returns to scaffolding rather than proceeding to deployment.
+- If a required human approval is denied, the workflow stops before the gated action and the DM records
+  why.
+return_paths:
+- A requirement built on an undocumented assumption returns to vision or requirements definition.
+escalation_paths:
+- Any production provisioning or deployment escalates to the human before execution.

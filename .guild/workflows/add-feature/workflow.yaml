@@ -1,0 +1,250 @@
+schema: guild.workflow/v1
+id: add-feature
+name: Add a feature
+description: Implement a new, prioritized product feature from requirements through optional deployment.
+status: ready
+steps:
+- id: add-feature-01-triage
+  name: Triage the feature request
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: triage-request
+  required_input_artifacts:
+  - Feature request or prioritized work item
+  expected_output_artifacts:
+  - Scoped brief
+  preconditions: []
+  completion_criteria:
+  - Scope is confirmed.
+  gates: []
+- id: add-feature-02-define-requirements
+  name: Define requirements
+  responsible_profile: business-analyst
+  invoked_skill: define-requirements
+  required_input_artifacts:
+  - Prioritized work item
+  expected_output_artifacts:
+  - Requirements artifact
+  - User stories with acceptance criteria
+  preconditions: []
+  completion_criteria:
+  - Acceptance criteria are testable without interpretation.
+  gates: []
+  on_return: If a requirement depends on an undocumented domain fact, return to the Product Manager for
+    clarification.
+- id: add-feature-03-design-experience
+  name: Design the experience
+  responsible_profile: product-experience-designer
+  invoked_skill: design-experience
+  required_input_artifacts:
+  - Requirements and acceptance criteria
+  expected_output_artifacts:
+  - Wireframes and screen-state specifications
+  preconditions: []
+  completion_criteria:
+  - Every screen state referenced in requirements has a wireframe or interaction spec.
+  gates: []
+  optional: true
+  condition: when the feature has a user-facing interface
+- id: add-feature-04-write-copy
+  name: Write interface copy
+  responsible_profile: ux-content-designer
+  invoked_skill: write-interface-copy
+  required_input_artifacts:
+  - Wireframes and screen-state specifications
+  expected_output_artifacts:
+  - Copy deck
+  preconditions: []
+  completion_criteria:
+  - Every screen, error and empty state has corresponding copy.
+  gates: []
+  optional: true
+  condition: when the feature has a user-facing interface
+- id: add-feature-05-implement-backend
+  name: Implement backend/domain logic
+  responsible_profile: product-software-engineer
+  invoked_skill: implement-feature
+  required_input_artifacts:
+  - Requirements and acceptance criteria
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - The implementation satisfies every acceptance criterion in scope for this step.
+  gates: []
+  optional: true
+  condition: when the feature touches domain logic, application flow or an API
+- id: add-feature-06-implement-frontend
+  name: Implement the web experience
+  responsible_profile: web-experience-engineer
+  invoked_skill: implement-feature
+  required_input_artifacts:
+  - Requirements, wireframes and copy deck
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - The implementation matches the approved flow, copy and accessibility bar.
+  gates: []
+  optional: true
+  condition: when the feature is primarily a web-experience/frontend change
+- id: add-feature-07-review-schema
+  name: Review the schema change
+  responsible_profile: database-engineer
+  invoked_skill: review-schema-change
+  required_input_artifacts:
+  - Proposed schema/migration change
+  expected_output_artifacts:
+  - Reviewed schema/migration
+  - Migration risk assessment
+  preconditions: []
+  completion_criteria:
+  - The migration has a documented rollback path.
+  gates: []
+  optional: true
+  condition: when the feature touches the database schema
+- id: add-feature-08-implement-integration
+  name: Implement the integration
+  responsible_profile: integration-engineer
+  invoked_skill: implement-integration
+  required_input_artifacts:
+  - Integration requirement
+  expected_output_artifacts:
+  - Integration contract and implementation
+  preconditions: []
+  completion_criteria:
+  - Provider auth, retries and failure handling are implemented and documented.
+  gates: []
+  optional: true
+  condition: when the feature touches an external integration
+- id: add-feature-09-instrument-analytics
+  name: Instrument analytics
+  responsible_profile: data-analytics-engineer
+  invoked_skill: instrument-analytics
+  required_input_artifacts:
+  - Analytics requirement
+  expected_output_artifacts:
+  - Event/property taxonomy
+  - Instrumentation / pipeline code change
+  preconditions: []
+  completion_criteria:
+  - Data quality is verified against the declared taxonomy.
+  gates: []
+  optional: true
+  condition: when the feature requires new analytics events
+- id: add-feature-10-regression-review
+  name: Run the regression review
+  responsible_profile: quality-assurance-engineer
+  invoked_skill: run-regression-review
+  required_input_artifacts:
+  - Code change(s)
+  - Acceptance criteria
+  expected_output_artifacts:
+  - Test results
+  - 'Gate result: pass or fail'
+  preconditions:
+  - At least one implementation step is complete.
+  completion_criteria:
+  - Every acceptance criterion has an explicit verification outcome.
+  gates:
+  - qa_gate_pass
+  on_return: Return to whichever implementation step (05-09) the failing behavior traces to.
+- id: add-feature-11-threat-model
+  name: Review security impact
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - Code change(s)
+  expected_output_artifacts:
+  - Threat model or security review report
+  - Classified findings
+  preconditions: []
+  completion_criteria:
+  - No open critical or high-severity finding remains.
+  gates:
+  - security_gate_clean
+  on_return: Return to the implementing step with the classified finding; a critical/high finding blocks
+    the gate.
+  optional: true
+  condition: when the feature touches authentication, authorization, secrets, payments or personal data
+- id: add-feature-12-prepare-pull-request
+  name: Prepare the pull request
+  responsible_profile: product-software-engineer
+  invoked_skill: prepare-pull-request
+  required_input_artifacts:
+  - Verified code change(s)
+  - Passing gate results
+  expected_output_artifacts:
+  - Pull request
+  preconditions:
+  - add-feature-10-regression-review passed, and add-feature-11-threat-model has no open critical/high
+    finding when it ran.
+  completion_criteria:
+  - The PR links the requirement, the change and the verification evidence.
+  gates: []
+- id: add-feature-13-human-approval-merge
+  name: Approve merge to a protected branch
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Pull request
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions: []
+  completion_criteria:
+  - The human has explicitly approved or rejected the merge.
+  gates:
+  - merge_protected_branch
+  optional: true
+  condition: when the target branch is protected
+- id: add-feature-14-human-approval-deploy
+  name: Approve production deployment
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Deployment plan
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions: []
+  completion_criteria:
+  - The human has explicitly approved or rejected the deployment.
+  gates:
+  - deploy_production
+  optional: true
+  condition: when this workflow includes a production deployment
+- id: add-feature-15-deploy
+  name: Deploy the change
+  responsible_profile: cloud-devops-engineer
+  invoked_skill: plan-and-execute-deployment
+  required_input_artifacts:
+  - Verified, approved change
+  expected_output_artifacts:
+  - Deployment/rollback plan
+  - Deployment execution record
+  preconditions:
+  - Any required human approval (add-feature-14) is recorded when the target is production.
+  completion_criteria:
+  - The change is live with a documented rollback path.
+  gates: []
+  optional: true
+  condition: when this workflow includes a deployment
+- id: add-feature-16-consolidate-knowledge
+  name: Consolidate knowledge
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: consolidate-knowledge
+  required_input_artifacts:
+  - Outcome of this workflow run
+  expected_output_artifacts:
+  - Updated project-memory entries, if any
+  preconditions: []
+  completion_criteria:
+  - Any new memory entry cites verifiable evidence.
+  gates: []
+  optional: true
+  condition: when the feature produced a reusable pattern or decision worth recording
+failure_paths:
+- A failing regression review returns to the implementing step rather than proceeding to review or deployment.
+- An open critical/high security finding blocks pull-request preparation until resolved and re-reviewed.
+return_paths:
+- An ambiguous or incomplete requirement returns to the Business Analyst before implementation continues.
+escalation_paths:
+- Merging to a protected branch and any production deployment always escalate to the human before proceeding.

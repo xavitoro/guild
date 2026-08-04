@@ -1,0 +1,17 @@
+schema: guild.skill-manifest/v1
+id: define-requirements
+name: Define requirements
+goal: Turn an approved goal into actors, business rules, dependencies, edge cases and testable acceptance
+  criteria.
+applicable_profiles:
+- business-analyst
+inputs:
+- Prioritized goal or hypothesis from the Product Manager
+outputs:
+- Requirements artifact
+- User stories with acceptance criteria
+steps:
+- Identify the actors and business rules involved.
+- Enumerate dependencies and edge cases.
+- Write acceptance criteria specific enough to verify without interpretation.
+- List open ambiguities instead of resolving them by assumption.

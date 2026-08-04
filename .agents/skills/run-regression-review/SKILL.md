@@ -1,0 +1,31 @@
+<!-- GENERATED FILE — DO NOT EDIT BY HAND.
+     Source of truth: .guild/skills/run-regression-review/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+
+# Run a regression review
+
+*Canonical Guild skill id: `run-regression-review`*
+
+## Goal
+
+Verify a change against its acceptance criteria and check for regressions.
+
+## Applicable profiles
+
+quality-assurance-engineer
+
+## Inputs
+
+- Code change / pull request
+- Acceptance criteria or original reproduction steps
+
+## Outputs
+
+- Test results
+- Gate result: pass or fail
+
+## Steps
+
+- Derive or reuse a test plan from the acceptance criteria.
+- Run automated and, where warranted, exploratory checks.
+- Record a pass/fail gate result referencing each criterion.

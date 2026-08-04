@@ -4,23 +4,28 @@ Updated: 4 August 2026
 
 ## Overall status
 
-Ready to begin the declarative foundation.
+Milestones M1 (declarative foundation), M2 (provider adapters) and M3
+(evaluation and first real-project pilot) are all complete. WI-001 through
+WI-005 are done. The full planned bootstrap roadmap in
+`project-plan.yaml` is complete.
 
 ## Current objective
 
-Create the provider-neutral structure, schemas and profile definitions without building a SaaS platform or custom runtime.
+Remaining work is human-owned: resolve the open decisions below, and pilot
+Guild on a genuine external project (the automated pilot in
+`.guild/evals/pilot_install_check.py` proves the install steps work against
+an isolated fresh copy, but is not a substitute for real usage).
 
 ## Ready work
 
-- WI-001 — Define canonical repository structure and schemas.
+- (none — no work items are currently ready; new work requires scoping a
+  new milestone or work item)
 
 ## Planned next
 
-1. Generate fourteen agent profiles.
-2. Define reusable skills.
-3. Define six initial workflows.
-4. Generate Codex and Claude Code adapters.
-5. Add structural validation and run a pilot.
+- Resolve the open decisions below.
+- Install Guild into a real external project and run an actual workflow
+  end to end with a human in the loop.
 
 ## Open decisions
 

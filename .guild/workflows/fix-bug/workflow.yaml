@@ -1,0 +1,209 @@
+schema: guild.workflow/v1
+id: fix-bug
+name: Fix a bug
+description: Intake by the DM, reproduction by QA, root-cause and plan by the Product Software Engineer,
+  specialist review when needed, implementation by the relevant specialist, regression validation by QA,
+  conditional review by security, and pull-request preparation by the DM.
+status: ready
+steps:
+- id: fix-bug-01-triage
+  name: Triage the defect report
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: triage-request
+  required_input_artifacts:
+  - Defect report
+  expected_output_artifacts:
+  - Scoped brief
+  preconditions: []
+  completion_criteria:
+  - Scope and severity are confirmed.
+  gates: []
+- id: fix-bug-02-reproduce
+  name: Reproduce the defect
+  responsible_profile: quality-assurance-engineer
+  invoked_skill: reproduce-defect
+  required_input_artifacts:
+  - Defect report
+  expected_output_artifacts:
+  - Confirmed reproduction steps
+  - Observed vs. expected behavior
+  preconditions: []
+  completion_criteria:
+  - The defect reproduces deterministically, or the attempt is fully documented.
+  gates: []
+  on_return: If the defect cannot be reproduced, return to the requester (via the DM) for more information.
+- id: fix-bug-03-diagnose-root-cause
+  name: Diagnose the root cause
+  responsible_profile: product-software-engineer
+  invoked_skill: diagnose-root-cause
+  required_input_artifacts:
+  - Confirmed reproduction steps
+  expected_output_artifacts:
+  - Root-cause analysis and fix plan
+  preconditions:
+  - fix-bug-02-reproduce succeeded.
+  completion_criteria:
+  - The root cause, not just the symptom, is stated and a fix plan proposed.
+  gates: []
+  on_return: If the root cause is inconclusive, return to fix-bug-02-reproduce for a narrower reproduction.
+- id: fix-bug-04-review-schema
+  name: Review a schema-related root cause
+  responsible_profile: database-engineer
+  invoked_skill: review-schema-change
+  required_input_artifacts:
+  - Root-cause analysis and fix plan
+  expected_output_artifacts:
+  - Reviewed schema/migration
+  - Migration risk assessment
+  preconditions: []
+  completion_criteria:
+  - The proposed schema fix has a documented rollback path.
+  gates: []
+  optional: true
+  condition: when the root cause is in the database schema or a migration
+- id: fix-bug-05-review-integration
+  name: Review an integration-related root cause
+  responsible_profile: integration-engineer
+  invoked_skill: implement-integration
+  required_input_artifacts:
+  - Root-cause analysis and fix plan
+  expected_output_artifacts:
+  - Integration review notes
+  preconditions: []
+  completion_criteria:
+  - Provider auth, retry and failure-handling implications are documented.
+  gates: []
+  optional: true
+  condition: when the root cause is in an external integration
+- id: fix-bug-06-implement-fix-backend
+  name: Implement the backend fix
+  responsible_profile: product-software-engineer
+  invoked_skill: implement-fix
+  required_input_artifacts:
+  - Root-cause analysis and fix plan
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - A test that would have caught the original defect is added or updated.
+  gates: []
+  optional: true
+  condition: when the root cause is in backend/domain logic
+- id: fix-bug-07-implement-fix-frontend
+  name: Implement the frontend fix
+  responsible_profile: web-experience-engineer
+  invoked_skill: implement-fix
+  required_input_artifacts:
+  - Root-cause analysis and fix plan
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - A test that would have caught the original defect is added or updated.
+  gates: []
+  optional: true
+  condition: when the root cause is in the web-experience/frontend layer
+- id: fix-bug-08-implement-fix-database
+  name: Implement the database fix
+  responsible_profile: database-engineer
+  invoked_skill: implement-fix
+  required_input_artifacts:
+  - Root-cause analysis and fix plan
+  - Reviewed schema/migration, if produced
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - A test that would have caught the original defect is added or updated.
+  gates: []
+  optional: true
+  condition: when the root cause requires a schema or data fix
+- id: fix-bug-09-implement-fix-integration
+  name: Implement the integration fix
+  responsible_profile: integration-engineer
+  invoked_skill: implement-fix
+  required_input_artifacts:
+  - Root-cause analysis and fix plan
+  - Integration review notes, if produced
+  expected_output_artifacts:
+  - Code change / pull request
+  preconditions: []
+  completion_criteria:
+  - A test that would have caught the original defect is added or updated.
+  gates: []
+  optional: true
+  condition: when the root cause requires an integration fix
+- id: fix-bug-10-regression-review
+  name: Verify the fix
+  responsible_profile: quality-assurance-engineer
+  invoked_skill: run-regression-review
+  required_input_artifacts:
+  - Code change
+  - Original reproduction steps
+  expected_output_artifacts:
+  - Test results
+  - 'Gate result: pass or fail'
+  preconditions:
+  - At least one implement-fix step is complete.
+  completion_criteria:
+  - The original reproduction steps no longer reproduce the defect, and no new regression is introduced.
+  gates:
+  - qa_gate_pass
+  on_return: Return to whichever implement-fix step (06-09) produced the change.
+- id: fix-bug-11-threat-model
+  name: Review security impact
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - Code change
+  expected_output_artifacts:
+  - Threat model or security review report
+  - Classified findings
+  preconditions: []
+  completion_criteria:
+  - No open critical or high-severity finding remains.
+  gates:
+  - security_gate_clean
+  optional: true
+  condition: when the defect is security-relevant (authentication, authorization, injection, data exposure
+    or secret handling)
+- id: fix-bug-12-prepare-pull-request
+  name: Prepare the pull request
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: prepare-pull-request
+  required_input_artifacts:
+  - Verified code change
+  - Passing gate results
+  expected_output_artifacts:
+  - Pull request
+  preconditions:
+  - fix-bug-10-regression-review passed, and fix-bug-11-threat-model has no open critical/high finding
+    when it ran.
+  completion_criteria:
+  - The PR links the defect, the root cause, the fix and the verification evidence.
+  gates: []
+- id: fix-bug-13-human-approval-merge
+  name: Approve merge to a protected branch
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Pull request
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions: []
+  completion_criteria:
+  - The human has explicitly approved or rejected the merge.
+  gates:
+  - merge_protected_branch
+  optional: true
+  condition: when the target branch is protected
+failure_paths:
+- An unreproducible defect halts the workflow at reproduction and escalates to the DM/requester for more
+  information.
+- A failing regression review returns to the implementing step rather than proceeding to pull-request
+  preparation.
+return_paths:
+- An inconclusive root-cause analysis returns to reproduction for a narrower repro.
+escalation_paths:
+- An open critical/high security finding blocks pull-request preparation until resolved and re-reviewed.
+- Merging to a protected branch always escalates to the human before proceeding.

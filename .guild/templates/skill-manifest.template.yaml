@@ -1,0 +1,19 @@
+# Template for .guild/skills/<skill-id>/SKILL.yaml (or .guild/skills/<skill-id>.yaml)
+# Validates against .guild/schemas/skill-manifest.schema.json
+schema: guild.skill-manifest/v1
+id: replace-with-skill-id   # kebab-case, e.g. reproduce-a-bug
+name: Replace with skill name
+goal: >
+  One sentence describing the narrow outcome this skill accomplishes.
+applicable_profiles:
+  - replace-with-profile-id
+inputs:
+  - Name a required input.
+outputs:
+  - Name a produced output.
+preconditions:
+  - Describe a condition that must hold before this skill can run.
+steps:
+  - Describe the first step.
+  - Describe the next step.
+depends_on: []

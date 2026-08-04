@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/policies/v1",
+  "guildSchemaId": "guild.policies/v1",
+  "title": "Guild Policies",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "principles",
+    "approval_required"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.policies/v1"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "principles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "approval_required": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  }
+}

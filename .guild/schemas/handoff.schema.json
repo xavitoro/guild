@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/handoff/v1",
+  "guildSchemaId": "guild.handoff/v1",
+  "title": "Guild Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "workflow_id",
+    "step_id",
+    "from_profile",
+    "to_profile",
+    "artifact_ids",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.handoff/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "step_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "planned",
+        "ready",
+        "in_progress",
+        "blocked",
+        "in_review",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

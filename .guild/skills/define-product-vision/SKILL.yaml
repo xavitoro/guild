@@ -1,0 +1,16 @@
+schema: guild.skill-manifest/v1
+id: define-product-vision
+name: Define or evaluate product vision
+goal: Establish or evaluate a product vision, outcome and priority against which requirements and hypotheses
+  are judged.
+applicable_profiles:
+- product-owner
+inputs:
+- Business goals or stakeholder input
+- 'Optional: a proposed hypothesis or opportunity to evaluate'
+outputs:
+- Vision/roadmap update or a prioritization decision
+steps:
+- State the intended outcome in outcome terms, not solution terms.
+- Check the proposal against the existing roadmap and scope.
+- Decide whether to pursue, defer or reject, and record why.

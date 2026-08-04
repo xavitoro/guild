@@ -1,0 +1,95 @@
+schema: guild.workflow/v1
+id: onboard-existing-project
+name: Onboard an existing project
+description: 'Bring an existing repository under Guild governance: discover its stack, structure and conventions,
+  establish a baseline security posture, and initialize planning and project memory from verified evidence.
+  Read-only against the target codebase; makes no product change.'
+status: ready
+steps:
+- id: onboard-01-triage
+  name: Triage the onboarding request
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: triage-request
+  required_input_artifacts:
+  - Onboarding request
+  expected_output_artifacts:
+  - Scoped onboarding brief
+  preconditions:
+  - Repository is accessible for read-only inspection.
+  completion_criteria:
+  - Scope of onboarding (whole repository or a subset) is confirmed.
+  gates: []
+  on_return: If scope is unclear, return to the requester for clarification before proceeding.
+- id: onboard-02-discover-codebase
+  name: Discover the codebase
+  responsible_profile: product-software-engineer
+  invoked_skill: discover-project
+  required_input_artifacts:
+  - Scoped onboarding brief
+  expected_output_artifacts:
+  - Project discovery report (stack, structure, conventions)
+  preconditions:
+  - Onboarding scope is confirmed.
+  completion_criteria:
+  - The discovery report cites evidence (file paths) for every stated convention.
+  gates:
+  - discovery_report_evidence_backed
+  on_return: If findings are inconclusive or contradictory, narrow the scope and repeat this step.
+- id: onboard-03-discover-infra
+  name: Discover CI/CD and infrastructure
+  responsible_profile: cloud-devops-engineer
+  invoked_skill: discover-project
+  required_input_artifacts:
+  - Scoped onboarding brief
+  expected_output_artifacts:
+  - 'Operational discovery notes: CI/CD, environments, observability'
+  preconditions:
+  - Onboarding scope is confirmed.
+  completion_criteria:
+  - Operational notes cite evidence for every stated pipeline or environment.
+  gates: []
+  optional: true
+  condition: when the repository includes CI/CD pipelines or infrastructure-as-code configuration
+- id: onboard-04-baseline-threat-model
+  name: Assess baseline security posture
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - Project discovery report
+  expected_output_artifacts:
+  - Baseline threat model
+  preconditions: []
+  completion_criteria:
+  - Any critical or high baseline finding is explicitly recorded, not silently noted.
+  gates: []
+  escalation: A critical baseline finding (e.g. an exposed secret) escalates to the human immediately,
+    outside the normal sequence.
+  optional: true
+  condition: when discovery finds authentication, payment, secret-handling or personal-data code
+- id: onboard-05-consolidate-knowledge
+  name: Consolidate initial project knowledge
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: consolidate-knowledge
+  required_input_artifacts:
+  - Project discovery report
+  - Operational discovery notes, if produced
+  - Baseline threat model, if produced
+  expected_output_artifacts:
+  - Initial .guild/knowledge/project-memory.yaml entries
+  - Initial .guild/planning/ scaffolding
+  preconditions:
+  - All applicable discovery steps are complete.
+  completion_criteria:
+  - Every new memory entry cites discovery evidence.
+  gates:
+  - memory_entries_evidence_backed
+failure_paths:
+- If the repository cannot be read or access is denied, the workflow halts at triage and escalates to
+  the human.
+- If discovery evidence is insufficient to support an evidence-backed memory entry, the entry is left
+  unrecorded rather than guessed.
+return_paths:
+- Ambiguous or contradictory discovery findings return to the discovery step with a narrower scope.
+escalation_paths:
+- A baseline security finding of critical or high severity escalates directly to the human, bypassing
+  the rest of the sequence.

@@ -1,0 +1,16 @@
+schema: guild.skill-manifest/v1
+id: review-schema-change
+name: Review a schema change
+goal: Design or review a database schema/migration change for integrity, concurrency, compatibility and
+  migration risk.
+applicable_profiles:
+- database-engineer
+inputs:
+- Proposed schema or migration change
+outputs:
+- Reviewed schema/migration
+- Migration risk assessment
+steps:
+- Check constraints, indexes and transaction boundaries.
+- Assess concurrency and backward-compatibility risk.
+- Document a rollback or mitigation path.

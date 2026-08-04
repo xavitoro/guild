@@ -1,0 +1,15 @@
+schema: guild.skill-manifest/v1
+id: consolidate-knowledge
+name: Consolidate knowledge
+goal: Fold evidence-backed outcomes of a workflow run into canonical planning and project memory.
+applicable_profiles:
+- workflow-knowledge-orchestrator
+inputs:
+- Workflow run outcome and its evidence
+outputs:
+- Updated project-memory entries
+- Updated planning/status artifacts
+steps:
+- Check that every proposed memory entry cites verifiable evidence.
+- Update .guild/knowledge/project-memory.yaml and its Markdown view.
+- Update .guild/planning/ state to reflect the run's outcome.

@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/project-plan/v1",
+  "guildSchemaId": "guild.project-plan/v1",
+  "title": "Guild Project Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "project",
+    "version",
+    "updated_at",
+    "updated_by",
+    "vision",
+    "current_focus",
+    "milestones",
+    "work_items"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.project-plan/v1"
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "updated_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "current_focus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "milestone",
+        "objective",
+        "status"
+      ],
+      "properties": {
+        "milestone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "planned",
+            "ready",
+            "in_progress",
+            "blocked",
+            "in_review",
+            "completed",
+            "cancelled"
+          ]
+        }
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "status",
+          "weight"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "proposed",
+              "planned",
+              "ready",
+              "in_progress",
+              "blocked",
+              "in_review",
+              "completed",
+              "cancelled"
+            ]
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "work_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "status",
+          "milestone",
+          "assigned_profile",
+          "weight"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z]+-[0-9]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "proposed",
+              "planned",
+              "ready",
+              "in_progress",
+              "blocked",
+              "in_review",
+              "completed",
+              "cancelled"
+            ]
+          },
+          "milestone": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assigned_profile": {
+            "type": "string",
+            "minLength": 1
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    }
+  }
+}

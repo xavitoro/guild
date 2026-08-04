@@ -1,0 +1,123 @@
+schema: guild.workflow/v1
+id: review-pull-request
+name: Review a pull request
+description: Independently review a pull request — whether produced by another Guild workflow or submitted
+  directly — for correctness, schema/integration risk and security, with an explicit human approval point
+  before any protected-branch merge.
+status: ready
+steps:
+- id: review-pr-01-triage
+  name: Triage the review request
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: triage-request
+  required_input_artifacts:
+  - Pull request reference
+  expected_output_artifacts:
+  - Identified PR, target branch, and linked requirement if any
+  preconditions: []
+  completion_criteria:
+  - The PR and its target branch are identified.
+  gates: []
+- id: review-pr-02-review-code
+  name: Review code correctness and coverage
+  responsible_profile: quality-assurance-engineer
+  invoked_skill: review-code
+  required_input_artifacts:
+  - Pull request
+  - Linked requirement or acceptance criteria, if any
+  expected_output_artifacts:
+  - Review comments
+  - 'Gate result: pass or fail'
+  preconditions: []
+  completion_criteria:
+  - Every linked acceptance criterion, if any, has an explicit verification outcome.
+  gates:
+  - qa_gate_pass
+  on_return: Return review comments to the author; if the author is external to Guild, the DM relays feedback
+    rather than reassigning a workflow step.
+- id: review-pr-03-review-schema
+  name: Review a schema change in the PR
+  responsible_profile: database-engineer
+  invoked_skill: review-schema-change
+  required_input_artifacts:
+  - Pull request
+  expected_output_artifacts:
+  - Reviewed schema/migration
+  - Migration risk assessment
+  preconditions: []
+  completion_criteria:
+  - The migration has a documented rollback path.
+  gates: []
+  optional: true
+  condition: when the pull request touches the database schema or a migration
+- id: review-pr-04-review-integration
+  name: Review an integration change in the PR
+  responsible_profile: integration-engineer
+  invoked_skill: implement-integration
+  required_input_artifacts:
+  - Pull request
+  expected_output_artifacts:
+  - Integration review notes
+  preconditions: []
+  completion_criteria:
+  - Provider auth, retry and failure-handling implications are documented.
+  gates: []
+  optional: true
+  condition: when the pull request touches an external integration
+- id: review-pr-05-threat-model
+  name: Review security impact
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - Pull request
+  expected_output_artifacts:
+  - Threat model or security review report
+  - Classified findings
+  preconditions: []
+  completion_criteria:
+  - No open critical or high-severity finding remains.
+  gates:
+  - security_gate_clean
+  optional: true
+  condition: when the pull request touches a security-sensitive surface (authentication, authorization,
+    secrets, payments or personal data)
+- id: review-pr-06-human-approval-merge
+  name: Approve merge to a protected branch
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Pull request
+  - All applicable gate results
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions:
+  - review-pr-02-review-code passed, and review-pr-05-threat-model has no open critical/high finding when
+    it ran.
+  completion_criteria:
+  - The human has explicitly approved or rejected the merge.
+  gates:
+  - merge_protected_branch
+  optional: true
+  condition: when the target branch is protected
+- id: review-pr-07-consolidate-knowledge
+  name: Consolidate knowledge
+  responsible_profile: workflow-knowledge-orchestrator
+  invoked_skill: consolidate-knowledge
+  required_input_artifacts:
+  - Outcome of this review
+  expected_output_artifacts:
+  - Updated project-memory entries, if any
+  preconditions: []
+  completion_criteria:
+  - Any new memory entry cites verifiable evidence.
+  gates: []
+  optional: true
+  condition: when the review surfaced a reusable pattern or decision
+failure_paths:
+- A failing code review returns to the author with specific comments rather than proceeding toward merge.
+- An open critical/high security finding blocks merge approval until resolved and re-reviewed.
+return_paths:
+- Review comments that require rework return to the author (via the DM when the author is external to
+  Guild).
+escalation_paths:
+- Merging to a protected branch always escalates to the human before proceeding.

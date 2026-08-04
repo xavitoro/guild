@@ -1,0 +1,66 @@
+schema: guild.run-record/v1
+id: RUN-EXAMPLE-FIX-BUG-001
+workflow_id: fix-bug
+status: completed
+started_at: '2026-08-04'
+completed_at: '2026-08-04'
+initiated_by: quality-assurance-engineer
+steps:
+- step_id: fix-bug-01-triage
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Scoped brief (example)
+- step_id: fix-bug-02-reproduce
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Confirmed reproduction steps (example)
+- step_id: fix-bug-03-diagnose-root-cause
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Root-cause analysis and fix plan (example)
+- step_id: fix-bug-04-review-schema
+  status: skipped
+- step_id: fix-bug-05-review-integration
+  status: skipped
+- step_id: fix-bug-06-implement-fix-backend
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Code change / pull request (example)
+- step_id: fix-bug-07-implement-fix-frontend
+  status: skipped
+- step_id: fix-bug-08-implement-fix-database
+  status: skipped
+- step_id: fix-bug-09-implement-fix-integration
+  status: skipped
+- step_id: fix-bug-10-regression-review
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Test results (example)
+  gate_results:
+  - 'qa_gate_pass: pass (example)'
+- step_id: fix-bug-11-threat-model
+  status: skipped
+- step_id: fix-bug-12-prepare-pull-request
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Pull request (example)
+- step_id: fix-bug-13-human-approval-merge
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Approval record / gate result (example)
+  gate_results:
+  - 'merge_protected_branch: pass (example)'

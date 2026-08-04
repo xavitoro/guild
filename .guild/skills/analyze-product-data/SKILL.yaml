@@ -1,0 +1,15 @@
+schema: guild.skill-manifest/v1
+id: analyze-product-data
+name: Analyze product data
+goal: Interpret product usage and feedback data to form or evaluate an evidence-backed hypothesis.
+applicable_profiles:
+- product-data-analyst
+inputs:
+- Analytics data and events
+- Question or hypothesis under evaluation
+outputs:
+- Analysis report with evidence, confidence and caveats
+steps:
+- Pull the relevant usage, conversion or error data.
+- State findings with evidence and known limitations, not just a conclusion.
+- Flag when data is insufficient rather than forcing a conclusion.

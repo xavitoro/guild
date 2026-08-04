@@ -1,8 +1,8 @@
 schema: guild.project-memory/v1
 project: guild
-version: 1
+version: 6
 updated_at: 2026-08-04
-updated_by: human
+updated_by: workflow-knowledge-orchestrator
 
 entries:
   - id: MEM-001
@@ -17,3 +17,106 @@ entries:
     statement: The first implementation is declarative and does not include a mandatory multiagent runtime.
     evidence:
       - .guild/spec/GUILD_MASTER_SPEC.md
+  - id: MEM-003
+    category: architecture
+    status: verified
+    statement: >
+      WI-001 is complete. The canonical .guild/ directory structure exists,
+      with 16 JSON Schemas under .guild/schemas/, artifact templates under
+      .guild/templates/, and a structural validator at
+      .guild/evals/validate_guild.py that checks YAML/JSON syntax, schema
+      validity, instance-to-schema conformance, global id uniqueness and
+      depends_on reference resolution.
+    evidence:
+      - .guild/schemas/
+      - .guild/templates/
+      - .guild/evals/validate_guild.py
+      - .guild/planning/project-plan.yaml
+  - id: MEM-004
+    category: architecture
+    status: verified
+    statement: >
+      WI-002 is complete. All fourteen canonical agent profiles exist under
+      .guild/agents/<id>/ as a manifest.yaml (validating against
+      guild.agent-manifest/v1) plus a human-readable AGENT.md, with
+      independent QA (Barbarian) and security (Rogue) gates preserved and no
+      profile granted unrestricted write, merge, deploy or secret access.
+      .guild/evals/check_agent_profiles.py proves all fourteen ids are
+      present, schema-valid and unique against the spec's roster.
+    evidence:
+      - .guild/agents/
+      - .guild/evals/check_agent_profiles.py
+      - .guild/spec/GUILD_MASTER_SPEC.md
+  - id: MEM-005
+    category: architecture
+    status: verified
+    statement: >
+      WI-003 is complete, closing milestone M1. An initial catalogue of 22
+      reusable skills exists under .guild/skills/<id>/ (SKILL.yaml +
+      SKILL.md), and all six canonical workflows (onboard-existing-project,
+      create-new-project, add-feature, fix-bug, improve-product,
+      review-pull-request) exist under .guild/workflows/<id>/ (workflow.yaml
+      + workflow.md with a Mermaid diagram), each step declaring a
+      responsible profile, invoked skill, artifacts, preconditions,
+      completion criteria and gates, with conditional branches for optional
+      database/integration/web/security/cloud/data involvement and explicit
+      human-approval steps for every Red-tier action. Two example run
+      records exist under .guild/runs/ for add-feature and fix-bug.
+      .guild/evals/check_workflow_refs.py proves every responsible_profile,
+      invoked_skill, run workflow_id and run step_id reference resolves.
+    evidence:
+      - .guild/skills/
+      - .guild/workflows/
+      - .guild/runs/
+      - .guild/evals/check_workflow_refs.py
+  - id: MEM-006
+    category: architecture
+    status: verified
+    statement: >
+      WI-004 is complete, closing milestone M2. A deterministic generator at
+      .guild/adapters/generate_adapters.py derives every provider adapter
+      file from canonical .guild/agents/ and .guild/skills/ sources: Codex
+      skills under .agents/skills/, Claude Code subagents under
+      .claude/agents/ (tool grants mechanically derived from each profile's
+      allowed_capabilities, never unrestricted), Claude Code skills under
+      .claude/skills/, one deterministic policy-derived deny rule
+      (force-push) in .claude/settings.json, and managed, clearly-marked
+      sections appended to root AGENTS.md and CLAUDE.md without touching
+      existing repository-specific content. `--check` performs drift
+      detection (stale, missing, hand-edited and orphaned generated files
+      all fail the check), verified by deliberately breaking and restoring
+      each case. .guild/evals/smoke_test_add_feature.py proves the
+      generated adapters give complete, up-to-date coverage for the
+      add-feature workflow.
+    evidence:
+      - .guild/adapters/generate_adapters.py
+      - .guild/adapters/INSTALL.md
+      - .guild/evals/smoke_test_add_feature.py
+      - .claude/agents/
+      - .agents/skills/
+  - id: MEM-007
+    category: architecture
+    status: verified
+    statement: >
+      WI-005 is complete, closing milestone M3 and the full M1–M3 bootstrap
+      roadmap in project-plan.yaml. No dedicated bootstrap prompt existed
+      for this work item; its scope was derived from the still-unverified
+      items in GUILD_MASTER_SPEC.md section 14's definition of done. Three
+      fixtures were added: check_independent_gates.py (proves every agent
+      manifest forbids every Red-tier policy action, every code-editing
+      profile forbids self-approving its own QA/security result, and every
+      workflow gate on a Red-tier action is owned by 'human'),
+      check_language_neutrality.py (a deny-list scan proving no canonical
+      definition names a specific language, framework or cloud vendor), and
+      pilot_install_check.py (copies .guild/ into an isolated temp
+      directory with nothing else from this repo, installs it per
+      INSTALL.md's empty-repository steps, and re-runs every other check
+      from that copy — proving .guild/ is self-contained and the documented
+      install steps work end to end). All three were verified by
+      deliberately breaking and restoring a violation. A genuine pilot on
+      an external, non-bootstrap project remains human-owned future work.
+    evidence:
+      - .guild/evals/check_independent_gates.py
+      - .guild/evals/check_language_neutrality.py
+      - .guild/evals/pilot_install_check.py
+      - .guild/planning/project-plan.yaml

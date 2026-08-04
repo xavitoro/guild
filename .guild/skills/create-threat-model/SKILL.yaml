@@ -1,0 +1,15 @@
+schema: guild.skill-manifest/v1
+id: create-threat-model
+name: Create a threat model
+goal: Assess a change or architecture proposal for security risk and classify findings.
+applicable_profiles:
+- product-security-engineer
+inputs:
+- Code change / pull request or architecture proposal
+outputs:
+- Threat model or security review report
+- Classified findings
+steps:
+- Identify trust boundaries and attack surface touched by the change.
+- Review authorization logic, secret handling and dependency risk.
+- Classify findings by severity with recommended remediation.

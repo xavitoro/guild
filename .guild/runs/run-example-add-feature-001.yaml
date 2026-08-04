@@ -1,0 +1,76 @@
+schema: guild.run-record/v1
+id: RUN-EXAMPLE-ADD-FEATURE-001
+workflow_id: add-feature
+status: completed
+started_at: '2026-08-04'
+completed_at: '2026-08-04'
+initiated_by: product-owner
+steps:
+- step_id: add-feature-01-triage
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Scoped brief (example)
+- step_id: add-feature-02-define-requirements
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Requirements artifact (example)
+- step_id: add-feature-03-design-experience
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Wireframes and screen-state specifications (example)
+- step_id: add-feature-04-write-copy
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Copy deck (example)
+- step_id: add-feature-05-implement-backend
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Code change / pull request (example)
+- step_id: add-feature-06-implement-frontend
+  status: skipped
+- step_id: add-feature-07-review-schema
+  status: skipped
+- step_id: add-feature-08-implement-integration
+  status: skipped
+- step_id: add-feature-09-instrument-analytics
+  status: skipped
+- step_id: add-feature-10-regression-review
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Test results (example)
+  gate_results:
+  - 'qa_gate_pass: pass (example)'
+- step_id: add-feature-11-threat-model
+  status: skipped
+- step_id: add-feature-12-prepare-pull-request
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Pull request (example)
+- step_id: add-feature-13-human-approval-merge
+  status: completed
+  started_at: '2026-08-04'
+  completed_at: '2026-08-04'
+  artifacts_produced:
+  - Approval record / gate result (example)
+  gate_results:
+  - 'merge_protected_branch: pass (example)'
+- step_id: add-feature-14-human-approval-deploy
+  status: skipped
+- step_id: add-feature-15-deploy
+  status: skipped
+- step_id: add-feature-16-consolidate-knowledge
+  status: skipped

@@ -1,0 +1,14 @@
+schema: guild.skill-manifest/v1
+id: write-interface-copy
+name: Write interface copy
+goal: Produce interface copy tied to concrete screen states and actions.
+applicable_profiles:
+- ux-content-designer
+inputs:
+- Wireframes and screen-state specifications
+outputs:
+- Copy deck
+steps:
+- Write copy for every state and action in the specification.
+- Cover error, confirmation and empty states explicitly.
+- Check terminology against the existing glossary.

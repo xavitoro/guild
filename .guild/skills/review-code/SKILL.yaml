@@ -1,0 +1,16 @@
+schema: guild.skill-manifest/v1
+id: review-code
+name: Review code in a pull request
+goal: Review a pull request's correctness, test coverage and adherence to linked acceptance criteria.
+applicable_profiles:
+- quality-assurance-engineer
+inputs:
+- Pull request
+- Linked requirement or acceptance criteria, if any
+outputs:
+- Review comments
+- 'Gate result: pass or fail'
+steps:
+- Check the change against linked acceptance criteria, if any.
+- Review test coverage and code quality.
+- Record a pass/fail gate result with specific comments.

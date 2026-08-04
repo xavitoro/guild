@@ -1,0 +1,18 @@
+schema: guild.skill-manifest/v1
+id: discover-project
+name: Discover a project
+goal: Produce an evidence-based picture of a repository's stack, structure, conventions and operational
+  setup.
+applicable_profiles:
+- workflow-knowledge-orchestrator
+- product-software-engineer
+- cloud-devops-engineer
+inputs:
+- Repository read access
+outputs:
+- Project discovery report
+steps:
+- Inventory languages, frameworks and package manifests.
+- Identify existing conventions, tests and CI configuration.
+- Note anything undocumented or ambiguous rather than guessing.
+- Summarize findings as evidence-backed statements with file references.

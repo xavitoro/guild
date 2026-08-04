@@ -50,3 +50,24 @@ Before implementation:
 4. Make changes in a coherent batch.
 5. Run structural validation.
 6. Summarize created or changed files, validation results and open decisions.
+
+<!-- guild:adapter:start -->
+## Guild adapter (generated — do not edit this section by hand)
+
+This project has [Guild](.guild/spec/GUILD_MASTER_SPEC.md) installed. `.guild/` is the
+canonical source of truth; everything below is generated from it.
+
+- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (22 skills)
+- Claude Code subagents: `.claude/agents/<profile-id>.md` (14 profiles)
+- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (22 skills)
+- Generic / single-assistant clients: read `.guild/agents/`, `.guild/skills/` and
+  `.guild/workflows/` directly — see `.guild/workflows/EXECUTION_MODES.md` mode 1.
+
+Regenerate after any change under `.guild/agents/` or `.guild/skills/`:
+
+    python3 .guild/adapters/generate_adapters.py --target .
+
+Check for drift (fails if generated files no longer match canonical sources):
+
+    python3 .guild/adapters/generate_adapters.py --target . --check
+<!-- guild:adapter:end -->

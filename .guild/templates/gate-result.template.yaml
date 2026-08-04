@@ -1,0 +1,13 @@
+# Template for the outcome of evaluating a gate.
+# Validates against .guild/schemas/gate-result.schema.json
+schema: guild.gate-result/v1
+id: replace-with-gate-result-id
+gate_name: replace-with-gate-name   # e.g. tests_passed, no_critical_security_finding
+workflow_id: replace-with-workflow-id
+step_id: replace-with-step-id
+status: pass   # pass | fail | blocked | waived
+evaluated_by: replace-with-profile-id-or-human
+evaluated_at: "2026-08-04"
+requires_human_approval: false
+evidence: []
+notes: ""

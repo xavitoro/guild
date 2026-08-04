@@ -1,0 +1,17 @@
+schema: guild.skill-manifest/v1
+id: plan-and-execute-deployment
+name: Plan and execute a deployment
+goal: Plan and, once approved, execute a deployment with a documented rollback path.
+applicable_profiles:
+- cloud-devops-engineer
+inputs:
+- Verified change with a passing QA gate
+outputs:
+- Deployment/rollback plan
+- Deployment execution record
+preconditions:
+- The change has a passing quality-assurance-engineer gate result.
+steps:
+- Write a deployment plan including a rollback path.
+- Confirm the QA gate, and security gate where applicable, are passing.
+- Execute the deployment only after any required human approval is recorded.

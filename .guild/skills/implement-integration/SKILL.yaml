@@ -1,0 +1,15 @@
+schema: guild.skill-manifest/v1
+id: implement-integration
+name: Implement or review an integration
+goal: Design, implement or review an external API contract, including auth, idempotency, retries and failure
+  handling.
+applicable_profiles:
+- integration-engineer
+inputs:
+- Integration requirement or existing integration under review
+outputs:
+- Integration contract and implementation / review notes
+steps:
+- Define or review the contract, including authentication and failure modes.
+- Implement or verify idempotency and retry/backoff behavior.
+- Document observability for the integration.

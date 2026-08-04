@@ -1,0 +1,17 @@
+schema: guild.skill-manifest/v1
+id: implement-fix
+name: Implement a fix
+goal: Apply a fix for a diagnosed defect without introducing a regression.
+applicable_profiles:
+- product-software-engineer
+- web-experience-engineer
+- database-engineer
+- integration-engineer
+inputs:
+- Root-cause analysis and fix plan
+outputs:
+- Code change / pull request
+steps:
+- Implement the fix per the agreed plan.
+- Add or update a test that would have caught the original defect.
+- Re-run the original reproduction steps to confirm the defect is gone.
