@@ -1,0 +1,7 @@
+schema: guild.project/v1
+id: guild
+name: Guild
+type: agentic-sdlc-framework
+status: bootstrap
+canonical_root: .guild
+language_policy: provider-and-language-neutral

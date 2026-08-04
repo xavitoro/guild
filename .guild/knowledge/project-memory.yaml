@@ -1,0 +1,19 @@
+schema: guild.project-memory/v1
+project: guild
+version: 1
+updated_at: 2026-08-04
+updated_by: human
+
+entries:
+  - id: MEM-001
+    category: product
+    status: verified
+    statement: Guild is a portable, provider-neutral Agentic SDLC framework.
+    evidence:
+      - .guild/spec/GUILD_MASTER_SPEC.md
+  - id: MEM-002
+    category: architecture
+    status: verified
+    statement: The first implementation is declarative and does not include a mandatory multiagent runtime.
+    evidence:
+      - .guild/spec/GUILD_MASTER_SPEC.md
