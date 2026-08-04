@@ -4,8 +4,8 @@ description: Produce interface copy tied to concrete screen states and actions.
 ---
 
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
-     Source of truth: .guild/skills/write-interface-copy/SKILL.yaml (schema guild.skill-manifest/v1)
-     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+     Source of truth: .guild/core/skills/write-interface-copy/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/core/adapters/generate_adapters.py --target . -->
 
 # Write interface copy
 

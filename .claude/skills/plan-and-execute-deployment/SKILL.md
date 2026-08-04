@@ -4,8 +4,8 @@ description: Plan and, once approved, execute a deployment with a documented rol
 ---
 
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
-     Source of truth: .guild/skills/plan-and-execute-deployment/SKILL.yaml (schema guild.skill-manifest/v1)
-     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+     Source of truth: .guild/core/skills/plan-and-execute-deployment/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/core/adapters/generate_adapters.py --target . -->
 
 # Plan and execute a deployment
 

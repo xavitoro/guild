@@ -4,8 +4,8 @@ description: Review a pull request's correctness, test coverage and adherence to
 ---
 
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
-     Source of truth: .guild/skills/review-code/SKILL.yaml (schema guild.skill-manifest/v1)
-     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+     Source of truth: .guild/core/skills/review-code/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/core/adapters/generate_adapters.py --target . -->
 
 # Review code in a pull request
 

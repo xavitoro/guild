@@ -1,0 +1,41 @@
+schema: guild.decision/v1
+id: DEC-001
+title: Split .guild/ into core/ (framework) and state/ (project data)
+status: accepted
+context: >
+  Through WI-001–WI-005, .guild/ held nine framework directories (spec,
+  agents, skills, workflows, schemas, templates, policies, adapters, evals)
+  and three project-state directories (knowledge, planning, runs) plus
+  project.yaml as flat siblings. The human reviewer observed that this
+  mixes two things with very different lifecycles: the Guild framework
+  itself, which should be upgradeable by replacing it wholesale, and a
+  project's own accumulated knowledge/planning/run history, which must
+  survive that upgrade untouched. A flat layout gives no structural
+  guarantee that upgrading Guild won't clobber a project's own state.
+decision: >
+  .guild/ now has exactly two top-level directories. .guild/core/ holds the
+  nine framework directories and is the canonical, replaceable-wholesale
+  Guild definition. .guild/state/ holds knowledge/, planning/, runs/ and
+  project.yaml — a project's own data, never touched by a core upgrade or
+  by installing Guild into a new project. Installing Guild now means
+  copying only .guild/core/; a new project's .guild/state/ is populated by
+  running the create-new-project or onboard-existing-project workflow, not
+  by copying another project's state. This is recorded as design principle
+  11 in GUILD_MASTER_SPEC.md.
+consequences: >
+  Every path reference across the master spec, the eight Python scripts
+  under .guild/core/evals/ and .guild/core/adapters/, all generated
+  adapters, and every doc under .guild/ had to move from .guild/<dir>/ to
+  .guild/core/<dir>/ or .guild/state/<dir>/. pilot_install_check.py was
+  corrected to copy only .guild/core/ into its isolated test target
+  (previously it copied the whole .guild/, which — now that the split
+  exists — would have leaked this project's own state into a simulated
+  empty-repo installation, a latent inconsistency this decision surfaces
+  and fixes). All five required validators, the smoke test and the pilot
+  install check were re-run and pass against the new layout.
+decided_by: human
+decided_at: "2026-08-04"
+related_work_items:
+  - WI-001
+  - WI-004
+  - WI-005

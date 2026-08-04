@@ -1,0 +1,20 @@
+schema: guild.project-status/v1
+project: guild
+updated_at: "2026-08-04"
+overall_status: >
+  Milestones M1, M2, M3 and M4 are all complete. WI-001 through WI-006 are
+  done. .guild/ now splits into core/ (the Guild framework) and state/
+  (this project's own data) — see DEC-001.
+current_objective: >
+  Remaining work is human-owned: resolve the open decisions below, and
+  pilot Guild on a genuine external project.
+ready_work: []
+planned_next:
+  - Resolve the open decisions below.
+  - Install Guild into a real external project and run an actual workflow
+    end to end with a human in the loop.
+open_decisions:
+  - Final public product and protocol name.
+  - License.
+  - Whether adapters are copied or generated during installation.
+  - Whether a CLI is included in the first public release.

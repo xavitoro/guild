@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
-     Source of truth: .guild/skills/define-product-vision/SKILL.yaml (schema guild.skill-manifest/v1)
-     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+     Source of truth: .guild/core/skills/define-product-vision/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/core/adapters/generate_adapters.py --target . -->
 
 # Define or evaluate product vision
 

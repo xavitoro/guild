@@ -4,8 +4,8 @@ description: Package a verified change into a pull request with a clear descript
 ---
 
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
-     Source of truth: .guild/skills/prepare-pull-request/SKILL.yaml (schema guild.skill-manifest/v1)
-     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+     Source of truth: .guild/core/skills/prepare-pull-request/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/core/adapters/generate_adapters.py --target . -->
 
 # Prepare a pull request
 

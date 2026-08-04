@@ -1,6 +1,6 @@
 # Prompt 01 — Build the declarative foundation
 
-Read `AGENTS.md`, `.guild/spec/GUILD_MASTER_SPEC.md`, `.guild/planning/PROJECT_STATUS.md` and the other existing `.guild/` files before changing anything.
+Read `AGENTS.md`, `.guild/core/spec/GUILD_MASTER_SPEC.md`, `.guild/state/planning/PROJECT_STATUS.md` and the other existing `.guild/` files before changing anything.
 
 Implement **only Phase 1: the declarative Guild foundation**.
 

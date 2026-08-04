@@ -4,11 +4,11 @@
 
 Before planning or modifying this repository, read:
 
-1. `.guild/spec/GUILD_MASTER_SPEC.md`
-2. `.guild/planning/PROJECT_STATUS.md`
-3. `.guild/planning/project-plan.yaml`
-4. `.guild/knowledge/PROJECT_MEMORY.md`
-5. `.guild/policies/default-policies.yaml`
+1. `.guild/core/spec/GUILD_MASTER_SPEC.md`
+2. `.guild/state/planning/PROJECT_STATUS.md`
+3. `.guild/state/planning/project-plan.yaml`
+4. `.guild/state/knowledge/PROJECT_MEMORY.md`
+5. `.guild/core/policies/default-policies.yaml`
 
 ## Repository purpose
 
@@ -36,8 +36,8 @@ It is not initially a SaaS product, IDE, autonomous coding runtime or language-s
 - Every workflow step must declare its inputs, outputs, responsible profile and gates.
 - Never let an implementation profile approve its own QA or security result.
 - Destructive, production, credential, payment and permission changes require explicit human approval.
-- Update `.guild/knowledge/` when stable knowledge is verified.
-- Update `.guild/planning/` when project scope or status changes.
+- Update `.guild/state/knowledge/` when stable knowledge is verified.
+- Update `.guild/state/planning/` when project scope or status changes.
 - Do not record private chain-of-thought or unverified opinions as project memory.
 
 ## Change protocol
@@ -54,20 +54,23 @@ Before implementation:
 <!-- guild:adapter:start -->
 ## Guild adapter (generated — do not edit this section by hand)
 
-This project has [Guild](.guild/spec/GUILD_MASTER_SPEC.md) installed. `.guild/` is the
-canonical source of truth; everything below is generated from it.
+This project has [Guild](.guild/core/spec/GUILD_MASTER_SPEC.md) installed. `.guild/core/`
+is the canonical source of truth; everything below is generated from it. This project's
+own knowledge, planning and run history live in `.guild/state/`, untouched by Guild
+upgrades.
 
 - Codex skills: `.agents/skills/<skill-id>/SKILL.md` (22 skills)
 - Claude Code subagents: `.claude/agents/<profile-id>.md` (14 profiles)
 - Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (22 skills)
-- Generic / single-assistant clients: read `.guild/agents/`, `.guild/skills/` and
-  `.guild/workflows/` directly — see `.guild/workflows/EXECUTION_MODES.md` mode 1.
+- Generic / single-assistant clients: read `.guild/core/agents/`, `.guild/core/skills/`
+  and `.guild/core/workflows/` directly — see
+  `.guild/core/workflows/EXECUTION_MODES.md` mode 1.
 
-Regenerate after any change under `.guild/agents/` or `.guild/skills/`:
+Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 
-    python3 .guild/adapters/generate_adapters.py --target .
+    python3 .guild/core/adapters/generate_adapters.py --target .
 
 Check for drift (fails if generated files no longer match canonical sources):
 
-    python3 .guild/adapters/generate_adapters.py --target . --check
+    python3 .guild/core/adapters/generate_adapters.py --target . --check
 <!-- guild:adapter:end -->

@@ -1,6 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT BY HAND.
-     Source of truth: .guild/skills/consolidate-knowledge/SKILL.yaml (schema guild.skill-manifest/v1)
-     Regenerate: python3 .guild/adapters/generate_adapters.py --target . -->
+     Source of truth: .guild/core/skills/consolidate-knowledge/SKILL.yaml (schema guild.skill-manifest/v1)
+     Regenerate: python3 .guild/core/adapters/generate_adapters.py --target . -->
 
 # Consolidate knowledge
 
@@ -26,5 +26,5 @@ workflow-knowledge-orchestrator
 ## Steps
 
 - Check that every proposed memory entry cites verifiable evidence.
-- Update .guild/knowledge/project-memory.yaml and its Markdown view.
-- Update .guild/planning/ state to reflect the run's outcome.
+- Update .guild/state/knowledge/project-memory.yaml and its Markdown view.
+- Update .guild/state/planning/ state to reflect the run's outcome.

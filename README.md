@@ -16,6 +16,6 @@ Este paquete sirve para iniciar **Guild**, un framework portable y agnóstico de
 3. `bootstrap-prompts/03-workflows.md`
 4. `bootstrap-prompts/04-adapters-and-validation.md`
 
-La fuente canónica inicial está en `.guild/spec/GUILD_MASTER_SPEC.md`.
+La fuente canónica inicial está en `.guild/core/spec/GUILD_MASTER_SPEC.md`.
 
 No construyas todavía una plataforma SaaS, una interfaz gráfica ni un runtime multiagente. La primera versión debe ser declarativa y portable.

@@ -2,7 +2,7 @@
 
 Read all canonical Guild specifications and schemas. Confirm Phase 1 validation passes before continuing.
 
-Generate the fourteen canonical agent profiles under `.guild/agents/`:
+Generate the fourteen canonical agent profiles under `.guild/core/agents/`:
 
 1. DM — AI Workflow & Knowledge Orchestrator
 2. Paladin — Product Manager / Product Owner

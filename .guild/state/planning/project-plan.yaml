@@ -1,0 +1,79 @@
+schema: guild.project-plan/v1
+project: guild
+version: 7
+updated_at: 2026-08-04
+updated_by: workflow-knowledge-orchestrator
+
+vision:
+  summary: Create a portable framework that gives AI agents consistent roles, workflows and safeguards for software development.
+
+current_focus:
+  milestone: M4
+  objective: >
+    M1–M4 are complete. Remaining work is human-owned: the open decisions
+    below, and piloting Guild on a genuine external project.
+  status: completed
+
+milestones:
+  - id: M1
+    name: Declarative foundation
+    status: completed
+    weight: 5
+  - id: M2
+    name: Provider adapters
+    status: completed
+    weight: 3
+    depends_on: [M1]
+  - id: M3
+    name: Evaluation and first real-project pilot
+    status: completed
+    weight: 2
+    depends_on: [M1, M2]
+  - id: M4
+    name: Repository layout hardening
+    status: completed
+    weight: 1
+    depends_on: [M1, M2, M3]
+
+work_items:
+  - id: WI-001
+    title: Define canonical repository structure and schemas
+    status: completed
+    milestone: M1
+    assigned_profile: workflow-knowledge-orchestrator
+    weight: 2
+  - id: WI-002
+    title: Define the fourteen agent profiles
+    status: completed
+    milestone: M1
+    assigned_profile: workflow-knowledge-orchestrator
+    depends_on: [WI-001]
+    weight: 2
+  - id: WI-003
+    title: Define initial skills and workflows
+    status: completed
+    milestone: M1
+    assigned_profile: business-analyst
+    depends_on: [WI-001, WI-002]
+    weight: 3
+  - id: WI-004
+    title: Generate Codex and Claude Code adapters
+    status: completed
+    milestone: M2
+    assigned_profile: product-software-engineer
+    depends_on: [WI-002, WI-003]
+    weight: 2
+  - id: WI-005
+    title: Add structural validation and fixtures
+    status: completed
+    milestone: M3
+    assigned_profile: quality-assurance-engineer
+    depends_on: [WI-003, WI-004]
+    weight: 2
+  - id: WI-006
+    title: Split .guild/ into core/ (framework) and state/ (project data)
+    status: completed
+    milestone: M4
+    assigned_profile: workflow-knowledge-orchestrator
+    depends_on: [WI-001, WI-004, WI-005]
+    weight: 3

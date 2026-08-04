@@ -1,0 +1,25 @@
+# Template for .guild/core/agents/<profile-id>.yaml
+# Validates against .guild/core/schemas/agent-manifest.schema.json
+schema: guild.agent-manifest/v1
+id: replace-with-profile-id            # kebab-case, e.g. product-software-engineer
+name: Replace with professional title  # e.g. Product Software Engineer
+alias: Replace with D&D alias          # e.g. Artificer
+mission: >
+  One or two sentences describing the profile's stable responsibility and
+  perspective.
+responsibilities:
+  - Describe a concrete responsibility.
+non_responsibilities:
+  - Describe something explicitly out of scope for this profile.
+required_inputs:
+  - Name an artifact or piece of context this profile needs before acting.
+produced_outputs:
+  - Name an artifact this profile produces.
+allowed_capabilities:
+  - Name a tool or action category this profile may use.
+forbidden_capabilities:
+  - Name a tool or action category this profile must never use.
+quality_gates:
+  - Name a condition that must hold before this profile's work is accepted.
+escalation_conditions:
+  - Describe when this profile must escalate to another profile or a human.
