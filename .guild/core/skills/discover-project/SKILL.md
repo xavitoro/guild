@@ -10,7 +10,7 @@ Produce an evidence-based picture of a repository's stack, structure, convention
 
 ## Applicable profiles
 
-workflow-knowledge-orchestrator, product-software-engineer, cloud-devops-engineer
+DM (workflow-knowledge-orchestrator), Artificer (product-software-engineer), Cleric (cloud-devops-engineer)
 
 ## Inputs
 

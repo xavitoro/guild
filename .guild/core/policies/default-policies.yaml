@@ -8,6 +8,7 @@ principles:
   - project_memory_requires_evidence
   - destructive_actions_require_human_approval
   - production_actions_require_human_approval
+  - human_facing_messages_identify_the_profile_by_alias
 
 approval_required:
   - merge_protected_branch
@@ -19,3 +20,16 @@ approval_required:
   - change_payment_behavior
   - send_external_communication
   - provision_material_cost
+
+# How Guild addresses the human. See GUILD_MASTER_SPEC.md sections 3.1 and 11.
+human_interaction:
+  address_profiles_by: alias
+  approval_request_required_fields:
+    - policy_key
+    - requesting_profile
+    - blocked_profile
+    - action
+    - evidence
+    - effect_of_approval
+    - effect_of_rejection
+    - answer_options

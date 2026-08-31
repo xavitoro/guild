@@ -1,7 +1,7 @@
 schema: guild.project-memory/v1
 project: guild
-version: 8
-updated_at: 2026-08-04
+version: 9
+updated_at: 2026-08-31
 updated_by: workflow-knowledge-orchestrator
 
 entries:
@@ -168,3 +168,33 @@ entries:
       - .guild/core/workflows/create-new-project/workflow.yaml
       - .guild/core/workflows/add-feature/workflow.yaml
       - .guild/state/runs/run-example-add-feature-001.yaml
+  - id: MEM-010
+    category: architecture
+    status: verified
+    statement: >
+      The D&D roster was documented but barely used: aliases appeared in the
+      spec table, the profile manifests and the AGENT.md headers, while every
+      surface a human actually reads — approval requests, workflow diagrams
+      and step tables, skill documentation, escalation prose, generated
+      subagent prompts — referred to profiles by canonical id only, and the
+      AGENT.md boilerplate explicitly demoted the alias to "a memorability
+      aid". Section 3.1 of GUILD_MASTER_SPEC.md now makes the alias the
+      human-facing name and the canonical id the machine name, with a strict
+      surface split; section 11 defines the approval-request format (policy
+      key, who is asking, who is blocked, evidence, effect of approving and
+      of rejecting), backed by human_interaction in default-policies.yaml, an
+      optional requested_by field on gate-result, and a grant-human-approval
+      skill that instructs the human to return an unattributed request to the
+      DM. Aliases were rendered into all 6 workflow.md step tables and Mermaid
+      labels, all 23 core SKILL.md files, the skills README, all 14 AGENT.md
+      files, workflow escalation/return prose, and — via
+      generate_adapters.py — every generated Codex/Claude skill and Claude
+      subagent prompt plus the AGENTS.md/CLAUDE.md managed blocks. Enforced by
+      the new check_alias_presence.py, which also checks the reverse
+      direction: no alias may appear in responsible_profile or
+      applicable_profiles.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/policies/default-policies.yaml
+      - .guild/core/skills/grant-human-approval/SKILL.yaml
+      - .guild/core/evals/check_alias_presence.py

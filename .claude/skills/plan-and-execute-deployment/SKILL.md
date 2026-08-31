@@ -13,7 +13,7 @@ description: Plan and, once approved, execute a deployment with a documented rol
 
 ## Applicable profiles
 
-cloud-devops-engineer
+Cleric (cloud-devops-engineer)
 
 ## Inputs
 

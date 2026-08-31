@@ -48,6 +48,7 @@ OTHER_CHECKS = [
     "check_workflow_refs.py",
     "check_independent_gates.py",
     "check_language_neutrality.py",
+    "check_alias_presence.py",
 ]
 
 

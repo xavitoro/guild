@@ -13,7 +13,7 @@ description: Define and implement the analytics events, properties and pipeline 
 
 ## Applicable profiles
 
-data-analytics-engineer
+Monk (data-analytics-engineer)
 
 ## Inputs
 

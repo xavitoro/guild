@@ -34,9 +34,36 @@ service, agent) owns the named profile, and persists `gate-result` and
 definitions is required to support this mode — it is the reason the workflow and
 step schemas are declarative rather than expressed as code.
 
+## Speaking to the human
+
+Whichever mode is running, the person watching sees one thing: profiles, by alias.
+`GUILD_MASTER_SPEC.md` section 3.1 makes the alias the human-facing name and the
+canonical id the machine one, and each mode renders that differently:
+
+- **Mode 1** — the assistant announces every role switch before doing the step's work:
+  `Fighter (business-analyst) — Define requirements`, then speaks as the Fighter until
+  the next switch. Without the announcement the human cannot tell which profile is
+  talking, since there is only one assistant.
+- **Mode 2** — the DM names the subagent it dispatched and the one it is relaying:
+  "the Barbarian's regression review passed; handing the change to the Rogue". Subagent
+  output reaches the human attributed, never anonymous.
+- **Mode 3** — the runtime renders the alias from the `alias` field of the responsible
+  profile's manifest whenever it surfaces a step, a gate or a request to a person.
+
+In all three, the alias is presentation only. `responsible_profile`, `from_profile`,
+`to_profile`, `evaluated_by` and `requested_by` keep canonical ids; no artifact field
+ever stores an alias.
+
 ## Human approval steps
 
 Steps with `responsible_profile: human` and `invoked_skill: grant-human-approval`
 are gates, not agent work: in every execution mode, the workflow blocks at that
 step until an explicit approval is recorded, per
 `.guild/core/policies/default-policies.yaml`.
+
+The block is never silent. The DM presents the request in the format defined in
+`GUILD_MASTER_SPEC.md` section 11 — the Red-tier policy key, who is asking, which
+profile is blocked on the answer (both by alias), the evidence, and what approving and
+rejecting each cause. A request that arrives without those fields is returned to the DM
+rather than answered, and the resulting `gate-result` records the asking profile's
+canonical id in `requested_by`.

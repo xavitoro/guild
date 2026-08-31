@@ -13,7 +13,7 @@ description: Interpret product usage and feedback data to form or evaluate an ev
 
 ## Applicable profiles
 
-product-data-analyst
+Sorcerer (product-data-analyst)
 
 ## Inputs
 

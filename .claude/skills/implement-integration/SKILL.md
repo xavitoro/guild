@@ -13,7 +13,7 @@ description: Design, implement or review an external API contract, including aut
 
 ## Applicable profiles
 
-integration-engineer
+Warlock (integration-engineer)
 
 ## Inputs
 

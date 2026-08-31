@@ -12,7 +12,7 @@ Apply a fix for a diagnosed defect without introducing a regression.
 
 ## Applicable profiles
 
-product-software-engineer, web-experience-engineer, database-engineer, integration-engineer
+Artificer (product-software-engineer), Ranger (web-experience-engineer), Wizard (database-engineer), Warlock (integration-engineer)
 
 ## Inputs
 

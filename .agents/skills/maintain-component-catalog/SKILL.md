@@ -12,7 +12,7 @@ Set up or update an isolated, browsable catalog of UI components so each can be 
 
 ## Applicable profiles
 
-web-experience-engineer
+Ranger (web-experience-engineer)
 
 ## Inputs
 

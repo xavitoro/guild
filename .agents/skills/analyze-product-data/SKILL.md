@@ -12,7 +12,7 @@ Interpret product usage and feedback data to form or evaluate an evidence-backed
 
 ## Applicable profiles
 
-product-data-analyst
+Sorcerer (product-data-analyst)
 
 ## Inputs
 

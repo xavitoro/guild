@@ -12,7 +12,7 @@ Assess a change or architecture proposal for security risk and classify findings
 
 ## Applicable profiles
 
-product-security-engineer
+Rogue (product-security-engineer)
 
 ## Inputs
 

@@ -10,7 +10,7 @@ Revert a deployment that has failed or regressed, using its documented rollback 
 
 ## Applicable profiles
 
-cloud-devops-engineer
+Cleric (cloud-devops-engineer)
 
 ## Inputs
 

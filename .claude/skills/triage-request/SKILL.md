@@ -13,7 +13,7 @@ description: Confirm scope, urgency and the applicable workflow for an incoming 
 
 ## Applicable profiles
 
-workflow-knowledge-orchestrator
+DM (workflow-knowledge-orchestrator)
 
 ## Inputs
 

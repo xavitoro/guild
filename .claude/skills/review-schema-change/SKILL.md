@@ -13,7 +13,7 @@ description: Design or review a database schema/migration change for integrity, 
 
 ## Applicable profiles
 
-database-engineer
+Wizard (database-engineer)
 
 ## Inputs
 

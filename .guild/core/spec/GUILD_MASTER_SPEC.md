@@ -32,7 +32,9 @@ Guild defines how agents collaborate. It does not own the target project and doe
 
 ## 3. D&D mnemonic roster
 
-The D&D names are aliases for memorability. Technical identifiers remain professional.
+Every profile has two names. The D&D alias is the name a person sees and uses; the
+canonical profile ID is the name machines use. Both always exist and neither replaces
+the other — see section 3.1.
 
 | Alias | Canonical profile ID | Professional profile |
 |---|---|---|
@@ -50,6 +52,31 @@ The D&D names are aliases for memorability. Technical identifiers remain profess
 | Cleric | `cloud-devops-engineer` | Cloud & DevOps Engineer |
 | Sorcerer | `product-data-analyst` | Product Data Analyst |
 | Monk | `data-analytics-engineer` | Data & Analytics Engineer |
+
+### 3.1 Aliases are the human-facing name
+
+The alias is how a profile introduces itself to a person. The canonical ID is how it is
+referenced by machines. The two surfaces are strictly separated:
+
+| Surface | Uses |
+|---|---|
+| Anything a human reads or answers — approval requests, escalations, questions, role announcements, handoff summaries, status reports, workflow diagrams and tables, profile and skill documentation | The alias, first: `Barbarian (quality-assurance-engineer)` on first mention in an exchange or document, plain `Barbarian` afterwards |
+| Anything a machine reads — schema fields, `responsible_profile`, `applicable_profiles`, `assigned_profile`, directory and file names, gate and policy keys | The canonical ID only |
+
+Rules:
+
+1. Every message addressed to a human names the alias of the profile that produced it.
+2. Every request for a human decision names the alias that is asking and the alias whose
+   work is blocked on the answer (section 11, "Approval request format").
+3. Every role switch in single-assistant execution is announced by alias before that
+   step's work begins — see `workflows/EXECUTION_MODES.md`.
+4. An alias is always rendered from the `alias` field of the profile manifest. It is never
+   stored as a second identity field in an artifact, and never used as a key, path
+   segment or reference.
+5. `human` is not a profile and has no alias. It is written as "the human".
+
+A human-facing message that names only a canonical ID is incomplete, and so is an artifact
+field that carries an alias instead of an ID.
 
 ## 4. Profile responsibilities
 
@@ -392,6 +419,38 @@ Explicit human approval is required for:
 - external communications;
 - infrastructure actions with material cost or blast radius.
 
+### Approval request format
+
+A Red-tier action reaches the human as an explicit request, never as a silent block. The DM
+presents it; the human answers it. Per section 3.1, the request identifies profiles by
+alias. It must state:
+
+1. **Who is asking** — the DM, and the profile whose work is blocked, by alias and
+   canonical ID.
+2. **What action** — the Red-tier key from `policies/default-policies.yaml` plus the
+   concrete action in the target project's own terms.
+3. **What evidence backs it** — the gate results already recorded and by whom (the
+   Barbarian's QA gate, the Rogue's security gate), and the artifacts under review.
+4. **What approving causes, and what rejecting causes.**
+
+Canonical shape of the rendered request (the recorded artifact remains a `gate-result`,
+which stores canonical IDs, not aliases):
+
+    Guild approval required — merge_protected_branch
+    Asked by      DM (workflow-knowledge-orchestrator)
+    On behalf of  Artificer (product-software-engineer)
+    Action        Merge the change into the protected mainline branch
+    Evidence      Barbarian — qa_gate_pass: pass
+                  Rogue — security_gate_clean: pass
+    On approve    The Artificer's change merges; any deployment still needs the
+                  separate deploy_production approval before the Cleric proceeds.
+    On reject     The workflow stops at this step and the DM records the rejection.
+    Your answer   approve / reject / request changes
+
+A request that does not name the asking and blocked profiles is incomplete: the human
+returns it to the DM rather than answering it. The same shape applies to any non-gated
+question put to the human — it names the alias asking and what the answer unblocks.
+
 ## 12. Adapter model
 
 Canonical Guild sources must generate provider-specific files.
@@ -455,3 +514,4 @@ The foundation is complete when:
 8. A fresh target repository can install the generated files using documented steps.
 9. A human can understand the current Guild planning state from `PROJECT_STATUS.md`.
 10. Automated checks detect broken references, invalid YAML/JSON and duplicate IDs.
+11. Every human-facing surface names the profile it comes from by alias (section 3.1).

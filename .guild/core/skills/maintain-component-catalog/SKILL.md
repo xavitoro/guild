@@ -11,7 +11,7 @@ reviewed and visually verified independently of the full application.
 
 ## Applicable profiles
 
-web-experience-engineer
+Ranger (web-experience-engineer)
 
 ## Inputs
 

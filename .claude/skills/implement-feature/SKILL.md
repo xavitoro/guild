@@ -13,7 +13,7 @@ description: Implement new product functionality that satisfies a defined set of
 
 ## Applicable profiles
 
-product-software-engineer, web-experience-engineer
+Artificer (product-software-engineer), Ranger (web-experience-engineer)
 
 ## Inputs
 

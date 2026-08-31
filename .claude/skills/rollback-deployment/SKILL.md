@@ -13,7 +13,7 @@ description: Revert a deployment that has failed or regressed, using its documen
 
 ## Applicable profiles
 
-cloud-devops-engineer
+Cleric (cloud-devops-engineer)
 
 ## Inputs
 

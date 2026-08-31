@@ -13,7 +13,7 @@ description: Fold evidence-backed outcomes of a workflow run into canonical plan
 
 ## Applicable profiles
 
-workflow-knowledge-orchestrator
+DM (workflow-knowledge-orchestrator)
 
 ## Inputs
 

@@ -13,7 +13,7 @@ description: Reproduce a reported defect deterministically before any fix is att
 
 ## Applicable profiles
 
-quality-assurance-engineer
+Barbarian (quality-assurance-engineer)
 
 ## Inputs
 

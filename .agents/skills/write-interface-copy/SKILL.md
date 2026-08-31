@@ -12,7 +12,7 @@ Produce interface copy tied to concrete screen states and actions.
 
 ## Applicable profiles
 
-ux-content-designer
+Bard (ux-content-designer)
 
 ## Inputs
 

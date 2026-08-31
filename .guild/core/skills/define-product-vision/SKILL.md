@@ -10,7 +10,7 @@ Establish or evaluate a product vision, outcome and priority against which requi
 
 ## Applicable profiles
 
-product-owner
+Paladin (product-owner)
 
 ## Inputs
 

@@ -84,12 +84,13 @@ steps:
   gates:
   - memory_entries_evidence_backed
 failure_paths:
-- If the repository cannot be read or access is denied, the workflow halts at triage and escalates to
-  the human.
+- If the repository cannot be read or access is denied, the workflow halts at triage and the DM escalates to
+  the human, naming the access it needs.
 - If discovery evidence is insufficient to support an evidence-backed memory entry, the entry is left
   unrecorded rather than guessed.
 return_paths:
-- Ambiguous or contradictory discovery findings return to the discovery step with a narrower scope.
+- Ambiguous or contradictory discovery findings return to the Artificer or the Cleric for a narrower
+  discovery scope.
 escalation_paths:
-- A baseline security finding of critical or high severity escalates directly to the human, bypassing
-  the rest of the sequence.
+- A baseline security finding of critical or high severity from the Rogue escalates directly to the human,
+  bypassing the rest of the sequence.

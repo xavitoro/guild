@@ -10,7 +10,7 @@ Define and implement the analytics events, properties and pipeline changes a fea
 
 ## Applicable profiles
 
-data-analytics-engineer
+Monk (data-analytics-engineer)
 
 ## Inputs
 

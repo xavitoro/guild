@@ -13,7 +13,7 @@ description: Establish or evaluate a product vision, outcome and priority agains
 
 ## Applicable profiles
 
-product-owner
+Paladin (product-owner)
 
 ## Inputs
 

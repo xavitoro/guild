@@ -63,4 +63,4 @@ steps:
   artifacts_produced:
   - Approval record / gate result (example)
   gate_results:
-  - 'merge_protected_branch: pass (example)'
+  - 'merge_protected_branch: pass, requested_by workflow-knowledge-orchestrator — the DM (example)'

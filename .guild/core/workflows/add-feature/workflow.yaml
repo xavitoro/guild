@@ -29,8 +29,8 @@ steps:
   completion_criteria:
   - Acceptance criteria are testable without interpretation.
   gates: []
-  on_return: If a requirement depends on an undocumented domain fact, return to the Product Manager for
-    clarification.
+  on_return: If a requirement depends on an undocumented domain fact, return to the Paladin (product-owner)
+    for clarification.
 - id: add-feature-03-design-experience
   name: Design the experience
   responsible_profile: product-experience-designer
@@ -203,11 +203,16 @@ steps:
   invoked_skill: grant-human-approval
   required_input_artifacts:
   - Pull request
+  - Approval request from the DM in the canonical format — the Red-tier policy key, the profile blocked on
+    the answer named by alias and canonical id, the evidence behind it, and the effect of approving and of
+    rejecting
   expected_output_artifacts:
   - Approval record / gate result
   preconditions: []
   completion_criteria:
   - The human has explicitly approved or rejected the merge.
+  - The recorded gate result names the requesting profile in requested_by, and the answer is addressed to
+    the profile that asked.
   gates:
   - merge_protected_branch
   optional: true
@@ -218,11 +223,16 @@ steps:
   invoked_skill: grant-human-approval
   required_input_artifacts:
   - Deployment plan
+  - Approval request from the DM in the canonical format — the Red-tier policy key, the profile blocked on
+    the answer named by alias and canonical id, the evidence behind it, and the effect of approving and of
+    rejecting
   expected_output_artifacts:
   - Approval record / gate result
   preconditions: []
   completion_criteria:
   - The human has explicitly approved or rejected the deployment.
+  - The recorded gate result names the requesting profile in requested_by, and the answer is addressed to
+    the profile that asked.
   gates:
   - deploy_production
   optional: true
@@ -258,9 +268,13 @@ steps:
   optional: true
   condition: when the feature produced a reusable pattern or decision worth recording
 failure_paths:
-- A failing regression review returns to the implementing step rather than proceeding to review or deployment.
-- An open critical/high security finding blocks pull-request preparation until resolved and re-reviewed.
+- A failing regression review by the Barbarian returns to the implementing profile — Artificer, Ranger,
+  Wizard, Warlock or Monk — rather than proceeding to review or deployment.
+- An open critical/high finding raised by the Rogue blocks pull-request preparation until resolved
+  and re-reviewed.
 return_paths:
-- An ambiguous or incomplete requirement returns to the Business Analyst before implementation continues.
+- An ambiguous or incomplete requirement returns to the Fighter (business-analyst) before implementation
+  continues.
 escalation_paths:
-- Merging to a protected branch and any production deployment always escalate to the human before proceeding.
+- Merging to a protected branch and any production deployment always escalate to the human, asked by the DM
+  in the approval-request format and naming the profile blocked on the answer.

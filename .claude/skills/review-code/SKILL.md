@@ -13,7 +13,7 @@ description: Review a pull request's correctness, test coverage and adherence to
 
 ## Applicable profiles
 
-quality-assurance-engineer
+Barbarian (quality-assurance-engineer)
 
 ## Inputs
 

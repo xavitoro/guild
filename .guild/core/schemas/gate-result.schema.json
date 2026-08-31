@@ -50,6 +50,11 @@
       "minLength": 1,
       "description": "Profile id, tool name, or 'human' that evaluated this gate."
     },
+    "requested_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional. Canonical profile id that requested this gate result, or 'human'. Rendered to the human by its alias per GUILD_MASTER_SPEC.md section 3.1; the alias itself is never stored here."
+    },
     "evaluated_at": {
       "type": "string",
       "format": "date"

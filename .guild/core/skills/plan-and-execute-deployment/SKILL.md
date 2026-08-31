@@ -10,7 +10,7 @@ Plan and, once approved, execute a deployment with a documented rollback path.
 
 ## Applicable profiles
 
-cloud-devops-engineer
+Cleric (cloud-devops-engineer)
 
 ## Preconditions
 

@@ -66,6 +66,17 @@ upgrades.
   and `.guild/core/workflows/` directly — see
   `.guild/core/workflows/EXECUTION_MODES.md` mode 1.
 
+### Addressing the human
+
+Each profile has a human-facing alias and a canonical id. Anything a person reads names
+the profile by alias — Artificer, Barbarian, Bard, Cleric, DM, Druid, Fighter, Monk,
+Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard — with the canonical id in parentheses
+on first mention ("Barbarian (quality-assurance-engineer)"). Artifact fields
+(`responsible_profile`, `evaluated_by`, `requested_by`, ...) keep canonical ids only. In
+single-assistant mode, announce every role switch by alias before starting that step's
+work. Red-tier actions reach the human as an approval request naming who is asking and
+who is blocked — see `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 3.1 and 11.
+
 Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 
     python3 .guild/core/adapters/generate_adapters.py --target .

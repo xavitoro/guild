@@ -10,7 +10,7 @@ Reproduce a reported defect deterministically before any fix is attempted.
 
 ## Applicable profiles
 
-quality-assurance-engineer
+Barbarian (quality-assurance-engineer)
 
 ## Inputs
 

@@ -10,7 +10,7 @@ Design the user journey, information architecture and interaction specification 
 
 ## Applicable profiles
 
-product-experience-designer
+Druid (product-experience-designer)
 
 ## Inputs
 

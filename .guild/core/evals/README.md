@@ -8,6 +8,7 @@ python3 .guild/core/evals/check_agent_profiles.py
 python3 .guild/core/evals/check_workflow_refs.py
 python3 .guild/core/evals/check_independent_gates.py
 python3 .guild/core/evals/check_language_neutrality.py
+python3 .guild/core/evals/check_alias_presence.py
 python3 .guild/core/adapters/generate_adapters.py --target . --check
 ```
 
@@ -69,6 +70,18 @@ for language/framework/cloud-vendor names, guarding definition-of-done item
 Deliberately excludes `.guild/core/adapters/` (which legitimately names
 Codex and Claude Code) and `.guild/core/evals/` (tooling, necessarily
 Python).
+
+## check_alias_presence.py
+
+Proves the D&D roster is actually used where a person can see it
+(`GUILD_MASTER_SPEC.md` section 3.1): the alias-first principle is declared in
+`default-policies.yaml`, every `AGENT.md` introduces its own alias, every
+`workflow.md` step-table row and Mermaid node names the responsible profile's
+alias, every core `SKILL.md` renders its applicable profiles as
+`Alias (canonical-id)`, and `grant-human-approval` requires the request to
+identify profiles by alias. It also checks the complementary direction — that
+no `responsible_profile` or `applicable_profiles` entry stores an alias where a
+canonical id belongs.
 
 ## generate_adapters.py --check
 

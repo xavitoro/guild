@@ -53,6 +53,18 @@
   `.guild/state/knowledge/decisions/DEC-001-core-state-split.yaml`.
   `pilot_install_check.py` was corrected to copy only `.guild/core/` into
   its isolated target.
+- No workflow asked whether a project needs an isolated component catalog
+  for UI components. Added the provider-neutral `maintain-component-catalog`
+  skill (Ranger) and an optional step invoking it in `create-new-project`
+  and `add-feature`.
+- The D&D roster existed but was barely used: every surface a human reads
+  named profiles by canonical id only. `GUILD_MASTER_SPEC.md` section 3.1
+  now makes the alias the human-facing name and the canonical id the machine
+  name, section 11 defines the approval-request format (who is asking, who
+  is blocked, evidence, effect of approving and of rejecting), and aliases
+  are rendered across workflow diagrams and tables, skill and profile docs,
+  escalation prose and every generated adapter.
+  `check_alias_presence.py` enforces both directions.
 
 ## Current constraints
 

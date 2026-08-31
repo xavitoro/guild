@@ -10,7 +10,7 @@ Package a verified change into a pull request with a clear description and linke
 
 ## Applicable profiles
 
-workflow-knowledge-orchestrator, product-software-engineer, web-experience-engineer, database-engineer, integration-engineer, data-analytics-engineer
+DM (workflow-knowledge-orchestrator), Artificer (product-software-engineer), Ranger (web-experience-engineer), Wizard (database-engineer), Warlock (integration-engineer), Monk (data-analytics-engineer)
 
 ## Inputs
 

@@ -69,7 +69,7 @@ steps:
   artifacts_produced:
   - Approval record / gate result (example)
   gate_results:
-  - 'merge_protected_branch: pass (example)'
+  - 'merge_protected_branch: pass, requested_by workflow-knowledge-orchestrator — the DM (example)'
 - step_id: add-feature-15-human-approval-deploy
   status: skipped
 - step_id: add-feature-16-deploy

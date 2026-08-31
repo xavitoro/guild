@@ -10,7 +10,7 @@ Turn an approved goal into actors, business rules, dependencies, edge cases and 
 
 ## Applicable profiles
 
-business-analyst
+Fighter (business-analyst)
 
 ## Inputs
 

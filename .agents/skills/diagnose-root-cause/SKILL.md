@@ -12,7 +12,7 @@ Identify the root cause of a reproduced defect and propose a fix plan.
 
 ## Applicable profiles
 
-product-software-engineer, web-experience-engineer, database-engineer, integration-engineer
+Artificer (product-software-engineer), Ranger (web-experience-engineer), Wizard (database-engineer), Warlock (integration-engineer)
 
 ## Inputs
 

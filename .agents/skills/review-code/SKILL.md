@@ -12,7 +12,7 @@ Review a pull request's correctness, test coverage and adherence to linked accep
 
 ## Applicable profiles
 
-quality-assurance-engineer
+Barbarian (quality-assurance-engineer)
 
 ## Inputs
 

@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import textwrap
 from pathlib import Path
 
 import yaml
@@ -71,6 +72,9 @@ TOOL_ORDER = ["Read", "Grep", "Glob", "Edit", "Write", "Bash"]
 # Force-push is the one universal, unambiguous case.
 GUILD_MANAGED_DENY = ["Bash(git push --force*)", "Bash(git push -f*)"]
 
+# The `human` sentinel used by workflow steps and skills; not a profile, has no alias.
+HUMAN = "human"
+
 
 def source_header(source_path: str) -> str:
     return (
@@ -92,6 +96,15 @@ def bullets(items: list[str]) -> str:
     return "\n".join(f"- {i}" for i in items) if items else "- (none)"
 
 
+def named(profile_id: str, roster: dict[str, str]) -> str:
+    """Renders a profile the way a human reads it: alias first, canonical id in
+    parentheses. See GUILD_MASTER_SPEC.md section 3.1 — the alias is the
+    human-facing name, the id is the machine one."""
+    if profile_id == HUMAN:
+        return "the human"
+    return f"{roster[profile_id]} ({profile_id})"
+
+
 def derive_tools(agent: dict) -> list[str]:
     tools = set()
     for cap in agent["allowed_capabilities"]:
@@ -101,7 +114,7 @@ def derive_tools(agent: dict) -> list[str]:
 
 # ---------------------------------------------------------------- renderers
 
-def render_codex_skill(skill: dict) -> str:
+def render_codex_skill(skill: dict, roster: dict[str, str]) -> str:
     return f"""{source_header(f".guild/core/skills/{skill['id']}/SKILL.yaml (schema guild.skill-manifest/v1)")}
 # {skill['name']}
 
@@ -113,7 +126,7 @@ def render_codex_skill(skill: dict) -> str:
 
 ## Applicable profiles
 
-{', '.join(skill['applicable_profiles'])}
+{', '.join(named(p, roster) for p in skill['applicable_profiles'])}
 
 ## Inputs
 
@@ -129,7 +142,7 @@ def render_codex_skill(skill: dict) -> str:
 """
 
 
-def render_claude_skill(skill: dict) -> str:
+def render_claude_skill(skill: dict, roster: dict[str, str]) -> str:
     return f"""---
 name: {skill['id']}
 description: {skill['goal']}
@@ -142,7 +155,7 @@ description: {skill['goal']}
 
 ## Applicable profiles
 
-{', '.join(skill['applicable_profiles'])}
+{', '.join(named(p, roster) for p in skill['applicable_profiles'])}
 
 ## Inputs
 
@@ -158,11 +171,22 @@ description: {skill['goal']}
 """
 
 
-def render_claude_agent(agent: dict) -> str:
+def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
     tools = derive_tools(agent)
     description = (
-        f"{agent['mission']} Guild alias: {agent['alias']}. Use this subagent for workflow "
+        f"{agent['alias']} — {agent['mission']} Use this subagent for workflow "
         f"steps whose responsible_profile is `{agent['id']}`."
+    )
+    others = sorted(a for i, a in roster.items() if i != agent["id"])
+    alias_note = (
+        f"You are \"{agent['alias']}\" to the person you are working with, and "
+        f"`{agent['id']}` to every machine that reads a manifest, a workflow field or an "
+        f"artifact. Open anything a human reads — a question, an escalation, an approval "
+        f"request, a handoff summary, a finished result — with your alias: "
+        f"\"{agent['alias']} ({agent['id']}) — ...\" on first mention, then plain "
+        f"\"{agent['alias']}\". Name the other profiles the same way: "
+        f"{', '.join(others)}. Never hand a person a bare canonical id, and never write an "
+        f"alias into an artifact field. See .guild/core/spec/GUILD_MASTER_SPEC.md section 3.1."
     )
     gates_note = (
         "This profile can never approve its own QA or security result. Every Red-tier action "
@@ -184,6 +208,10 @@ You are the {agent['alias']} — {agent['name']} (Guild profile `{agent['id']}`)
 ## Mission
 
 {agent['mission']}
+
+## Speaking to the human
+
+{alias_note}
 
 ## Responsibilities
 
@@ -221,7 +249,20 @@ Full forbidden-capabilities list: {', '.join(agent['forbidden_capabilities'])}.
 """
 
 
-def render_agents_md_block(agent_ids: list[str], skill_ids: list[str]) -> str:
+def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: dict[str, str]) -> str:
+    example_id = "quality-assurance-engineer"
+    example = f"{roster[example_id]} ({example_id})" if example_id in roster else "Alias (profile-id)"
+    addressing = textwrap.fill(
+        "Each profile has a human-facing alias and a canonical id. Anything a person reads "
+        "names the profile by alias — " + ", ".join(sorted(roster.values())) + " — with the "
+        f"canonical id in parentheses on first mention (\"{example}\"). Artifact fields "
+        "(`responsible_profile`, `evaluated_by`, `requested_by`, ...) keep canonical ids only. "
+        "In single-assistant mode, announce every role switch by alias before starting that "
+        "step's work. Red-tier actions reach the human as an approval request naming who is "
+        "asking and who is blocked — see `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 3.1 "
+        "and 11.",
+        width=88,
+    )
     return f"""## Guild adapter (generated — do not edit this section by hand)
 
 This project has [Guild](.guild/core/spec/GUILD_MASTER_SPEC.md) installed. `.guild/core/`
@@ -235,6 +276,10 @@ upgrades.
 - Generic / single-assistant clients: read `.guild/core/agents/`, `.guild/core/skills/`
   and `.guild/core/workflows/` directly — see
   `.guild/core/workflows/EXECUTION_MODES.md` mode 1.
+
+### Addressing the human
+
+{addressing}
 
 Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 
@@ -255,6 +300,12 @@ manifests under `.guild/core/agents/` and `.guild/core/skills/`. Quality assuran
 (`quality-assurance-engineer` / Barbarian) and security (`product-security-engineer` /
 Rogue) are separate subagents, independent from every implementation subagent, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` principle 6.
+
+Every subagent introduces itself to the human by its Guild alias (DM, Paladin, Fighter,
+Druid, Bard, Ranger, Artificer, Wizard, Warlock, Barbarian, Rogue, Cleric, Sorcerer,
+Monk) with its canonical id in parentheses on first mention, and names the other profiles
+the same way; canonical ids alone stay in artifact fields, per
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
 
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).
@@ -315,14 +366,16 @@ def build_plan(target: Path) -> Plan:
     claude_skills_dir = target / ".claude" / "skills"
     claude_agents_dir = target / ".claude" / "agents"
 
+    roster = {agent_id: agent["alias"] for agent_id, agent in agents.items()}
+
     for skill_id, skill in skills.items():
-        plan.put(codex_skills_dir / skill_id / "SKILL.md", render_codex_skill(skill))
-        plan.put(claude_skills_dir / skill_id / "SKILL.md", render_claude_skill(skill))
+        plan.put(codex_skills_dir / skill_id / "SKILL.md", render_codex_skill(skill, roster))
+        plan.put(claude_skills_dir / skill_id / "SKILL.md", render_claude_skill(skill, roster))
     plan.sync_dir(codex_skills_dir, set(skills))
     plan.sync_dir(claude_skills_dir, set(skills))
 
     for agent_id, agent in agents.items():
-        plan.put(claude_agents_dir / f"{agent_id}.md", render_claude_agent(agent))
+        plan.put(claude_agents_dir / f"{agent_id}.md", render_claude_agent(agent, roster))
     plan.sync_dir(claude_agents_dir, {f"{a}.md" for a in agents})
 
     agents_md = target / "AGENTS.md"
@@ -330,7 +383,7 @@ def build_plan(target: Path) -> Plan:
     existing_agents_md = agents_md.read_text(encoding="utf-8") if agents_md.exists() else ""
     existing_claude_md = claude_md.read_text(encoding="utf-8") if claude_md.exists() else ""
     plan.put(agents_md, merge_managed_block(
-        existing_agents_md, render_agents_md_block(sorted(agents), sorted(skills))))
+        existing_agents_md, render_agents_md_block(sorted(agents), sorted(skills), roster)))
     plan.put(claude_md, merge_managed_block(existing_claude_md, render_claude_md_block()))
 
     return plan

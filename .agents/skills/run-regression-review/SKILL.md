@@ -12,7 +12,7 @@ Verify a change against its acceptance criteria and check for regressions.
 
 ## Applicable profiles
 
-quality-assurance-engineer
+Barbarian (quality-assurance-engineer)
 
 ## Inputs
 

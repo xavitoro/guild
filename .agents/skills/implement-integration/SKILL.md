@@ -12,7 +12,7 @@ Design, implement or review an external API contract, including auth, idempotenc
 
 ## Applicable profiles
 
-integration-engineer
+Warlock (integration-engineer)
 
 ## Inputs
 

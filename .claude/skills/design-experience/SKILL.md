@@ -13,7 +13,7 @@ description: Design the user journey, information architecture and interaction s
 
 ## Applicable profiles
 
-product-experience-designer
+Druid (product-experience-designer)
 
 ## Inputs
 

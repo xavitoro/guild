@@ -16,11 +16,11 @@ Diamond-shaped nodes are optional/conditional steps; see the step table for thei
 
 ```mermaid
 flowchart TD
-    onboard-01-triage["Triage the onboarding request"]
-    onboard-02-discover-codebase["Discover the codebase"]
-    onboard-03-discover-infra{{"Discover CI/CD and infrastructure"}}
-    onboard-04-baseline-threat-model{{"Assess baseline security posture"}}
-    onboard-05-consolidate-knowledge["Consolidate initial project knowledge"]
+    onboard-01-triage["DM — Triage the onboarding request"]
+    onboard-02-discover-codebase["Artificer — Discover the codebase"]
+    onboard-03-discover-infra{{"Cleric — Discover CI/CD and infrastructure"}}
+    onboard-04-baseline-threat-model{{"Rogue — Assess baseline security posture"}}
+    onboard-05-consolidate-knowledge["DM — Consolidate initial project knowledge"]
     onboard-01-triage --> onboard-02-discover-codebase
     onboard-02-discover-codebase --> onboard-03-discover-infra
     onboard-03-discover-infra --> onboard-04-baseline-threat-model
@@ -31,21 +31,21 @@ flowchart TD
 
 | Step id | Name | Responsible profile | Invoked skill | Gates |
 |---|---|---|---|---|
-| `onboard-01-triage` | Triage the onboarding request | workflow-knowledge-orchestrator | `triage-request` | — |
-| `onboard-02-discover-codebase` | Discover the codebase | product-software-engineer | `discover-project` | discovery_report_evidence_backed |
-| `onboard-03-discover-infra` | Discover CI/CD and infrastructure *(optional — when the repository includes CI/CD pipelines or infrastructure-as-code configuration)* | cloud-devops-engineer | `discover-project` | — |
-| `onboard-04-baseline-threat-model` | Assess baseline security posture *(optional — when discovery finds authentication, payment, secret-handling or personal-data code)* | product-security-engineer | `create-threat-model` | — |
-| `onboard-05-consolidate-knowledge` | Consolidate initial project knowledge | workflow-knowledge-orchestrator | `consolidate-knowledge` | memory_entries_evidence_backed |
+| `onboard-01-triage` | Triage the onboarding request | **DM** (`workflow-knowledge-orchestrator`) | `triage-request` | — |
+| `onboard-02-discover-codebase` | Discover the codebase | **Artificer** (`product-software-engineer`) | `discover-project` | discovery_report_evidence_backed |
+| `onboard-03-discover-infra` | Discover CI/CD and infrastructure *(optional — when the repository includes CI/CD pipelines or infrastructure-as-code configuration)* | **Cleric** (`cloud-devops-engineer`) | `discover-project` | — |
+| `onboard-04-baseline-threat-model` | Assess baseline security posture *(optional — when discovery finds authentication, payment, secret-handling or personal-data code)* | **Rogue** (`product-security-engineer`) | `create-threat-model` | — |
+| `onboard-05-consolidate-knowledge` | Consolidate initial project knowledge | **DM** (`workflow-knowledge-orchestrator`) | `consolidate-knowledge` | memory_entries_evidence_backed |
 
 ## Failure paths
 
-- If the repository cannot be read or access is denied, the workflow halts at triage and escalates to the human.
+- If the repository cannot be read or access is denied, the workflow halts at triage and the DM escalates to the human, naming the access it needs.
 - If discovery evidence is insufficient to support an evidence-backed memory entry, the entry is left unrecorded rather than guessed.
 
 ## Return paths
 
-- Ambiguous or contradictory discovery findings return to the discovery step with a narrower scope.
+- Ambiguous or contradictory discovery findings return to the Artificer or the Cleric for a narrower discovery scope.
 
 ## Escalation paths
 
-- A baseline security finding of critical or high severity escalates directly to the human, bypassing the rest of the sequence.
+- A baseline security finding of critical or high severity from the Rogue escalates directly to the human, bypassing the rest of the sequence.

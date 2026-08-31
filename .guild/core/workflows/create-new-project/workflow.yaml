@@ -42,8 +42,8 @@ steps:
   completion_criteria:
   - Acceptance criteria are testable without interpretation.
   gates: []
-  on_return: If a requirement depends on an undocumented domain fact, return to the Product Manager for
-    clarification.
+  on_return: If a requirement depends on an undocumented domain fact, return to the Paladin (product-owner)
+    for clarification.
 - id: new-project-04-design-experience
   name: Design the initial experience
   responsible_profile: product-experience-designer
@@ -181,11 +181,16 @@ steps:
   invoked_skill: grant-human-approval
   required_input_artifacts:
   - Proposed production deployment or infrastructure provisioning
+  - Approval request from the DM in the canonical format — the Red-tier policy key, the profile blocked on
+    the answer named by alias and canonical id, the evidence behind it, and the effect of approving and of
+    rejecting
   expected_output_artifacts:
   - Approval record / gate result
   preconditions: []
   completion_criteria:
   - The human has explicitly approved or rejected the action.
+  - The recorded gate result names the requesting profile in requested_by, and the answer is addressed to
+    the profile that asked.
   gates:
   - deploy_production
   - provision_material_cost
@@ -222,9 +227,11 @@ steps:
   gates: []
 failure_paths:
 - If the scaffold fails verification, the workflow returns to scaffolding rather than proceeding to deployment.
-- If a required human approval is denied, the workflow stops before the gated action and the DM records
-  why.
+- If a required human approval is denied, the workflow stops before the gated action and the DM records why,
+  naming the profile that stays blocked.
 return_paths:
-- A requirement built on an undocumented assumption returns to vision or requirements definition.
+- A requirement built on an undocumented assumption returns to the Paladin for vision or the Fighter for
+  requirements definition.
 escalation_paths:
-- Any production provisioning or deployment escalates to the human before execution.
+- Any production provisioning or deployment escalates to the human before execution, asked by the DM on the
+  Cleric's behalf.

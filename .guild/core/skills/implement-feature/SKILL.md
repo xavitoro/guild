@@ -10,7 +10,7 @@ Implement new product functionality that satisfies a defined set of acceptance c
 
 ## Applicable profiles
 
-product-software-engineer, web-experience-engineer
+Artificer (product-software-engineer), Ranger (web-experience-engineer)
 
 ## Inputs
 

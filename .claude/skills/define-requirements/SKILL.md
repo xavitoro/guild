@@ -13,7 +13,7 @@ description: Turn an approved goal into actors, business rules, dependencies, ed
 
 ## Applicable profiles
 
-business-analyst
+Fighter (business-analyst)
 
 ## Inputs
 

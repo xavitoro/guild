@@ -12,7 +12,7 @@ Design or review a database schema/migration change for integrity, concurrency, 
 
 ## Applicable profiles
 
-database-engineer
+Wizard (database-engineer)
 
 ## Inputs
 

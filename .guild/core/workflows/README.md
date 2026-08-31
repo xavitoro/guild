@@ -8,8 +8,8 @@ with a Mermaid diagram.
 | Workflow | Canonical id | Steps |
 |---|---|---|
 | [Onboard an existing project](onboard-existing-project/workflow.md) | `onboard-existing-project` | 5 |
-| [Create a new project](create-new-project/workflow.md) | `create-new-project` | 14 |
-| [Add a feature](add-feature/workflow.md) | `add-feature` | 16 |
+| [Create a new project](create-new-project/workflow.md) | `create-new-project` | 15 |
+| [Add a feature](add-feature/workflow.md) | `add-feature` | 17 |
 | [Fix a bug](fix-bug/workflow.md) | `fix-bug` | 13 |
 | [Improve the product](improve-product/workflow.md) | `improve-product` | 19 |
 | [Review a pull request](review-pull-request/workflow.md) | `review-pull-request` | 7 |

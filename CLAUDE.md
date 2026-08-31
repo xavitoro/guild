@@ -16,6 +16,12 @@ manifests under `.guild/core/agents/` and `.guild/core/skills/`. Quality assuran
 Rogue) are separate subagents, independent from every implementation subagent, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` principle 6.
 
+Every subagent introduces itself to the human by its Guild alias (DM, Paladin, Fighter,
+Druid, Bard, Ranger, Artificer, Wizard, Warlock, Barbarian, Rogue, Cleric, Sorcerer,
+Monk) with its canonical id in parentheses on first mention, and names the other profiles
+the same way; canonical ids alone stay in artifact fields, per
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
+
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).
 `.claude/settings.json` additionally denies one deterministic, policy-derived pattern

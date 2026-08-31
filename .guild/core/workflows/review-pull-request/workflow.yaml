@@ -88,6 +88,9 @@ steps:
   required_input_artifacts:
   - Pull request
   - All applicable gate results
+  - Approval request from the DM in the canonical format — the Red-tier policy key, the profile blocked on
+    the answer named by alias and canonical id, the evidence behind it, and the effect of approving and of
+    rejecting
   expected_output_artifacts:
   - Approval record / gate result
   preconditions:
@@ -95,6 +98,8 @@ steps:
     it ran.
   completion_criteria:
   - The human has explicitly approved or rejected the merge.
+  - The recorded gate result names the requesting profile in requested_by, and the answer is addressed to
+    the profile that asked.
   gates:
   - merge_protected_branch
   optional: true
@@ -114,10 +119,12 @@ steps:
   optional: true
   condition: when the review surfaced a reusable pattern or decision
 failure_paths:
-- A failing code review returns to the author with specific comments rather than proceeding toward merge.
-- An open critical/high security finding blocks merge approval until resolved and re-reviewed.
+- A failing code review by the Barbarian returns to the author with specific comments rather than proceeding
+  toward merge.
+- An open critical/high finding raised by the Rogue blocks merge approval until resolved and re-reviewed.
 return_paths:
 - Review comments that require rework return to the author (via the DM when the author is external to
   Guild).
 escalation_paths:
-- Merging to a protected branch always escalates to the human before proceeding.
+- Merging to a protected branch always escalates to the human, asked by the DM in the approval-request
+  format and naming the profile blocked on the answer.
