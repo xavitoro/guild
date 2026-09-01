@@ -1,0 +1,52 @@
+schema: guild.decision/v1
+id: DEC-002
+title: Distribute ownership and knowledge across profiles, with the DM holding only the index
+status: accepted
+context: >
+  Through WI-001-WI-006 every profile had responsibilities (what it can do) but
+  nothing recorded which part of a project it owned, and all knowledge converged
+  on a single project-memory.yaml consolidated by the DM. Two consequences
+  followed. First, ownership was implicit: whoever touched a file last was its
+  de facto owner, and no artifact said otherwise, so a profile started every step
+  without a defined boundary or any accumulated knowledge of its own part.
+  Second, coordination required the DM to have absorbed everything: with one
+  shared memory and no index, connecting two pieces of work meant holding both,
+  which does not scale with project size and collapses the point of having
+  fourteen distinct perspectives.
+decision: >
+  Every part of a project is an ownership area with exactly one owning profile,
+  recorded in .guild/state/knowledge/ownership.yaml. A profile claims its area
+  before working (skill claim-ownership) and appends what each interaction
+  verified to its own ledger at
+  .guild/state/knowledge/profiles/<profile-id>.yaml afterwards (skill
+  record-profile-knowledge), with evidence. A profile writes only its own
+  ledger; entry ids carry their owner's canonical id so a misfiled entry is
+  detectable. The DM maintains the ownership map as an index of area, owner,
+  ledger location, newest entry, open questions and related areas — pointers
+  only, by construction of its schema — and routes by those pointers, connecting
+  the owners of related areas rather than merging their knowledge. Handoffs
+  carry knowledge_refs (ledger entry ids) instead of restated content. Canonical
+  memory is still consolidated only by the DM, now reached through a memory
+  proposal that links back to the promoting ledger entry. Recorded as design
+  principle 12 and section 7.1-7.4 of GUILD_MASTER_SPEC.md, and as the
+  knowledge_protocol block of default-policies.yaml.
+consequences: >
+  The protocol is declared once per workflow as step_protocol rather than as
+  extra numbered steps, so it applies to every step in all three execution modes
+  without renumbering any graph. Two schemas (ownership-map, profile-knowledge),
+  two templates, two skills and one check (check_ownership_model.py) were added;
+  all fourteen manifests gained the record_own_knowledge capability, the
+  write_another_profiles_ledger prohibition and the step-entry/step-exit quality
+  gate, and every profile but the DM now explicitly forbids maintaining the map
+  or consolidating canonical memory. Mapping record_own_knowledge to the Write
+  tool means the QA and security subagents receive Write, which they previously
+  lacked; the boundary keeping them out of product code remains their manifests'
+  forbidden capabilities, which check_independent_gates.py enforces, and both
+  profiles already had shell access. This repository's own state was populated
+  with nine areas and five ledgers, derived from the assigned_profile of each
+  work item in project-plan.yaml; the nine profiles with no area here own
+  nothing rather than a token one.
+decided_by: human
+decided_at: "2026-09-01"
+related_work_items:
+  - WI-007

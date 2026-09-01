@@ -5,6 +5,11 @@ description: 'Bring an existing repository under Guild governance: discover its 
   establish a baseline security posture, and initialize planning and project memory from verified evidence.
   Read-only against the target codebase; makes no product change.'
 status: ready
+step_protocol:
+  on_step_entry: claim-ownership
+  on_step_exit: record-profile-knowledge
+  on_blocked_decision: request-human-decision
+  index: .guild/state/knowledge/ownership.yaml
 steps:
 - id: onboard-01-triage
   name: Triage the onboarding request

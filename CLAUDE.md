@@ -22,6 +22,20 @@ Monk) with its canonical id in parentheses on first mention, and names the other
 the same way; canonical ids alone stay in artifact fields, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
 
+Each subagent owns a declared part of the project and keeps its own knowledge ledger
+under `.guild/state/knowledge/profiles/<profile-id>.yaml`, claiming its area before a
+step and recording what the step verified afterwards. The DM
+(`workflow-knowledge-orchestrator`) maintains `.guild/state/knowledge/ownership.yaml`
+as an index of area, owner and ledger location, and routes by those pointers — which
+is what lets a subagent hand back entry ids instead of its whole reasoning, and keeps
+the orchestrator's context bounded as the project grows.
+
+Nothing is left pending by default: what a subagent cannot decide from the project
+itself becomes a decision request under `.guild/state/planning/decisions/` — options,
+a recommendation and the default that applies if nobody answers — which the DM puts to
+a person and records. A default never applies before the human has seen it, and
+Red-tier actions remain approvals that block outright.
+
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).
 `.claude/settings.json` additionally denies one deterministic, policy-derived pattern

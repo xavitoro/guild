@@ -1,0 +1,40 @@
+schema: guild.decision-request/v1
+id: DR-003
+question: >
+  When Guild is installed into a target repository, are the provider adapter
+  files generated there, or shipped pre-generated with the distribution?
+raised_by: product-software-engineer
+raised_at: "2026-09-01"
+area: AREA-provider-adapters
+source_question: KNQ-product-software-engineer-001
+blocks:
+  - product-software-engineer
+  - The installation steps in .guild/core/adapters/INSTALL.md
+options:
+  - option: A
+    label: Generated at install time, as INSTALL.md already describes
+    consequence: >
+      The target runs the generator once after copying .guild/core/. Drift
+      detection stays meaningful, and the target needs an interpreter available.
+  - option: B
+    label: Ship pre-generated adapter files alongside the framework
+    consequence: >
+      Installation is a pure copy with no execution, but the shipped files go
+      stale the moment .guild/core/ changes, and drift detection compares against
+      whatever was shipped rather than against canonical sources.
+recommendation:
+  option: A
+  because: >
+    Everything the framework guarantees about adapters — that they are derived,
+    never hand-maintained, and provably not drifted — depends on generating them
+    from the canonical sources in place.
+default_if_unanswered:
+  option: A
+  in_force_from: Already in force — this is the behavior implemented today
+  revisit_when: A target environment cannot run the generator at install time
+status: answered
+presented_at: "2026-09-01"
+answered_at: "2026-09-01"
+answered_by: human
+answer: A
+resulting_decision: DEC-007

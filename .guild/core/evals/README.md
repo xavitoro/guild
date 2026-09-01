@@ -9,6 +9,8 @@ python3 .guild/core/evals/check_workflow_refs.py
 python3 .guild/core/evals/check_independent_gates.py
 python3 .guild/core/evals/check_language_neutrality.py
 python3 .guild/core/evals/check_alias_presence.py
+python3 .guild/core/evals/check_ownership_model.py
+python3 .guild/core/evals/check_human_in_the_loop.py
 python3 .guild/core/adapters/generate_adapters.py --target . --check
 ```
 
@@ -82,6 +84,43 @@ alias, every core `SKILL.md` renders its applicable profiles as
 identify profiles by alias. It also checks the complementary direction — that
 no `responsible_profile` or `applicable_profiles` entry stores an alias where a
 canonical id belongs.
+
+## check_ownership_model.py
+
+Proves the distributed-ownership model (`GUILD_MASTER_SPEC.md` principle 12
+and section 7) is structural rather than prose. The canonical half always
+runs: `default-policies.yaml` declares the knowledge protocol; every profile
+can record its own knowledge, forbids writing another profile's ledger and
+carries the step-entry/step-exit quality gate; only the orchestrator may
+maintain the ownership map or consolidate canonical memory; the two protocol
+skills apply to all fourteen profiles; and every workflow declares a
+`step_protocol` whose skills resolve. The state half runs only when
+`.guild/state/knowledge/ownership.yaml` exists — so a fresh `.guild/core/`-only
+installation still passes — and then checks that every area has exactly one
+real owner, that each ledger is written only by its own profile with entry ids
+carrying that profile's id, that the map and the ledgers agree on ownership in
+both directions, and that every pointer (`last_entry`, `open_questions`,
+`related_areas`, `promoted_to`) resolves.
+
+## check_human_in_the_loop.py
+
+Proves that nothing is left pending by default (`GUILD_MASTER_SPEC.md`
+principle 13 and sections 11.1-11.2). The canonical half always runs:
+`default-policies.yaml` declares the decision protocol and the fields a
+request must state; `request-human-decision` exists and is answerable by the
+human; the decision-request schema makes an incomplete request unwritable
+(at least two options, a recommendation, and a default with an effective
+moment and a revisit trigger); `project-status.schema.json` accepts only
+decision-request ids, so an open decision can never be a bare sentence; every
+workflow declares `step_protocol.on_blocked_decision`; every profile escalates
+what it cannot decide as a decision request, and only the orchestrator may
+present one. The state half runs when `.guild/state/planning/decisions/`
+exists and checks that open requests are listed in the status file *and*
+named in `PROJECT_STATUS.md`, that recommended and default options actually
+exist, that an answered or deferred request records who answered and what,
+that no request reached `presented`/`answered`/`deferred` without a
+`presented_at` — a default may not apply before it was shown — and that no
+ledger question blocked on the human was left un-escalated.
 
 ## generate_adapters.py --check
 

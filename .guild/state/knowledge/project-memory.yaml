@@ -1,7 +1,7 @@
 schema: guild.project-memory/v1
 project: guild
-version: 9
-updated_at: 2026-08-31
+version: 12
+updated_at: 2026-09-01
 updated_by: workflow-knowledge-orchestrator
 
 entries:
@@ -198,3 +198,93 @@ entries:
       - .guild/core/policies/default-policies.yaml
       - .guild/core/skills/grant-human-approval/SKILL.yaml
       - .guild/core/evals/check_alias_presence.py
+  - id: MEM-011
+    category: architecture
+    status: verified
+    statement: >
+      WI-007 is complete, closing milestone M5. Profiles had responsibilities
+      but no declared ownership of any part of a project, and all knowledge
+      converged on one project-memory.yaml — so a profile began each step
+      without a boundary or accumulated knowledge of its own, and coordination
+      required the DM to have absorbed everything. Every part of a project is
+      now an ownership area with exactly one owner in
+      .guild/state/knowledge/ownership.yaml; a profile claims its area before
+      working (skill claim-ownership) and appends what each interaction
+      verified, with evidence, to its own ledger at
+      .guild/state/knowledge/profiles/<profile-id>.yaml afterwards (skill
+      record-profile-knowledge). Entry ids carry their owner's canonical id, so
+      a misfiled entry is detectable. The DM maintains the map as pointers only
+      — area, owner, ledger, newest entry, open questions, related areas — by
+      construction of its schema, and connects the owners of related areas
+      instead of merging their knowledge; handoffs carry knowledge_refs rather
+      than restated content. The protocol is declared once per workflow as
+      step_protocol, not as extra steps, so it holds in all three execution
+      modes. Recorded as design principle 12 and section 7.1-7.4 of the master
+      spec, as the knowledge_protocol block of default-policies.yaml, and as
+      DEC-002; enforced by check_ownership_model.py, whose state half is skipped
+      when .guild/state/ is absent so a core-only install still passes. This
+      repository's own state was populated with nine areas and five ledgers
+      derived from each work item's assigned_profile.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/schemas/ownership-map.schema.json
+      - .guild/core/schemas/profile-knowledge.schema.json
+      - .guild/core/evals/check_ownership_model.py
+      - .guild/state/knowledge/ownership.yaml
+      - .guild/state/knowledge/decisions/DEC-002-distributed-ownership.yaml
+  - id: MEM-012
+    category: architecture
+    status: verified
+    statement: >
+      WI-008 is complete, closing milestone M6. The ownership model of WI-007
+      produced open questions but nothing obliged them to reach a person or be
+      closed: PROJECT_STATUS.md carried four open decisions as bullet sentences
+      with no owner, no options and no default, and a ledger question blocked on
+      the human could sit there indefinitely. Guild now distinguishes an approval
+      (a Red-tier action, blocks outright, never has a default) from a decision
+      request (guild.decision-request/v1, in
+      .guild/state/planning/decisions/, stating what it blocks, at least two
+      options with consequences, the asking profile's recommendation, and the
+      default that applies if nobody answers with when it takes effect and what
+      brings it back). A default never applies before the human has been shown
+      it, deferral is an explicit recorded answer rather than silence, every open
+      decision is listed by id in project status, and no run closes with a
+      decision it needed left unpresented. Recorded as design principle 13 and
+      sections 11.1-11.2 of the master spec, the decision_protocol block of
+      default-policies.yaml, the request-human-decision skill, a third
+      step_protocol route (on_blocked_decision) in all six workflows, and DEC-004;
+      enforced by check_human_in_the_loop.py. This project's own four open
+      decisions became DR-001 to DR-004, presented with recommendations and
+      defaults, and the Fighter's KNQ-business-analyst-001 was answered inside the
+      roster as DEC-003 rather than escalated.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/schemas/decision-request.schema.json
+      - .guild/core/skills/request-human-decision/SKILL.yaml
+      - .guild/core/evals/check_human_in_the_loop.py
+      - .guild/state/planning/decisions/
+      - .guild/state/knowledge/decisions/DEC-004-decision-requests.yaml
+  - id: MEM-013
+    category: product
+    status: verified
+    statement: >
+      The four decisions open since the bootstrap were presented as DR-001 to
+      DR-004 and answered by the human on 2026-09-01, closing every pending
+      decision in the project. "Guild" is the public product and protocol name
+      (DEC-005). The framework is published under MIT, as the existing LICENSE
+      file already stated — the DM had recommended a permissive license with an
+      explicit patent grant and the human chose the shorter form, so adopters
+      have no explicit patent position (DEC-006). Adapters are generated in the
+      target repository at install time rather than shipped pre-generated, which
+      is what makes drift detection meaningful (DEC-007). The first public
+      release ships the canonical definitions and the adapter generator, without
+      a command-line interface (DEC-008). Each decision keeps the revisit trigger
+      its request declared. Piloting Guild on a genuine external project is the
+      only remaining roadmap work and is no longer blocked.
+    evidence:
+      - .guild/state/planning/decisions/
+      - .guild/state/knowledge/decisions/DEC-005-public-name.yaml
+      - .guild/state/knowledge/decisions/DEC-006-license.yaml
+      - .guild/state/knowledge/decisions/DEC-007-adapter-distribution.yaml
+      - .guild/state/knowledge/decisions/DEC-008-no-cli-in-first-release.yaml
+      - LICENSE

@@ -1,0 +1,84 @@
+# Artificer's own knowledge ledger. Written only by product-software-engineer.
+schema: guild.profile-knowledge/v1
+profile: product-software-engineer
+project: guild
+version: 2
+updated_at: "2026-09-01"
+updated_by: product-software-engineer
+
+owned_areas:
+  - AREA-provider-adapters
+
+entries:
+  - id: KN-product-software-engineer-001
+    area: AREA-provider-adapters
+    status: verified
+    statement: >
+      Every provider file is derived from .guild/core/agents/ and
+      .guild/core/skills/ by generate_adapters.py, which never reads its own
+      output to decide what to produce. `--check` detects stale, missing,
+      hand-edited and orphaned generated files, so an adapter is never
+      hand-maintained.
+    evidence:
+      - .guild/core/adapters/generate_adapters.py
+      - .guild/core/adapters/INSTALL.md
+      - .guild/core/evals/smoke_test_add_feature.py
+    recorded_at: "2026-09-01"
+    promoted_to: MEM-006
+  - id: KN-product-software-engineer-002
+    area: AREA-provider-adapters
+    status: verified
+    statement: >
+      Subagent tool grants are derived mechanically from each profile's
+      allowed_capabilities through the CAP_TOOLS map and are never unrestricted;
+      a capability with no mapping silently grants nothing, so adding a
+      capability means adding its mapping.
+    evidence:
+      - .guild/core/adapters/generate_adapters.py
+      - .claude/agents/
+    recorded_at: "2026-09-01"
+  - id: KN-product-software-engineer-003
+    area: AREA-provider-adapters
+    status: verified
+    statement: >
+      Mapping record_own_knowledge to the Write tool gives the QA and security
+      subagents Write, which they previously lacked. The boundary keeping them
+      out of product code is their manifests' forbidden capabilities, checked by
+      check_independent_gates.py — the coarse tool grant never was that boundary,
+      since both profiles already had shell access.
+    evidence:
+      - .guild/core/adapters/generate_adapters.py
+      - .guild/core/evals/check_independent_gates.py
+      - .guild/core/agents/quality-assurance-engineer/manifest.yaml
+    learned_from: WI-007
+    recorded_at: "2026-09-01"
+  - id: KN-product-software-engineer-004
+    area: AREA-provider-adapters
+    status: verified
+    statement: >
+      Generating adapters in the target at install time is now a decided
+      constraint, not an implementation detail: drift detection only proves
+      anything because the generated files are produced from the canonical
+      sources present in that same repository. Shipping pre-generated files would
+      make the drift check compare against whatever was distributed.
+    evidence:
+      - .guild/state/knowledge/decisions/DEC-007-adapter-distribution.yaml
+      - .guild/core/adapters/INSTALL.md
+    learned_from: DR-003
+    recorded_at: "2026-09-01"
+
+open_questions:
+  - id: KNQ-product-software-engineer-001
+    area: AREA-provider-adapters
+    question: >
+      Whether adapters are generated at install time or shipped pre-generated
+      changes what drift detection can prove, and is not decidable from this
+      repository alone.
+    blocked_on: human
+    raised_at: "2026-09-01"
+    status: answered
+    answer: >
+      Answered by the human through DR-003: adapters are generated in the target
+      at install time, as INSTALL.md describes. Recorded as DEC-007.
+    answered_at: "2026-09-01"
+    escalated_as: DR-003

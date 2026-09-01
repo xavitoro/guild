@@ -41,7 +41,8 @@
       "description": "How Guild addresses the human, per GUILD_MASTER_SPEC.md section 3.1.",
       "required": [
         "address_profiles_by",
-        "approval_request_required_fields"
+        "approval_request_required_fields",
+        "decision_request_required_fields"
       ],
       "properties": {
         "address_profiles_by": {
@@ -60,6 +61,103 @@
             "minLength": 1
           },
           "description": "Fields a Red-tier approval request must state before a human answers it."
+        },
+        "decision_request_required_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Fields a decision request must state before a human is asked to answer it."
+        }
+      }
+    },
+    "knowledge_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How ownership and knowledge are distributed across profiles, per GUILD_MASTER_SPEC.md section 7.",
+      "required": [
+        "ownership_map",
+        "profile_ledger",
+        "canonical_memory",
+        "ownership_map_maintained_by",
+        "canonical_memory_consolidated_by",
+        "rules"
+      ],
+      "properties": {
+        "ownership_map": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to the orchestrator's routing index of areas, owners and ledger locations."
+        },
+        "profile_ledger": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path pattern of a single profile's own knowledge ledger."
+        },
+        "canonical_memory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ownership_map_maintained_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id allowed to write the ownership map."
+        },
+        "canonical_memory_consolidated_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id allowed to consolidate canonical memory."
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "decision_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How a decision no profile can make from the project itself reaches a person and is closed, per GUILD_MASTER_SPEC.md section 11.2.",
+      "required": [
+        "decision_requests",
+        "decision_records",
+        "presented_by",
+        "answered_by",
+        "rules"
+      ],
+      "properties": {
+        "decision_requests": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Directory holding pending decision requests."
+        },
+        "decision_records": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Directory holding the decision records answers produce."
+        },
+        "presented_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id that puts a decision request in front of the human."
+        },
+        "answered_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     }

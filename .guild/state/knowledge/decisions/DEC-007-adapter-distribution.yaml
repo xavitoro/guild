@@ -1,0 +1,22 @@
+schema: guild.decision/v1
+id: DEC-007
+title: Adapters are generated in the target repository at install time
+status: accepted
+context: >
+  DR-003, raised by the Artificer (product-software-engineer) from its own area:
+  whether installing Guild means running the generator in the target or copying
+  pre-generated adapter files changes what drift detection can prove.
+decision: >
+  Option A: adapters are generated at install time, as INSTALL.md already
+  describes — copy .guild/core/, then run generate_adapters.py in the target.
+consequences: >
+  Everything the framework guarantees about adapters — derived from canonical
+  sources, never hand-maintained, provably not drifted — continues to hold,
+  because the generated files are always produced from the sources present in
+  that repository. The cost is that a target must be able to run the generator;
+  DR-003's revisit trigger stands if an environment cannot.
+decided_by: human
+decided_at: "2026-09-01"
+resolves_decision_request: DR-003
+related_work_items:
+  - WI-008

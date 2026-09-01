@@ -1,0 +1,33 @@
+# Template for the orchestrator's routing index at
+# .guild/state/knowledge/ownership.yaml — which profile owns which area of
+# the project, and where that owner's knowledge lives.
+# Validates against .guild/core/schemas/ownership-map.schema.json
+#
+# This file holds pointers, never knowledge. The orchestrator reads it to
+# find the right owner and the right ledger; it does not need to have read
+# what those ledgers say.
+schema: guild.ownership-map/v1
+project: replace-with-project-id
+version: 1
+updated_at: "2026-08-04"
+updated_by: workflow-knowledge-orchestrator   # only the orchestrator maintains this map
+
+areas:
+  - id: AREA-replace-with-slug
+    name: Human-readable name of this area
+    boundary: >
+      What falls inside this area and what does not. A definition of scope,
+      not a finding about the area.
+    owner_profile: replace-with-profile-id    # exactly one owner
+    ledger: .guild/state/knowledge/profiles/replace-with-profile-id.yaml
+    claimed_at: "2026-08-04"
+    claimed_in_run: replace-with-run-id       # optional
+    paths:
+      - path/in/the/target/project
+    last_entry: KN-replace-with-profile-id-001   # pointer to the owner's newest entry
+    last_entry_at: "2026-08-04"
+    open_questions:
+      - KNQ-replace-with-profile-id-001       # ids only; the text lives in the ledger
+    related_areas:
+      - AREA-replace-with-another-slug
+    status: active                            # active | dormant | superseded

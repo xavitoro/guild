@@ -1,17 +1,18 @@
 schema: guild.project-plan/v1
 project: guild
-version: 7
-updated_at: 2026-08-04
+version: 9
+updated_at: 2026-09-01
 updated_by: workflow-knowledge-orchestrator
 
 vision:
   summary: Create a portable framework that gives AI agents consistent roles, workflows and safeguards for software development.
 
 current_focus:
-  milestone: M4
+  milestone: M6
   objective: >
-    M1–M4 are complete. Remaining work is human-owned: the open decisions
-    below, and piloting Guild on a genuine external project.
+    M1–M6 are complete. Remaining work is human-owned: answering decision
+    requests DR-001 to DR-004, and piloting Guild on a genuine external
+    project.
   status: completed
 
 milestones:
@@ -34,6 +35,16 @@ milestones:
     status: completed
     weight: 1
     depends_on: [M1, M2, M3]
+  - id: M5
+    name: Distributed ownership and knowledge
+    status: completed
+    weight: 2
+    depends_on: [M1, M2, M3, M4]
+  - id: M6
+    name: Nothing stays pending
+    status: completed
+    weight: 2
+    depends_on: [M5]
 
 work_items:
   - id: WI-001
@@ -77,3 +88,17 @@ work_items:
     assigned_profile: workflow-knowledge-orchestrator
     depends_on: [WI-001, WI-004, WI-005]
     weight: 3
+  - id: WI-007
+    title: Give each profile ownership of its part and its own knowledge ledger, indexed by the DM
+    status: completed
+    milestone: M5
+    assigned_profile: workflow-knowledge-orchestrator
+    depends_on: [WI-002, WI-003, WI-006]
+    weight: 2
+  - id: WI-008
+    title: Make every pending decision reach a person, with options, a recommendation and a default
+    status: completed
+    milestone: M6
+    assigned_profile: workflow-knowledge-orchestrator
+    depends_on: [WI-007]
+    weight: 2

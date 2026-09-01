@@ -9,6 +9,8 @@ several skills across different workflow steps.
 | Skill | Canonical id | Applicable profiles |
 |---|---|---|
 | [Triage a request](triage-request/SKILL.md) | `triage-request` | DM (workflow-knowledge-orchestrator) |
+| [Claim ownership of an area](claim-ownership/SKILL.md) | `claim-ownership` | every profile |
+| [Record what an interaction taught this profile](record-profile-knowledge/SKILL.md) | `record-profile-knowledge` | every profile |
 | [Discover a project](discover-project/SKILL.md) | `discover-project` | DM (workflow-knowledge-orchestrator), Artificer (product-software-engineer), Cleric (cloud-devops-engineer) |
 | [Define or evaluate product vision](define-product-vision/SKILL.md) | `define-product-vision` | Paladin (product-owner) |
 | [Define requirements](define-requirements/SKILL.md) | `define-requirements` | Fighter (business-analyst) |
@@ -30,7 +32,17 @@ several skills across different workflow steps.
 | [Prepare a pull request](prepare-pull-request/SKILL.md) | `prepare-pull-request` | DM (workflow-knowledge-orchestrator), Artificer (product-software-engineer), Ranger (web-experience-engineer), Wizard (database-engineer), Warlock (integration-engineer), Monk (data-analytics-engineer) |
 | [Review code in a pull request](review-code/SKILL.md) | `review-code` | Barbarian (quality-assurance-engineer) |
 | [Grant human approval](grant-human-approval/SKILL.md) | `grant-human-approval` | the human |
+| [Put a pending decision to the human](request-human-decision/SKILL.md) | `request-human-decision` | DM (workflow-knowledge-orchestrator), the human |
 | [Consolidate knowledge](consolidate-knowledge/SKILL.md) | `consolidate-knowledge` | DM (workflow-knowledge-orchestrator) |
+
+`claim-ownership` and `record-profile-knowledge` are the two protocol skills every
+profile runs, and they are not numbered workflow steps: each workflow declares them
+once as its `step_protocol`, and every step is bracketed by them — the responsible
+profile claims the area it is about to work in, does the step's own skill, then
+records what that interaction verified in its own ledger. The same `step_protocol`
+names `request-human-decision` as the route for a step blocked on something no
+profile can decide from the project itself. See `GUILD_MASTER_SPEC.md` sections 7
+and 11.2.
 
 See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 5 and
 `.guild/core/templates/skill-manifest.template.yaml` for the manifest shape, and

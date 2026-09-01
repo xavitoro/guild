@@ -1,0 +1,24 @@
+schema: guild.decision/v1
+id: DEC-006
+title: Guild is published under a short permissive license (MIT)
+status: accepted
+context: >
+  DR-002. The repository already carried an MIT LICENSE file, but "License" had
+  been an open decision since the bootstrap, so nothing confirmed that the file
+  reflected an actual choice. The DM recommended a permissive license with an
+  explicit patent grant; the human chose the short permissive form instead.
+decision: >
+  Option B: Guild is published under MIT, as the existing LICENSE file already
+  states. Anyone may copy .guild/core/ into their own repository and adapt the
+  canonical definitions; there is no explicit patent grant, which the human
+  accepted as the trade for a shorter, more familiar license.
+consequences: >
+  The LICENSE file needed no change — the decision confirms it rather than
+  altering it. The external-project pilot is no longer blocked on licensing: it
+  now depends only on someone actually running it. Contributors and adopters have
+  no explicit patent position, which is the known limitation of this choice.
+decided_by: human
+decided_at: "2026-09-01"
+resolves_decision_request: DR-002
+related_work_items:
+  - WI-008

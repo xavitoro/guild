@@ -1,0 +1,21 @@
+schema: guild.decision/v1
+id: DEC-005
+title: 'Guild is the public product and protocol name'
+status: accepted
+context: >
+  DR-001. "Guild" had been used since the bootstrap across every path, schema id
+  and the D&D roster mnemonic, but had never been confirmed as the public name;
+  it sat in PROJECT_STATUS.md as an unowned bullet.
+decision: >
+  Option A: "Guild" is the public product and protocol name. Nothing changes —
+  .guild/, the guild.* schema ids and the roster stay as they are.
+consequences: >
+  The name stays load-bearing, which is the accepted cost: a later conflict would
+  mean migrating paths and schema ids, not just documentation. DR-001's revisit
+  trigger stands — the question returns if a trademark or naming conflict with an
+  existing product is found.
+decided_by: human
+decided_at: "2026-09-01"
+resolves_decision_request: DR-001
+related_work_items:
+  - WI-008

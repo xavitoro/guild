@@ -1,0 +1,39 @@
+# Template for a decision the roster cannot make from the project itself, put
+# to the human. Lives in .guild/state/planning/decisions/<id>-<slug>.yaml.
+# Validates against .guild/core/schemas/decision-request.schema.json
+#
+# Every field below exists to stop a decision from stalling silently: options
+# so the human can choose, a recommendation so the analysis is not pushed back
+# onto them, and a default so work continues if they do not answer — a default
+# they were shown before it applied.
+schema: guild.decision-request/v1
+id: DR-000
+question: >
+  The decision, stated so a person can answer it without reading the repository.
+raised_by: replace-with-profile-id
+raised_at: "2026-09-01"
+area: AREA-replace-with-slug          # optional
+source_question: KNQ-replace-with-profile-id-001   # optional
+blocks:
+  - replace-with-profile-id-work-item-or-run
+options:
+  - option: A
+    label: First option
+    consequence: What choosing this causes, in the project's own terms.
+  - option: B
+    label: Second option
+    consequence: What choosing this causes instead.
+recommendation:
+  option: A
+  because: Why the asking profile would choose it.
+default_if_unanswered:
+  option: B
+  in_force_from: The event or date at which this applies if nobody answers.
+  revisit_when: What brings this back to the human — a default is provisional.
+status: open                          # open | presented | answered | deferred | withdrawn
+presented_at: "2026-09-01"            # set when the human has actually seen it
+answered_at: "2026-09-01"
+answered_by: human
+answer: A
+resulting_decision: DEC-000
+notes: ""

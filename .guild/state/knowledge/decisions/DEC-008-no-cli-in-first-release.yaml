@@ -1,0 +1,21 @@
+schema: guild.decision/v1
+id: DEC-008
+title: The first public release ships definitions and the adapter generator, without a CLI
+status: accepted
+context: >
+  DR-004. Whether the first public release includes a command-line interface set
+  the scope of that release and had been unresolved since the bootstrap.
+decision: >
+  Option B: the first public release is the canonical definitions plus the
+  adapter generator. Installation stays "copy .guild/core/, run the generator".
+consequences: >
+  No new maintained surface with its own compatibility expectations, consistent
+  with GUILD_MASTER_SPEC.md section 13, which keeps a custom runtime out of the
+  first implementation. A CLI remains addable later without breaking anything.
+  DR-004's revisit trigger stands — the question returns the first time a user
+  reports the copy-and-run installation as a real obstacle.
+decided_by: human
+decided_at: "2026-09-01"
+resolves_decision_request: DR-004
+related_work_items:
+  - WI-008

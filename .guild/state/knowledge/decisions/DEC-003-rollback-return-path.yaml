@@ -1,0 +1,30 @@
+schema: guild.decision/v1
+id: DEC-003
+title: A failed deployment routes into rollback-deployment through the deploy step's return path
+status: accepted
+context: >
+  The Fighter (business-analyst) raised KNQ-business-analyst-001 while claiming
+  its area: the rollback-deployment skill existed in the catalogue but no
+  workflow step invoked it and no failure path referenced it, so a failed or
+  regressed deployment had no declared route into rollback. The question was
+  blocked on the DM, not on the human — it is answerable from the repository
+  itself, so escalating it to a person would have been noise.
+decision: >
+  The three workflows that deploy — add-feature, improve-product and
+  create-new-project — declare on their deployment step an on_return that sends a
+  failed or regressed deployment to the Cleric (cloud-devops-engineer) to execute
+  the documented rollback path with the rollback-deployment skill before any
+  further step, and carry a matching failure path. No new step was added: a step
+  would have renumbered every later step in all three graphs to express something
+  that is a return path, not a phase of the work.
+consequences: >
+  rollback-deployment is now reachable from the workflow definitions rather than
+  being an orphan in the catalogue, and the deployment step's failure behavior is
+  declared where a reader of the workflow will look for it. KNQ-business-analyst-001
+  is answered and closed in the Fighter's ledger with the answer recorded, and
+  KN-business-analyst-003 records the general lesson: a skill no step invokes is a
+  silent gap, not a spare part.
+decided_by: workflow-knowledge-orchestrator
+decided_at: "2026-09-01"
+related_work_items:
+  - WI-008

@@ -48,6 +48,14 @@
       },
       "minItems": 1
     },
+    "knowledge_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional. Ids of ledger entries or open questions (guild.profile-knowledge/v1) the receiving profile should read. Pointers, never copies: a handoff moves the address of the knowledge, not the knowledge."
+    },
     "status": {
       "type": "string",
       "enum": [

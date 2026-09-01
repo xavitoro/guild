@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/ownership-map/v1",
+  "guildSchemaId": "guild.ownership-map/v1",
+  "title": "Guild Ownership Map",
+  "description": "The orchestrator's routing index: which profile owns which area of the project, and where that owner's knowledge lives. It holds pointers only. Knowledge itself lives in the owner's ledger (guild.profile-knowledge/v1) and, once consolidated, in project memory. Adding a knowledge statement here is a schema violation by construction: no property accepts one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "project",
+    "version",
+    "updated_at",
+    "updated_by",
+    "areas"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.ownership-map/v1"
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "updated_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical profile id. Only the orchestrator maintains this map."
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "boundary",
+          "owner_profile",
+          "ledger",
+          "claimed_at",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AREA-[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "boundary": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What falls inside this area and what does not. A definition of scope, never a finding about the area."
+          },
+          "owner_profile": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Canonical profile id of the single owner. Exactly one owner per area."
+          },
+          "ledger": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Path to the owner's knowledge ledger, where this area's accumulated knowledge actually lives."
+          },
+          "claimed_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "claimed_in_run": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional. Run record id in which the owner claimed this area."
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Optional. Concrete parts of the target project this area covers."
+          },
+          "last_entry": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional. Id of the most recent ledger entry for this area — a pointer the orchestrator can follow, not a copy of what it says."
+          },
+          "last_entry_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "open_questions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Ids of open questions recorded in the owner's ledger. Ids only: the question's text stays with its owner."
+          },
+          "related_areas": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Ids of areas whose owners this owner must coordinate with. This is what lets the orchestrator connect pieces without holding either piece."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "dormant",
+              "superseded"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

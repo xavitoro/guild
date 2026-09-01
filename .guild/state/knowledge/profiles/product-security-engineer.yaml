@@ -1,0 +1,37 @@
+# Rogue's own knowledge ledger. Written only by product-security-engineer.
+schema: guild.profile-knowledge/v1
+profile: product-security-engineer
+project: guild
+version: 1
+updated_at: "2026-09-01"
+updated_by: product-security-engineer
+
+owned_areas:
+  - AREA-policies-and-gates
+
+entries:
+  - id: KN-product-security-engineer-001
+    area: AREA-policies-and-gates
+    status: verified
+    statement: >
+      Nine actions are Red-tier and require explicit human approval. Every agent
+      manifest forbids all nine and every workflow gate on one has
+      responsible_profile 'human', so no profile can satisfy a Red-tier gate by
+      its own say-so.
+    evidence:
+      - .guild/core/policies/default-policies.yaml
+      - .guild/core/evals/check_independent_gates.py
+    recorded_at: "2026-09-01"
+  - id: KN-product-security-engineer-002
+    area: AREA-policies-and-gates
+    status: verified
+    statement: >
+      Only force-push is enforced as a deterministic deny rule. The other
+      Red-tier actions cannot be pattern-matched from arbitrary shell commands
+      across arbitrary target projects without guessing at their tooling, so they
+      depend on the explicit human-approval steps — a client-side rule is a
+      supplement to those steps, never a replacement.
+    evidence:
+      - .guild/core/adapters/generate_adapters.py
+      - .claude/settings.json
+    recorded_at: "2026-09-01"

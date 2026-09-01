@@ -1,0 +1,49 @@
+schema: guild.decision/v1
+id: DEC-004
+title: Every decision the roster cannot make becomes a decision request with a default, put to a person
+status: accepted
+context: >
+  WI-007 gave each profile an area and a ledger, and with it a place to record
+  what it could not resolve — but nothing obliged an open question to ever reach
+  a person or be closed. The human reviewer observed that this leaves decisions
+  pending by construction. The evidence was in this repository: PROJECT_STATUS.md
+  had carried four open decisions since the bootstrap as bullet sentences with no
+  owner, no options, no recommendation and no consequence for never answering
+  them, and the new ledgers could accumulate questions blocked on the human that
+  nobody was obliged to present. Guild also conflated two different things under
+  "human in the loop": Red-tier approvals, which must block, and ordinary
+  decisions, which must not block forever.
+decision: >
+  The two are now separated (GUILD_MASTER_SPEC.md section 11.1). A Red-tier
+  action remains an approval: it blocks outright and never carries a default. A
+  decision no profile can make from the project itself becomes a decision request
+  (guild.decision-request/v1) in .guild/state/planning/decisions/, stating the
+  question in the project's own terms, what it blocks, at least two options with
+  their consequences, the asking profile's recommendation, and the default that
+  applies if nobody answers — with when that default takes effect and what brings
+  the question back. The DM presents it in a canonical format and records the
+  answer as a decision record linked both ways, or an explicit deferral. Four
+  rules make this non-optional: a default never applies before the human has been
+  shown it; deferral is an answer a person gives, not silence; every open
+  decision is listed by id in the project status, which now accepts ids rather
+  than free text; and a run does not close with a decision it needed left
+  unpresented. Declared as design principle 13, the decision_protocol block of
+  default-policies.yaml, the request-human-decision skill, and a third
+  step_protocol route (on_blocked_decision) in all six workflows.
+consequences: >
+  Every profile manifest gained an escalation condition routing what it cannot
+  decide to a person through the DM rather than to assumption, and only the DM
+  may present a request. check_human_in_the_loop.py enforces the canonical half
+  always and the state half when .guild/state/ exists, so a core-only install
+  still passes. This project's four open decisions became DR-001 to DR-004 with
+  recommendations and defaults, and were presented; DR-002's default is
+  deliberately the uncomfortable one — silence keeps the work unpublished rather
+  than quietly granting rights nobody agreed to. Separately, the Fighter's
+  KNQ-business-analyst-001 was answered inside the roster as DEC-003 rather than
+  escalated, since it was answerable from the repository: not every open question
+  is a question for the human, and treating them all as one would bury the ones
+  that are.
+decided_by: human
+decided_at: "2026-09-01"
+related_work_items:
+  - WI-008

@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.guild.dev/decision-request/v1",
+  "guildSchemaId": "guild.decision-request/v1",
+  "title": "Guild Decision Request",
+  "description": "A decision nobody in the roster can make from the project itself, put to the human. Every request carries options, a recommendation and what happens if it goes unanswered, so a pending decision can never silently stall the work or be silently resolved by assumption. Red-tier actions are not decision requests: they block on an approval (guild.gate-result/v1) and never carry a default.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "question",
+    "raised_by",
+    "raised_at",
+    "blocks",
+    "options",
+    "recommendation",
+    "default_if_unanswered",
+    "status"
+  ],
+  "properties": {
+    "schema": {
+      "const": "guild.decision-request/v1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^DR-[0-9]{3}$"
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The decision, stated so a person can answer it without reading the repository."
+    },
+    "raised_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical profile id of the profile that could not decide this inside its own boundary."
+    },
+    "raised_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "area": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional. Id of the ownership area this decision belongs to."
+    },
+    "source_question": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional. Id of the ledger open question this was escalated from."
+    },
+    "blocks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "What is waiting on this answer: profile ids, work item ids or run ids. A decision that blocks nothing is not worth a person's attention."
+    },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "option",
+          "label",
+          "consequence"
+        ],
+        "properties": {
+          "option": {
+            "type": "string",
+            "pattern": "^[A-Z]$",
+            "description": "Short choice key, unique within this request. Not an `id`: option keys repeat across requests by design, while every `id` in a Guild tree is globally unique."
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "consequence": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What choosing this causes, in the project's own terms."
+          }
+        }
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "option",
+        "because"
+      ],
+      "description": "The asking profile's own recommendation. A request with no recommendation pushes the analysis onto the human.",
+      "properties": {
+        "option": {
+          "type": "string",
+          "pattern": "^[A-Z]$"
+        },
+        "because": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "default_if_unanswered": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "option",
+        "in_force_from",
+        "revisit_when"
+      ],
+      "description": "What happens if the human does not answer. Required so work is never blocked indefinitely \u2014 and so a default is never applied without the human having been shown it first.",
+      "properties": {
+        "option": {
+          "type": "string",
+          "pattern": "^[A-Z]$"
+        },
+        "in_force_from": {
+          "type": "string",
+          "minLength": 1,
+          "description": "When the default takes effect: a date, or the event that triggers it."
+        },
+        "revisit_when": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What brings this back to the human. A default is provisional, never a closed decision."
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "presented",
+        "answered",
+        "deferred",
+        "withdrawn"
+      ],
+      "description": "open: raised, not yet put to the human. presented: the human has seen it in the canonical format. answered: the human chose. deferred: the human explicitly chose to decide later, and the default is in force. withdrawn: no longer needed."
+    },
+    "presented_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "answered_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "answered_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "'human', or the canonical profile id the human delegated it to."
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The chosen option id, or the human's own answer when it is none of the options."
+    },
+    "resulting_decision": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional. Id of the decision record this answer produced."
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

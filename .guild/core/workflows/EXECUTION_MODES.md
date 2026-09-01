@@ -34,6 +34,31 @@ service, agent) owns the named profile, and persists `gate-result` and
 definitions is required to support this mode — it is the reason the workflow and
 step schemas are declarative rather than expressed as code.
 
+## Ownership and knowledge in each mode
+
+Every workflow declares a `step_protocol`: each step is bracketed by
+`claim-ownership` before its own work and `record-profile-knowledge` after it
+(`GUILD_MASTER_SPEC.md` section 7). It is declared once per workflow rather than
+as extra steps precisely so it survives every execution mode:
+
+- **Mode 1** — the single assistant claims the area at each role switch, works as
+  that profile, then appends what the step verified to *that profile's* ledger
+  before switching again. The ledgers are what stop one assistant's roles from
+  collapsing into one undifferentiated memory: the Barbarian's ledger holds what
+  QA verified, not what the Artificer assumed while implementing.
+- **Mode 2** — each subagent claims its area, reads its own ledger for that area
+  as its starting context, and returns ledger entry ids to the DM. This is what
+  keeps the DM's own context bounded: a subagent hands back pointers, so the
+  orchestrator never has to absorb every subagent's reasoning to coordinate the
+  next step.
+- **Mode 3** — the runtime enforces the same bracket around each dispatched job,
+  and persists ownership-map and ledger updates alongside `gate-result` and
+  `run-record` artifacts per `.guild/core/schemas/`.
+
+In all three, the ownership map is the only thing the orchestrator needs to route
+any part of the project to its owner, and no profile writes another profile's
+ledger.
+
 ## Speaking to the human
 
 Whichever mode is running, the person watching sees one thing: profiles, by alias.

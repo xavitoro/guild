@@ -1,0 +1,39 @@
+schema: guild.decision-request/v1
+id: DR-004
+question: >
+  Does the first public release include a command-line interface, or only the
+  canonical definitions plus the adapter generator?
+raised_by: workflow-knowledge-orchestrator
+raised_at: "2026-09-01"
+area: AREA-project-planning
+source_question: KNQ-workflow-knowledge-orchestrator-003
+blocks:
+  - The scope of the first public release
+options:
+  - option: A
+    label: Include a command-line interface
+    consequence: >
+      Installation, upgrade and validation get a single entry point, at the cost
+      of a maintained surface with its own compatibility expectations, before
+      anyone has asked for one.
+  - option: B
+    label: Definitions and the adapter generator only
+    consequence: >
+      Installation stays "copy .guild/core/, run the generator". Nothing new to
+      maintain; a CLI can still be added later without breaking anything.
+recommendation:
+  option: B
+  because: >
+    The generator already covers install, upgrade and drift detection, and
+    GUILD_MASTER_SPEC.md section 13 explicitly keeps a custom runtime out of the
+    first implementation; a CLI is a surface to support, not a capability gain.
+default_if_unanswered:
+  option: B
+  in_force_from: The first public release
+  revisit_when: A user reports the copy-and-run installation as a real obstacle
+status: answered
+presented_at: "2026-09-01"
+answered_at: "2026-09-01"
+answered_by: human
+answer: B
+resulting_decision: DEC-008

@@ -65,6 +65,37 @@
   are rendered across workflow diagrams and tables, skill and profile docs,
   escalation prose and every generated adapter.
   `check_alias_presence.py` enforces both directions.
+- Profiles had no declared ownership of any part of a project and all
+  knowledge converged on one consolidated memory, so a profile started each
+  step without a boundary or accumulated knowledge of its own, and the DM had
+  to hold everything to coordinate. Every part is now an ownership area with
+  exactly one owner in `.guild/state/knowledge/ownership.yaml`; each owner
+  claims its area before working and appends what it verified, with evidence,
+  to its own ledger under `.guild/state/knowledge/profiles/`. The DM keeps
+  pointers only — area, owner, ledger, newest entry, open questions, related
+  areas — and connects owners rather than merging their knowledge. See DEC-002
+  and `check_ownership_model.py`.
+- Open questions had no obligation to reach a person: the status file carried
+  four open decisions as bullet sentences with no owner, options or default. A
+  decision no profile can make from the project itself is now a decision request
+  under `.guild/state/planning/decisions/` — what it blocks, options with
+  consequences, a recommendation, and the default that applies if nobody answers
+  — presented to a person and listed by id in `PROJECT_STATUS.md`. A default
+  never applies before it has been shown, deferral is an explicit answer, and
+  Red-tier actions stay approvals that block outright. See DEC-004 and
+  `check_human_in_the_loop.py`.
+
+## Decisions
+
+- "Guild" is the public product and protocol name (DEC-005).
+- Published under MIT, as `LICENSE` already stated; no explicit patent grant
+  (DEC-006).
+- Adapters are generated in the target at install time, never shipped
+  pre-generated — this is what makes drift detection meaningful (DEC-007).
+- The first public release is definitions plus the adapter generator, with no
+  CLI (DEC-008).
+- Each decision keeps the revisit trigger its request declared; none is pending,
+  none is sealed.
 
 ## Current constraints
 

@@ -8,6 +8,8 @@ from_profile: replace-with-profile-id
 to_profile: replace-with-profile-id
 artifact_ids:
   - replace-with-artifact-id
+knowledge_refs:                      # optional: ledger entry/question ids the
+  - KN-replace-with-profile-id-001   # receiver should read — pointers, not copies
 status: proposed
 created_at: "2026-08-04"
 notes: ""

@@ -5,6 +5,11 @@ description: Independently review a pull request — whether produced by another
   directly — for correctness, schema/integration risk and security, with an explicit human approval point
   before any protected-branch merge.
 status: ready
+step_protocol:
+  on_step_entry: claim-ownership
+  on_step_exit: record-profile-knowledge
+  on_blocked_decision: request-human-decision
+  index: .guild/state/knowledge/ownership.yaml
 steps:
 - id: review-pr-01-triage
   name: Triage the review request

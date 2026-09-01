@@ -1,0 +1,49 @@
+# Barbarian's own knowledge ledger. Written only by quality-assurance-engineer.
+schema: guild.profile-knowledge/v1
+profile: quality-assurance-engineer
+project: guild
+version: 1
+updated_at: "2026-09-01"
+updated_by: quality-assurance-engineer
+
+owned_areas:
+  - AREA-structural-validation
+
+entries:
+  - id: KN-quality-assurance-engineer-001
+    area: AREA-structural-validation
+    status: verified
+    statement: >
+      The required gate is six checks plus the adapter drift check; the smoke
+      test and the pilot install check are demonstrations run after any change to
+      agents, skills or workflows. A change that passes only the demonstrations
+      has not been verified.
+    evidence:
+      - .guild/core/evals/README.md
+      - .guild/core/evals/
+    recorded_at: "2026-09-01"
+    promoted_to: MEM-007
+  - id: KN-quality-assurance-engineer-002
+    area: AREA-structural-validation
+    status: verified
+    statement: >
+      A check that reads .guild/state/ must degrade to canonical-only when that
+      directory is absent, because pilot_install_check.py re-runs every check
+      from an isolated copy of .guild/core/ alone. check_ownership_model.py is
+      split into a canonical half and a state half for exactly this reason.
+    evidence:
+      - .guild/core/evals/check_ownership_model.py
+      - .guild/core/evals/pilot_install_check.py
+    learned_from: WI-007
+    recorded_at: "2026-09-01"
+  - id: KN-quality-assurance-engineer-003
+    area: AREA-structural-validation
+    status: verified
+    statement: >
+      A fixture is trusted only after a violation has been deliberately
+      introduced and restored; hardcoded counts of agents or skills go stale and
+      must be derived from canonical sources instead.
+    evidence:
+      - .guild/core/evals/pilot_install_check.py
+      - .guild/state/knowledge/project-memory.yaml
+    recorded_at: "2026-09-01"

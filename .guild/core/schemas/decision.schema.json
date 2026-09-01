@@ -53,6 +53,11 @@
       "type": "string",
       "format": "date"
     },
+    "resolves_decision_request": {
+      "type": "string",
+      "pattern": "^DR-[0-9]{3}$",
+      "description": "Optional. Id of the decision request this record answers, so a pending decision and its outcome stay linked."
+    },
     "related_work_items": {
       "type": "array",
       "items": {

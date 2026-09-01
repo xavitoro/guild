@@ -4,6 +4,11 @@ name: Create a new project
 description: Bootstrap a brand-new project under Guild governance, from vision through an initial, verified,
   optionally-deployed skeleton.
 status: ready
+step_protocol:
+  on_step_entry: claim-ownership
+  on_step_exit: record-profile-knowledge
+  on_blocked_decision: request-human-decision
+  index: .guild/state/knowledge/ownership.yaml
 steps:
 - id: new-project-01-triage
   name: Triage the new-project request
@@ -210,6 +215,7 @@ steps:
   completion_criteria:
   - The environment is live with a documented rollback path.
   gates: []
+  on_return: If the deployment fails or regresses, the Cleric (cloud-devops-engineer) executes the documented rollback path with the rollback-deployment skill before any further step, and the run returns to the implementing profile with the failure evidence.
   optional: true
   condition: when this workflow includes provisioning a live environment
 - id: new-project-15-consolidate-knowledge
@@ -226,6 +232,7 @@ steps:
   - Every new memory entry cites verifiable evidence.
   gates: []
 failure_paths:
+- A deployment that fails or regresses is rolled back by the Cleric (cloud-devops-engineer) using the rollback-deployment skill and its documented rollback path; the change does not stay live while the cause is investigated.
 - If the scaffold fails verification, the workflow returns to scaffolding rather than proceeding to deployment.
 - If a required human approval is denied, the workflow stops before the gated action and the DM records why,
   naming the profile that stays blocked.

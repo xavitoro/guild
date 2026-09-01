@@ -51,6 +51,38 @@
       },
       "minItems": 1
     },
+    "step_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional. The ownership/knowledge protocol every step of this workflow follows, independent of which profile runs it: the responsible profile claims its area before the step's work and records what the step verified afterwards. Declared once per workflow rather than as extra steps, so it applies in every execution mode.",
+      "required": [
+        "on_step_entry",
+        "on_step_exit",
+        "on_blocked_decision"
+      ],
+      "properties": {
+        "on_step_entry": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical skill id the responsible profile runs before the step's own work."
+        },
+        "on_step_exit": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical skill id the responsible profile runs after the step's own work."
+        },
+        "index": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to the ownership map the orchestrator routes by."
+        },
+        "on_blocked_decision": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical skill id the responsible profile routes through when a step needs a decision no profile can make from the project itself. Declared per workflow so a blocked step reaches a person instead of stalling or being resolved by assumption."
+        }
+      }
+    },
     "failure_paths": {
       "type": "array",
       "items": {

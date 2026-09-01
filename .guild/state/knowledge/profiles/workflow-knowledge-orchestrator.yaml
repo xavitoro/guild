@@ -1,0 +1,123 @@
+# DM's own knowledge ledger. Written only by workflow-knowledge-orchestrator.
+schema: guild.profile-knowledge/v1
+profile: workflow-knowledge-orchestrator
+project: guild
+version: 2
+updated_at: "2026-09-01"
+updated_by: workflow-knowledge-orchestrator
+
+owned_areas:
+  - AREA-guild-spec
+  - AREA-schemas-and-templates
+  - AREA-agent-profiles
+  - AREA-project-planning
+  - AREA-project-knowledge
+
+entries:
+  - id: KN-workflow-knowledge-orchestrator-001
+    area: AREA-guild-spec
+    status: verified
+    statement: >
+      .guild/core/ is replaceable wholesale on a Guild upgrade and .guild/state/
+      is never touched by one. Anything that must survive an upgrade — knowledge,
+      planning, run history, ownership — therefore belongs under state/, and
+      installing Guild elsewhere copies only core/.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/state/knowledge/decisions/DEC-001-core-state-split.yaml
+    recorded_at: "2026-09-01"
+    promoted_to: MEM-008
+  - id: KN-workflow-knowledge-orchestrator-002
+    area: AREA-schemas-and-templates
+    status: verified
+    statement: >
+      Every artifact type Guild exchanges is real only once it has a JSON Schema
+      under .guild/core/schemas/ and a template beside it: validate_guild.py
+      validates each instance against the schema its own `schema:` field names,
+      so an artifact with no schema is silently unvalidated.
+    evidence:
+      - .guild/core/schemas/
+      - .guild/core/templates/
+      - .guild/core/evals/validate_guild.py
+    recorded_at: "2026-09-01"
+    promoted_to: MEM-003
+  - id: KN-workflow-knowledge-orchestrator-003
+    area: AREA-agent-profiles
+    status: verified
+    statement: >
+      A profile is its manifest.yaml; AGENT.md is a human-readable view that must
+      be updated with it. The alias is the name a person reads and the canonical
+      id the name a machine reads, and no artifact field ever stores an alias.
+    evidence:
+      - .guild/core/agents/
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/evals/check_alias_presence.py
+    recorded_at: "2026-09-01"
+    promoted_to: MEM-010
+  - id: KN-workflow-knowledge-orchestrator-004
+    area: AREA-project-planning
+    status: verified
+    statement: >
+      Milestones M1-M4 are complete and every work item WI-001 to WI-006 is
+      closed. Progress is computed from completed weighted work items in
+      project-plan.yaml, never estimated by a profile.
+    evidence:
+      - .guild/state/planning/project-plan.yaml
+      - .guild/state/planning/PROJECT_STATUS.md
+    recorded_at: "2026-09-01"
+  - id: KN-workflow-knowledge-orchestrator-005
+    area: AREA-project-knowledge
+    status: verified
+    statement: >
+      Canonical memory is deliberately small. A fact reaches
+      project-memory.yaml only as a memory proposal this profile accepts;
+      everything else stays in its owner's ledger, and the ownership map holds
+      only the pointers needed to reach an owner.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/skills/consolidate-knowledge/SKILL.yaml
+      - .guild/state/knowledge/ownership.yaml
+    recorded_at: "2026-09-01"
+
+open_questions:
+  - id: KNQ-workflow-knowledge-orchestrator-001
+    area: AREA-project-planning
+    question: >
+      The public product and protocol name has never been confirmed, though
+      "Guild" is load-bearing across every path and schema id.
+    blocked_on: human
+    raised_at: "2026-09-01"
+    status: answered
+    answer: >
+      Answered by the human through DR-001: "Guild" stays the public product and
+      protocol name. Recorded as DEC-005.
+    answered_at: "2026-09-01"
+    escalated_as: DR-001
+  - id: KNQ-workflow-knowledge-orchestrator-002
+    area: AREA-project-planning
+    question: >
+      The license this framework is published under is unconfirmed, which blocks
+      any external pilot.
+    blocked_on: human
+    raised_at: "2026-09-01"
+    status: answered
+    answer: >
+      Answered by the human through DR-002: MIT, as the existing LICENSE file already
+      states. The DM had recommended a permissive license with a patent grant; the
+      human chose the shorter form. Recorded as DEC-006.
+    answered_at: "2026-09-01"
+    escalated_as: DR-002
+  - id: KNQ-workflow-knowledge-orchestrator-003
+    area: AREA-project-planning
+    question: >
+      Whether the first public release includes a command-line interface is
+      unresolved, and it sets the scope of that release.
+    blocked_on: human
+    raised_at: "2026-09-01"
+    status: answered
+    answer: >
+      Answered by the human through DR-004: the first public release ships the
+      definitions and the adapter generator, without a command-line interface.
+      Recorded as DEC-008.
+    answered_at: "2026-09-01"
+    escalated_as: DR-004

@@ -1,0 +1,38 @@
+# Template for one profile's own knowledge ledger at
+# .guild/state/knowledge/profiles/<profile-id>.yaml.
+# Validates against .guild/core/schemas/profile-knowledge.schema.json
+#
+# Written only by the profile it belongs to, appended as that profile works.
+# Record what an interaction actually verified, with evidence — never private
+# reasoning, temporary logs, unsupported opinions, secrets or personal data
+# (GUILD_MASTER_SPEC.md section 7).
+schema: guild.profile-knowledge/v1
+profile: replace-with-profile-id     # must match the file name
+project: replace-with-project-id
+version: 1
+updated_at: "2026-08-04"
+updated_by: replace-with-profile-id  # must equal `profile`
+
+owned_areas:
+  - AREA-replace-with-slug
+
+entries:
+  - id: KN-replace-with-profile-id-001   # KN-<owning profile id>-<sequence>
+    area: AREA-replace-with-slug
+    status: verified                     # verified | unverified | superseded
+    statement: >
+      What this profile now knows about its area, stated so another profile
+      could act on it without re-deriving it.
+    evidence:
+      - Path or reference that anyone can check.
+    learned_from: replace-with-run-or-step-id   # optional
+    recorded_at: "2026-08-04"
+    promoted_to: MEM-000                 # optional; set by the orchestrator on consolidation
+
+open_questions:
+  - id: KNQ-replace-with-profile-id-001
+    area: AREA-replace-with-slug
+    question: What this profile could not resolve inside its own boundary.
+    blocked_on: replace-with-profile-id-or-human   # optional
+    raised_at: "2026-08-04"
+    status: open                         # open | answered | withdrawn

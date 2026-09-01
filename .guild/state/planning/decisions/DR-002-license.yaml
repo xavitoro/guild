@@ -1,0 +1,48 @@
+schema: guild.decision-request/v1
+id: DR-002
+question: >
+  Under what license is this framework published? The repository has a LICENSE
+  file but the project status has carried "License" as an unresolved decision
+  since the bootstrap, so what it should contain was never confirmed.
+raised_by: workflow-knowledge-orchestrator
+raised_at: "2026-09-01"
+area: AREA-project-planning
+source_question: KNQ-workflow-knowledge-orchestrator-002
+blocks:
+  - Any public release of this repository
+  - Installing Guild into a project outside this repository
+options:
+  - option: A
+    label: A permissive license with an explicit patent grant
+    consequence: >
+      Anyone may install Guild into their own repository and adapt the canonical
+      definitions; contributions and downstream use carry a clear patent position.
+  - option: B
+    label: A short permissive license without a patent grant
+    consequence: >
+      Simpler and shorter, same freedom to use and adapt, but no explicit patent
+      position for contributors or adopters.
+  - option: C
+    label: Keep it unpublished for now
+    consequence: >
+      No external adoption and no external pilot; the "pilot on a genuine external
+      project" work stays blocked.
+recommendation:
+  option: A
+  because: >
+    Guild is definitions and tooling meant to be copied into other people's
+    repositories, which is exactly the case a permissive license with a patent
+    grant covers; option C blocks the one piece of remaining roadmap work.
+default_if_unanswered:
+  option: C
+  in_force_from: Immediately — an unconfirmed license means the work cannot be published
+  revisit_when: Publication or an external pilot is next considered
+status: answered
+presented_at: "2026-09-01"
+answered_at: "2026-09-01"
+answered_by: human
+answer: B
+resulting_decision: DEC-006
+notes: >
+  This default is deliberately the uncomfortable one: silence here blocks
+  adoption rather than quietly granting rights nobody agreed to.

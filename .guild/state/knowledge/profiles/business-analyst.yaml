@@ -1,0 +1,72 @@
+# Fighter's own knowledge ledger. Written only by business-analyst.
+schema: guild.profile-knowledge/v1
+profile: business-analyst
+project: guild
+version: 1
+updated_at: "2026-09-01"
+updated_by: business-analyst
+
+owned_areas:
+  - AREA-skills-and-workflows
+
+entries:
+  - id: KN-business-analyst-001
+    area: AREA-skills-and-workflows
+    status: verified
+    statement: >
+      Every workflow step declares a responsible profile, an invoked skill, its
+      required input and expected output artifacts, preconditions, completion
+      criteria and gates; an optional step also carries an explicit condition, so
+      skipping it is a decision rather than an omission.
+    evidence:
+      - .guild/core/workflows/
+      - .guild/core/schemas/workflow-step.schema.json
+      - .guild/core/evals/check_workflow_refs.py
+    recorded_at: "2026-09-01"
+    promoted_to: MEM-005
+  - id: KN-business-analyst-002
+    area: AREA-skills-and-workflows
+    status: verified
+    statement: >
+      The ownership protocol is declared once per workflow as `step_protocol`
+      rather than as extra numbered steps. Declaring it per step would have
+      renumbered every graph and doubled their length; declaring it once makes it
+      apply to whichever profile runs a step, in all three execution modes.
+    evidence:
+      - .guild/core/schemas/workflow.schema.json
+      - .guild/core/workflows/add-feature/workflow.yaml
+      - .guild/core/workflows/EXECUTION_MODES.md
+    recorded_at: "2026-09-01"
+
+  - id: KN-business-analyst-003
+    area: AREA-skills-and-workflows
+    status: verified
+    statement: >
+      A skill with no workflow step that invokes it is a silent gap, not a
+      harmless spare part: rollback-deployment existed but no deployment step
+      routed into it. It is now reachable through the deploy step's on_return and
+      a declared failure path in the three workflows that deploy.
+    evidence:
+      - .guild/core/workflows/add-feature/workflow.yaml
+      - .guild/core/workflows/improve-product/workflow.yaml
+      - .guild/core/workflows/create-new-project/workflow.yaml
+      - .guild/state/knowledge/decisions/DEC-003-rollback-return-path.yaml
+    learned_from: WI-008
+    recorded_at: "2026-09-01"
+
+open_questions:
+  - id: KNQ-business-analyst-001
+    area: AREA-skills-and-workflows
+    question: >
+      The rollback-deployment skill is not invoked by any workflow step, so a
+      failed deployment has no declared return path into it. Should add-feature
+      and improve-product branch to it from their deployment steps?
+    blocked_on: workflow-knowledge-orchestrator
+    raised_at: "2026-09-01"
+    status: answered
+    answer: >
+      The DM decided it inside the roster rather than escalating: a failed or
+      regressed deployment routes into rollback-deployment through the deploy
+      step's on_return and a failure path, in add-feature, improve-product and
+      create-new-project. Recorded as DEC-003.
+    answered_at: "2026-09-01"

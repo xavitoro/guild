@@ -1,0 +1,180 @@
+# The DM's routing index: which profile owns which part of this repository,
+# and where that owner's accumulated knowledge lives. Pointers only — what an
+# owner knows is in its ledger, not here.
+schema: guild.ownership-map/v1
+project: guild
+version: 3
+updated_at: "2026-09-01"
+updated_by: workflow-knowledge-orchestrator
+
+areas:
+  - id: AREA-guild-spec
+    name: Guild master specification
+    boundary: >
+      The framework's own definition — design principles, roster, core concepts,
+      repository layout, knowledge and planning model, permission tiers and the
+      adapter model. Not the files that implement those rules; each of those has
+      its own area and owner.
+    owner_profile: workflow-knowledge-orchestrator
+    ledger: .guild/state/knowledge/profiles/workflow-knowledge-orchestrator.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/spec/
+    last_entry: KN-workflow-knowledge-orchestrator-001
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-schemas-and-templates
+      - AREA-agent-profiles
+      - AREA-policies-and-gates
+    status: active
+
+  - id: AREA-schemas-and-templates
+    name: Artifact schemas and templates
+    boundary: >
+      Every JSON Schema an artifact validates against and the illustrative
+      template beside it. Not the instances themselves, which belong to whichever
+      area produces them.
+    owner_profile: workflow-knowledge-orchestrator
+    ledger: .guild/state/knowledge/profiles/workflow-knowledge-orchestrator.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/schemas/
+      - .guild/core/templates/
+    last_entry: KN-workflow-knowledge-orchestrator-002
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-structural-validation
+      - AREA-guild-spec
+    status: active
+
+  - id: AREA-agent-profiles
+    name: Agent profile definitions
+    boundary: >
+      The fourteen canonical profiles — each manifest and its human-readable
+      AGENT.md view. Not the generated subagent files, which belong to the
+      adapter area.
+    owner_profile: workflow-knowledge-orchestrator
+    ledger: .guild/state/knowledge/profiles/workflow-knowledge-orchestrator.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/agents/
+    last_entry: KN-workflow-knowledge-orchestrator-003
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-skills-and-workflows
+      - AREA-provider-adapters
+    status: active
+
+  - id: AREA-skills-and-workflows
+    name: Skill catalogue and workflow graphs
+    boundary: >
+      The reusable skill manifests and the six canonical workflow definitions,
+      including step artifacts, gates, conditions and the step protocol. Not who
+      is allowed to approve a gate, which is policy.
+    owner_profile: business-analyst
+    ledger: .guild/state/knowledge/profiles/business-analyst.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/skills/
+      - .guild/core/workflows/
+    last_entry: KN-business-analyst-003
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-agent-profiles
+      - AREA-policies-and-gates
+    status: active
+
+  - id: AREA-provider-adapters
+    name: Provider adapters
+    boundary: >
+      The generator that derives provider-specific files from canonical sources,
+      everything it generates, and the installation steps. Not the canonical
+      definitions it reads.
+    owner_profile: product-software-engineer
+    ledger: .guild/state/knowledge/profiles/product-software-engineer.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/adapters/
+      - .agents/skills/
+      - .claude/agents/
+      - .claude/skills/
+      - .claude/settings.json
+    last_entry: KN-product-software-engineer-004
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-agent-profiles
+      - AREA-skills-and-workflows
+      - AREA-structural-validation
+    status: active
+
+  - id: AREA-structural-validation
+    name: Structural validation and fixtures
+    boundary: >
+      Every check under .guild/core/evals/ and what each one proves. Not the
+      definitions being checked, and not the judgement of product code quality in
+      a target project — that is this profile's work, not this repository's.
+    owner_profile: quality-assurance-engineer
+    ledger: .guild/state/knowledge/profiles/quality-assurance-engineer.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/evals/
+    last_entry: KN-quality-assurance-engineer-003
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-schemas-and-templates
+      - AREA-provider-adapters
+      - AREA-policies-and-gates
+    status: active
+
+  - id: AREA-policies-and-gates
+    name: Policies, permission tiers and approval gates
+    boundary: >
+      The capability tiers, the Red-tier action list requiring human approval,
+      the approval-request contract and the knowledge protocol rules. Not the
+      workflow steps that invoke them.
+    owner_profile: product-security-engineer
+    ledger: .guild/state/knowledge/profiles/product-security-engineer.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/core/policies/
+    last_entry: KN-product-security-engineer-002
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-guild-spec
+      - AREA-skills-and-workflows
+      - AREA-structural-validation
+    status: active
+
+  - id: AREA-project-planning
+    name: This project's planning state
+    boundary: >
+      Milestones, work items, status and open decisions for Guild's own
+      development. Not product priority for a target project.
+    owner_profile: workflow-knowledge-orchestrator
+    ledger: .guild/state/knowledge/profiles/workflow-knowledge-orchestrator.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/state/planning/
+    last_entry: KN-workflow-knowledge-orchestrator-004
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-project-knowledge
+    status: active
+
+  - id: AREA-project-knowledge
+    name: This project's knowledge state
+    boundary: >
+      Canonical project memory, decision records, this ownership map and the
+      profile ledgers as a structure. Not the content of another profile's
+      ledger, which only its owner writes.
+    owner_profile: workflow-knowledge-orchestrator
+    ledger: .guild/state/knowledge/profiles/workflow-knowledge-orchestrator.yaml
+    claimed_at: "2026-09-01"
+    paths:
+      - .guild/state/knowledge/
+    last_entry: KN-workflow-knowledge-orchestrator-005
+    last_entry_at: "2026-09-01"
+    related_areas:
+      - AREA-project-planning
+      - AREA-guild-spec
+    status: active

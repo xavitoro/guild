@@ -55,8 +55,9 @@
       "type": "array",
       "items": {
         "type": "string",
-        "minLength": 1
-      }
+        "pattern": "^DR-[0-9]{3}$"
+      },
+      "description": "Ids of open decision requests (guild.decision-request/v1). Free text is not accepted: an open decision that is only a sentence has no owner, no options, no default and no way to be closed."
     }
   }
 }

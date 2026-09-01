@@ -60,6 +60,16 @@ CAP_TOOLS = {
     "create_pull_request": ["Bash"],
     "consolidate_verified_memory": ["Edit", "Write"],
     "prioritize_backlog": ["Edit", "Write"],
+    # Writing this profile's own ownership claim and knowledge ledger under
+    # .guild/state/knowledge/ (GUILD_MASTER_SPEC.md section 7). This is why the
+    # QA and security profiles get Write despite owning no product code: a
+    # profile that cannot record what it learned cannot own an area. The
+    # boundary that keeps them out of product code is their manifest's
+    # forbidden_capabilities (edit_product_code, edit_code_in_branch), enforced
+    # by check_independent_gates.py — not the coarse tool grant.
+    "record_own_knowledge": ["Write"],
+    "maintain_ownership_map": ["Edit", "Write"],
+    "present_decision_request": ["Edit", "Write"],
 }
 TOOL_ORDER = ["Read", "Grep", "Glob", "Edit", "Write", "Bash"]
 
@@ -188,6 +198,29 @@ def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
         f"{', '.join(others)}. Never hand a person a bare canonical id, and never write an "
         f"alias into an artifact field. See .guild/core/spec/GUILD_MASTER_SPEC.md section 3.1."
     )
+    ledger_note = (
+        f"Before doing a step's work, claim the area of the project it touches (skill "
+        f"`claim-ownership`): confirm the area you already own in "
+        f".guild/state/knowledge/ownership.yaml, or propose one with an explicit boundary, and read "
+        f"your own ledger at .guild/state/knowledge/profiles/{agent['id']}.yaml for what you already "
+        f"know about it. Work that falls in another profile's area goes back to the DM to route — two "
+        f"owners for one part is a boundary error. After the work, append what the step actually "
+        f"verified to that same ledger with evidence (skill `record-profile-knowledge`), record what "
+        f"you could not resolve as an open question, and hand the DM the entry ids rather than a "
+        f"retelling. Write only your own ledger: never another profile's, and never the ownership map "
+        f"itself. See .guild/core/spec/GUILD_MASTER_SPEC.md section 7."
+    )
+    decision_note = (
+        "When you hit something you cannot decide from the project itself — scope, naming, an "
+        "ambiguity nobody owns — do not guess and do not leave it as a note. Raise it as an open "
+        "question in your ledger blocked on the human, and hand it to the DM to put to a person as a "
+        "decision request (skill `request-human-decision`): the question in plain terms, what it "
+        "blocks, at least two options with consequences, your own recommendation, and the default "
+        "that applies if nobody answers. Never act on a default the human has not been shown, and "
+        "never let a run close with a decision it needed still unasked. Red-tier actions are not "
+        "decision requests: they block on an explicit human approval and never carry a default. See "
+        ".guild/core/spec/GUILD_MASTER_SPEC.md section 11.2."
+    )
     gates_note = (
         "This profile can never approve its own QA or security result. Every Red-tier action "
         "(merge to a protected branch, production deployment, destructive migration, production "
@@ -212,6 +245,14 @@ You are the {agent['alias']} — {agent['name']} (Guild profile `{agent['id']}`)
 ## Speaking to the human
 
 {alias_note}
+
+## Owning your part and recording what you learn
+
+{ledger_note}
+
+## When you cannot decide it yourself
+
+{decision_note}
 
 ## Responsibilities
 
@@ -263,6 +304,31 @@ def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: d
         "and 11.",
         width=88,
     )
+    ownership = textwrap.fill(
+        "Every part of the project has exactly one owning profile. A profile claims its area "
+        "before working (`claim-ownership`) and appends what each interaction verified to its own "
+        "ledger at `.guild/state/knowledge/profiles/<profile-id>.yaml` afterwards "
+        "(`record-profile-knowledge`) — with evidence, never private reasoning. A profile writes "
+        "only its own ledger. The orchestrator maintains `.guild/state/knowledge/ownership.yaml`, "
+        "an index of area, owner, ledger location, newest entry and related areas: it routes by "
+        "those pointers instead of holding what every owner knows. Handoffs carry ledger entry "
+        "ids, not copies. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 7.",
+        width=88,
+        break_on_hyphens=False,
+    )
+    decisions = textwrap.fill(
+        "A decision no profile can make from the project itself — scope, naming, licensing, an "
+        "ambiguity nobody owns — is never resolved by assumption and never left as a note. It becomes "
+        "a decision request in `.guild/state/planning/decisions/` stating what it blocks, at least two "
+        "options with consequences, a recommendation, and the default that applies if nobody answers; "
+        "the orchestrator presents it to a person and records the answer, or an explicit deferral. A "
+        "default never applies before the human has been shown it, every open decision is listed by id "
+        "in `PROJECT_STATUS.md`, and no run closes with a decision it needed left unasked. Red-tier "
+        "actions are approvals, not decision requests: they block outright and never carry a default. "
+        "See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.2.",
+        width=88,
+        break_on_hyphens=False,
+    )
     return f"""## Guild adapter (generated — do not edit this section by hand)
 
 This project has [Guild](.guild/core/spec/GUILD_MASTER_SPEC.md) installed. `.guild/core/`
@@ -280,6 +346,14 @@ upgrades.
 ### Addressing the human
 
 {addressing}
+
+### Ownership and knowledge
+
+{ownership}
+
+### Pending decisions
+
+{decisions}
 
 Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 
@@ -306,6 +380,20 @@ Druid, Bard, Ranger, Artificer, Wizard, Warlock, Barbarian, Rogue, Cleric, Sorce
 Monk) with its canonical id in parentheses on first mention, and names the other profiles
 the same way; canonical ids alone stay in artifact fields, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
+
+Each subagent owns a declared part of the project and keeps its own knowledge ledger
+under `.guild/state/knowledge/profiles/<profile-id>.yaml`, claiming its area before a
+step and recording what the step verified afterwards. The DM
+(`workflow-knowledge-orchestrator`) maintains `.guild/state/knowledge/ownership.yaml`
+as an index of area, owner and ledger location, and routes by those pointers — which
+is what lets a subagent hand back entry ids instead of its whole reasoning, and keeps
+the orchestrator's context bounded as the project grows.
+
+Nothing is left pending by default: what a subagent cannot decide from the project
+itself becomes a decision request under `.guild/state/planning/decisions/` — options,
+a recommendation and the default that applies if nobody answers — which the DM puts to
+a person and records. A default never applies before the human has seen it, and
+Red-tier actions remain approvals that block outright.
 
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).

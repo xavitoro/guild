@@ -49,6 +49,8 @@ OTHER_CHECKS = [
     "check_independent_gates.py",
     "check_language_neutrality.py",
     "check_alias_presence.py",
+    "check_ownership_model.py",
+    "check_human_in_the_loop.py",
 ]
 
 
