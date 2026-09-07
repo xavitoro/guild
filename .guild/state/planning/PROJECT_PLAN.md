@@ -29,3 +29,21 @@ Create a portable framework that gives AI agents consistent roles, workflows, ar
      wholesale on upgrade) and `state/` (this project's own knowledge,
      planning and run history, never touched by an upgrade) — see
      `.guild/state/knowledge/decisions/DEC-001-core-state-split.yaml`
+
+5. **M5 — Distributed ownership and knowledge** (complete)
+   - One owning profile per part of the project
+   - A knowledge ledger per profile, indexed by the DM as pointers
+     — see `.guild/state/knowledge/decisions/DEC-002-distributed-ownership.yaml`
+
+6. **M6 — Nothing stays pending** (complete)
+   - Approvals and decisions separated
+   - Every decision the roster cannot make becomes a decision request with
+     options, a recommendation and a default, presented to a person — see
+     `.guild/state/knowledge/decisions/DEC-004-decision-requests.yaml`
+
+7. **M7 — Every question is answerable** (complete)
+   - Whatever is left for a person to resolve is asked as enumerated options
+     and always carries a free-text answer, so an answer nobody enumerated is
+     still an answer rather than silence — see
+     `.guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml`
+

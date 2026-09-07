@@ -84,6 +84,16 @@
   never applies before it has been shown, deferral is an explicit answer, and
   Red-tier actions stay approvals that block outright. See DEC-004 and
   `check_human_in_the_loop.py`.
+- Reaching a person was not the same as being answerable by one: `answer_options`
+  was a required field of both request kinds that nothing anywhere defined, and
+  the spec's only rendered approval line offered a closed list. Whatever is left
+  for a person to resolve is now asked as enumerated options that always carry a
+  free-text `other` — because the options are written by the profile that could
+  not decide, and without a way out of them a person whose answer is not listed
+  can only stay silent, which just re-runs that profile's default. A free-text
+  answer is recorded verbatim and closes a decision request
+  (`answer_kind: free_text`); on an approval it is recorded but never approves.
+  See DEC-009 and section 11.3 of the master spec.
 
 ## Decisions
 
@@ -96,6 +106,8 @@
   CLI (DEC-008).
 - Each decision keeps the revisit trigger its request declared; none is pending,
   none is sealed.
+- Every question put to a person is enumerated and always offers a free-text
+  answer; free text never counts as a Red-tier approval (DEC-009).
 
 ## Current constraints
 

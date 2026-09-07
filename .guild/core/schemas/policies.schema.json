@@ -38,11 +38,12 @@
     "human_interaction": {
       "type": "object",
       "additionalProperties": false,
-      "description": "How Guild addresses the human, per GUILD_MASTER_SPEC.md section 3.1.",
+      "description": "How Guild addresses the human, per GUILD_MASTER_SPEC.md sections 3.1 and 11.3.",
       "required": [
         "address_profiles_by",
         "approval_request_required_fields",
-        "decision_request_required_fields"
+        "decision_request_required_fields",
+        "answer_options"
       ],
       "properties": {
         "address_profiles_by": {
@@ -70,6 +71,61 @@
             "minLength": 1
           },
           "description": "Fields a decision request must state before a human is asked to answer it."
+        },
+        "answer_options": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "How anything left for a person to resolve may be answered. Every question Guild puts to a human is enumerated and always carries a free-text option, so an answer the asking profile did not think of is still an answer rather than silence. See GUILD_MASTER_SPEC.md section 11.3.",
+          "required": [
+            "always_enumerated",
+            "always_offer_free_text",
+            "free_text_option_key",
+            "free_text_is_recorded_verbatim",
+            "free_text_never_counts_as_approval",
+            "approval_request_answers",
+            "decision_request_answers"
+          ],
+          "properties": {
+            "always_enumerated": {
+              "const": true,
+              "description": "A question reaches a person as listed options, never as open prose."
+            },
+            "always_offer_free_text": {
+              "const": true,
+              "description": "The listed options are never the only way to answer."
+            },
+            "free_text_option_key": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The key under which an answer in the human's own words is offered."
+            },
+            "free_text_is_recorded_verbatim": {
+              "const": true,
+              "description": "A free-text answer is recorded as given, never mapped onto the nearest listed option."
+            },
+            "free_text_never_counts_as_approval": {
+              "const": true,
+              "description": "On a Red-tier approval only an explicit approval approves; free text is recorded and leaves the action blocked."
+            },
+            "approval_request_answers": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": "The answers a Red-tier approval request offers, including the free-text key."
+            },
+            "decision_request_answers": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": "The answers a decision request offers, including 'defer' and the free-text key."
+            }
+          }
         }
       }
     },

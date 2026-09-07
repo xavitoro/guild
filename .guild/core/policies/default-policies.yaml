@@ -14,6 +14,7 @@ principles:
   - orchestration_routes_by_pointer_not_by_omniscience
   - no_decision_is_left_pending_without_an_owner_a_default_and_a_person_asked
   - ambiguity_is_escalated_to_a_person_never_resolved_by_assumption
+  - every_question_to_a_person_is_asked_as_options_plus_a_free_text_answer
 
 approval_required:
   - merge_protected_branch
@@ -49,6 +50,25 @@ human_interaction:
     - what_brings_it_back
     - answer_options
 
+  # Anything left for a person to resolve is asked as enumerated options and always
+  # carries a free-text option, so an answer that is not on the list is still an
+  # answer. See GUILD_MASTER_SPEC.md section 11.3.
+  answer_options:
+    always_enumerated: true
+    always_offer_free_text: true
+    free_text_option_key: other
+    free_text_is_recorded_verbatim: true
+    free_text_never_counts_as_approval: true
+    approval_request_answers:
+      - approve
+      - reject
+      - request_changes
+      - other                  # free text; never read as approval
+    decision_request_answers:
+      - one_key_per_stated_option
+      - defer
+      - other                  # free text; closes the request as given
+
 # How ownership and knowledge are distributed. See GUILD_MASTER_SPEC.md section 7.
 knowledge_protocol:
   ownership_map: .guild/state/knowledge/ownership.yaml
@@ -83,3 +103,5 @@ decision_protocol:
     - a_run_does_not_close_with_a_decision_it_needs_unpresented
     - every_open_decision_is_listed_by_id_in_project_status
     - red_tier_actions_are_approvals_not_decision_requests_and_never_carry_a_default
+    - every_request_is_answerable_as_a_listed_option_or_as_a_free_text_answer
+    - a_free_text_answer_is_recorded_verbatim_and_closes_the_request

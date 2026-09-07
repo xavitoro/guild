@@ -103,8 +103,11 @@ if nobody answers; the orchestrator presents it to a person and records the answ
 an explicit deferral. A default never applies before the human has been shown it, every
 open decision is listed by id in `PROJECT_STATUS.md`, and no run closes with a decision
 it needed left unasked. Red-tier actions are approvals, not decision requests: they
-block outright and never carry a default. See `.guild/core/spec/GUILD_MASTER_SPEC.md`
-section 11.2.
+block outright and never carry a default. Whatever reaches a person is asked as
+enumerated options and always offers an answer in their own words — the options were
+written by the profile that could not decide, so they are never the limit of what may be
+answered; a free-text answer is recorded verbatim, and on an approval it never counts as
+approval. See `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 11.2 and 11.3.
 
 Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 

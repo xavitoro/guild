@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: business-analyst
 project: guild
-version: 1
-updated_at: "2026-09-01"
+version: 2
+updated_at: "2026-09-07"
 updated_by: business-analyst
 
 owned_areas:
@@ -53,6 +53,20 @@ entries:
       - .guild/state/knowledge/decisions/DEC-003-rollback-return-path.yaml
     learned_from: WI-008
     recorded_at: "2026-09-01"
+  - id: KN-business-analyst-004
+    area: AREA-skills-and-workflows
+    status: verified
+    statement: >
+      The two skills a person actually answers now state how:
+      request-human-decision offers the option keys, defer and a free-text
+      other, and records a free-text answer verbatim as answer_kind free_text;
+      grant-human-approval states that free text is recorded but never
+      approves. No workflow step changed — the shape of a question is a
+      property of the request, not of the graph.
+    evidence:
+      - .guild/core/skills/request-human-decision/SKILL.yaml
+      - .guild/core/skills/grant-human-approval/SKILL.yaml
+    recorded_at: "2026-09-07"
 
 open_questions:
   - id: KNQ-business-analyst-001

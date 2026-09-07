@@ -1,7 +1,7 @@
 schema: guild.project-memory/v1
 project: guild
-version: 12
-updated_at: 2026-09-01
+version: 13
+updated_at: 2026-09-07
 updated_by: workflow-knowledge-orchestrator
 
 entries:
@@ -288,3 +288,37 @@ entries:
       - .guild/state/knowledge/decisions/DEC-007-adapter-distribution.yaml
       - .guild/state/knowledge/decisions/DEC-008-no-cli-in-first-release.yaml
       - LICENSE
+  - id: MEM-014
+    category: architecture
+    status: verified
+    statement: >
+      WI-009 is complete, closing milestone M7. DEC-004 made every pending
+      decision reach a person but not in a fixed answerable shape:
+      human_interaction in default-policies.yaml required an answer_options
+      field of both request kinds while nothing defined what it meant, and the
+      only rendered approval line in the spec offered a closed list. Section
+      11.3 of the master spec now fixes the shape of every question Guild puts
+      to a person — enumerated options, always plus a free-text option
+      (approve / reject / request changes / other; one key per stated option /
+      defer / other) — declared as human_interaction.answer_options in
+      default-policies.yaml, required by policies.schema.json with
+      always_enumerated, always_offer_free_text and
+      free_text_is_recorded_verbatim fixed true, and as the design principle
+      every_question_to_a_person_is_asked_as_options_plus_a_free_text_answer.
+      The reason the free-text option is mandatory is that the option set is
+      written by the profile that could not decide: without a way out of it, a
+      person whose answer is not listed can only stay silent, and silence
+      re-runs the default that profile already chose. A free-text answer is
+      therefore a real answer — recorded verbatim on a decision request through
+      the new answer_kind field (option | free_text | deferral) and closing it,
+      recorded in the gate result's notes on an approval request and never
+      counting as approval, so a Red-tier action stays blocked unless someone
+      explicitly approves. Enforced by check_human_in_the_loop.py, which now
+      also fails a spec whose rendered answer lines offer no free-text option.
+      DR-001 to DR-004 were backfilled as answer_kind: option.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/policies/default-policies.yaml
+      - .guild/core/schemas/decision-request.schema.json
+      - .guild/core/evals/check_human_in_the_loop.py
+      - .guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml

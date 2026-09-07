@@ -1,18 +1,18 @@
 schema: guild.project-plan/v1
 project: guild
-version: 9
-updated_at: 2026-09-01
+version: 10
+updated_at: 2026-09-07
 updated_by: workflow-knowledge-orchestrator
 
 vision:
   summary: Create a portable framework that gives AI agents consistent roles, workflows and safeguards for software development.
 
 current_focus:
-  milestone: M6
+  milestone: M7
   objective: >
-    M1–M6 are complete. Remaining work is human-owned: answering decision
-    requests DR-001 to DR-004, and piloting Guild on a genuine external
-    project.
+    M1–M7 are complete. Every question Guild puts to a person is now enumerated
+    and always carries a free-text answer. Remaining work is human-owned:
+    piloting Guild on a genuine external project.
   status: completed
 
 milestones:
@@ -45,6 +45,11 @@ milestones:
     status: completed
     weight: 2
     depends_on: [M5]
+  - id: M7
+    name: Every question is answerable
+    status: completed
+    weight: 1
+    depends_on: [M6]
 
 work_items:
   - id: WI-001
@@ -102,3 +107,10 @@ work_items:
     assigned_profile: workflow-knowledge-orchestrator
     depends_on: [WI-007]
     weight: 2
+  - id: WI-009
+    title: Ask whatever is left for a person as options plus a free-text answer
+    status: completed
+    milestone: M7
+    assigned_profile: workflow-knowledge-orchestrator
+    depends_on: [WI-008]
+    weight: 1

@@ -1,0 +1,62 @@
+schema: guild.decision/v1
+id: DEC-009
+title: Whatever is left for a person to resolve is asked as options plus a free-text answer
+status: accepted
+context: >
+  DEC-004 made every pending decision reach a person, but not in a fixed
+  answerable shape. The gap was visible in this repository: human_interaction in
+  default-policies.yaml listed answer_options as a required field of both an
+  approval request and a decision request, and nothing anywhere defined what
+  answer_options meant — no schema, no skill step, no section of the master spec.
+  The only concrete rendering was one illustrative line per request shape in the
+  spec, and the approval one offered a closed list. Nothing obliged a question to
+  be enumerated at all, and nothing obliged it to leave a way out of the
+  enumeration. That matters because the option set is written by the profile that
+  could not decide: it is the best that profile could enumerate, not the set of
+  answers that exist. Without a free-text option, a person whose answer is not on
+  the list can only stay silent — and silence re-runs the default the profile had
+  already chosen, which is indistinguishable from never having asked.
+decision: >
+  Section 11.3 of GUILD_MASTER_SPEC.md now fixes the shape of every question
+  Guild puts to a person: enumerated options, always plus a free-text option. An
+  approval request offers approve / reject / request changes / other; a decision
+  request offers one key per stated option / defer / other. A question rendered
+  as prose, a note or an open-ended "what would you like to do?" is not a Guild
+  question, and the DM returns it to the asking profile. The contract is declared
+  as human_interaction.answer_options in default-policies.yaml — required by
+  policies.schema.json, with always_enumerated, always_offer_free_text and
+  free_text_is_recorded_verbatim fixed true — and as design principle
+  every_question_to_a_person_is_asked_as_options_plus_a_free_text_answer. A
+  free-text answer is a real answer: on a decision request it is recorded verbatim
+  with the new answer_kind field (option | free_text | deferral) and closes the
+  request; on an approval request it is recorded in the gate result's notes and
+  never counts as approval, so a Red-tier action stays blocked unless someone
+  explicitly approves it.
+consequences: >
+  answer_options is no longer an undefined word in the policies. The two
+  human-facing skills say how to answer — request-human-decision offers the way
+  out of its own option list, grant-human-approval states that free text never
+  approves. decision-request.schema.json gained answer_kind, and the four answered
+  requests DR-001 to DR-004 were backfilled as answer_kind: option; DR-002 is the
+  case that motivates the distinction, since the human answered against the DM's
+  recommendation and a future answer of that kind may not be on the list at all.
+  check_human_in_the_loop.py enforces the canonical half (the policy contract, the
+  schema's ability to record a free-text answer, both skills, and both rendered
+  shapes in the spec carrying a free-text option) and, where state exists, that no
+  closed request hides how it was answered. The Codex and Claude Code adapters for
+  both skills were regenerated.
+
+  Two sub-choices were put to the human and answered on 2026-09-07. A Red-tier
+  approval deliberately does not offer 'defer': not approving already leaves the
+  action blocked, so a deferral would add nothing and could be mistaken for a
+  default, which approvals never have. And since Guild's core stays
+  provider-neutral, 11.3 fixes the shape of a question but not its rendering —
+  the Claude Code adapter layer now requires it: generate_adapters.py instructs
+  the DM's subagent, and the CLAUDE.md managed block, to present a decision
+  request with the AskUserQuestion tool, whose automatic "Other" choice is
+  exactly the free-text answer 11.3 requires. Red-tier approvals are excluded
+  from that rendering and stay explicit approval requests.
+decided_by: human
+decided_at: "2026-09-07"
+related_work_items:
+  - WI-009

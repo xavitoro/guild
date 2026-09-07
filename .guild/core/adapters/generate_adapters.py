@@ -218,9 +218,19 @@ def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
         "blocks, at least two options with consequences, your own recommendation, and the default "
         "that applies if nobody answers. Never act on a default the human has not been shown, and "
         "never let a run close with a decision it needed still unasked. Red-tier actions are not "
-        "decision requests: they block on an explicit human approval and never carry a default. See "
-        ".guild/core/spec/GUILD_MASTER_SPEC.md section 11.2."
+        "decision requests: they block on an explicit human approval and never carry a default. Your "
+        "options are only what you could enumerate, so the request always also offers the person an "
+        "answer in their own words: record a free-text answer verbatim rather than mapping it onto "
+        "the nearest option. See .guild/core/spec/GUILD_MASTER_SPEC.md sections 11.2 and 11.3."
     )
+    if agent["id"] == "workflow-knowledge-orchestrator":
+        decision_note += (
+            " You are the only profile that presents a request. In Claude Code, present it with the "
+            "AskUserQuestion tool — one option per stated option plus `defer`, whose automatic "
+            "\"Other\" choice is the free-text answer section 11.3 requires — and lead with your "
+            "recommendation. A Red-tier approval is not asked this way: it stays an explicit "
+            "approval request, and only an explicit approval approves."
+        )
     gates_note = (
         "This profile can never approve its own QA or security result. Every Red-tier action "
         "(merge to a protected branch, production deployment, destructive migration, production "
@@ -325,7 +335,11 @@ def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: d
         "default never applies before the human has been shown it, every open decision is listed by id "
         "in `PROJECT_STATUS.md`, and no run closes with a decision it needed left unasked. Red-tier "
         "actions are approvals, not decision requests: they block outright and never carry a default. "
-        "See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.2.",
+        "Whatever reaches a person is asked as enumerated options and always offers an answer in "
+        "their own words — the options were written by the profile that could not decide, so they "
+        "are never the limit of what may be answered; a free-text answer is recorded verbatim, and "
+        "on an approval it never counts as approval. "
+        "See `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 11.2 and 11.3.",
         width=88,
         break_on_hyphens=False,
     )
@@ -394,6 +408,15 @@ itself becomes a decision request under `.guild/state/planning/decisions/` — o
 a recommendation and the default that applies if nobody answers — which the DM puts to
 a person and records. A default never applies before the human has seen it, and
 Red-tier actions remain approvals that block outright.
+
+Whatever is put to a person is asked as enumerated options and always offers an answer
+in their own words (`other`), because the options are only what the asking subagent could
+enumerate: without a way out of them, a person whose answer is not listed can only stay
+silent, and silence just re-runs the default. A free-text answer is recorded verbatim and
+closes a decision request; on a Red-tier approval it is recorded but never approves. The DM
+presents a decision request with the `AskUserQuestion` tool — one option per stated option
+plus `defer`, and its automatic "Other" choice as the free-text answer. Red-tier approvals
+stay explicit approval requests. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.3.
 
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).

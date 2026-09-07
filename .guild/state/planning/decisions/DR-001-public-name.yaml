@@ -37,4 +37,5 @@ presented_at: "2026-09-01"
 answered_at: "2026-09-01"
 answered_by: human
 answer: A
+answer_kind: option
 resulting_decision: DEC-005

@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: quality-assurance-engineer
 project: guild
-version: 1
-updated_at: "2026-09-01"
+version: 2
+updated_at: "2026-09-07"
 updated_by: quality-assurance-engineer
 
 owned_areas:
@@ -47,3 +47,17 @@ entries:
       - .guild/core/evals/pilot_install_check.py
       - .guild/state/knowledge/project-memory.yaml
     recorded_at: "2026-09-01"
+  - id: KN-quality-assurance-engineer-004
+    area: AREA-structural-validation
+    status: verified
+    statement: >
+      check_human_in_the_loop.py now also proves a question is answerable, not
+      just asked: the policy contract with a free-text key in both answer sets,
+      answer_kind able to record free_text, both human-facing skills offering an
+      answer in the person's own words, and every rendered 'Your answer' line in
+      the master spec carrying a free-text option. Its state half fails a closed
+      request that hides how it was answered.
+    evidence:
+      - .guild/core/evals/check_human_in_the_loop.py
+      - .guild/state/planning/decisions/
+    recorded_at: "2026-09-07"

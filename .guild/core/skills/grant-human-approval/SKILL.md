@@ -17,6 +17,7 @@ the human
 - An approval request in the canonical format, naming the asking profile (the DM) and the profile blocked on the answer, each by alias and canonical id
 - Description of the Red-tier action, its policy key and its context
 - Gate results and artifacts that back the request
+- The answer options the request offers, including the free-text one
 
 ## Outputs
 
@@ -27,7 +28,8 @@ the human
 - Check that the request states every field required by human_interaction.approval_request_required_fields in .guild/core/policies/default-policies.yaml, including which profile is asking and which profile is blocked, named by alias.
 - Return an incomplete or unattributed request to the DM instead of answering it.
 - Review the proposed action, its evidence and the stated effect of approving and of rejecting.
-- Approve, reject or request changes explicitly, addressing the asking profile by alias.
+- Answer with one of the options the request offers — approve, reject, request changes — or in your own words as `other`, addressing the asking profile by alias.
+- A free-text answer is recorded verbatim in the gate result's notes and never counts as approval: the gate reaches `pass` only on an explicit approval, and anything else leaves the Red-tier action blocked.
 - Record the decision as a gate result whose requested_by names the requesting profile's canonical id, before the action proceeds.
 
 ## Request format
@@ -35,4 +37,5 @@ the human
 The DM renders the request; `GUILD_MASTER_SPEC.md` section 11, "Approval request format",
 defines its canonical shape. Profiles appear by alias — `Artificer
 (product-software-engineer)`, `Cleric (cloud-devops-engineer)` — so the human always knows
-who is asking and whose work the answer releases.
+who is asking and whose work the answer releases. Section 11.3 fixes how it may be
+answered: the listed options, always plus a free-text `other`.

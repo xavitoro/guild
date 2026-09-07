@@ -555,6 +555,9 @@ alias. It must state:
 3. **What evidence backs it** — the gate results already recorded and by whom (the
    Barbarian's QA gate, the Rogue's security gate), and the artifacts under review.
 4. **What approving causes, and what rejecting causes.**
+5. **How to answer** — the answer options themselves, always including a free-text one
+   (section 11.3). A free-text answer to an approval is recorded verbatim and never
+   read as approval: only an explicit approval approves.
 
 Canonical shape of the rendered request (the recorded artifact remains a `gate-result`,
 which stores canonical IDs, not aliases):
@@ -568,7 +571,8 @@ which stores canonical IDs, not aliases):
     On approve    The Artificer's change merges; any deployment still needs the
                   separate deploy_production approval before the Cleric proceeds.
     On reject     The workflow stops at this step and the DM records the rejection.
-    Your answer   approve / reject / request changes
+    Your answer   approve / reject / request changes / other — answer in your own
+                  words; anything that is not an explicit approval does not approve
 
 A request that does not name the asking and blocked profiles is incomplete: the human
 returns it to the DM rather than answering it. The same shape applies to any non-gated
@@ -617,6 +621,10 @@ Rules:
   sweeps open questions before consolidating a run.
 - **A decision request with no recommendation is incomplete** — it pushes the analysis
   back onto the person it is asking.
+- **Every request is answerable as one of its listed options or in the person's own
+  words.** The options were written by the profile that could not decide; if none of
+  them is the right answer, the person must be able to say so without the request
+  becoming unanswerable. See section 11.3.
 - **Red-tier actions are never decision requests.** They block, per section 11.
 
 Canonical shape of the rendered request:
@@ -632,7 +640,42 @@ Canonical shape of the rendered request:
                    adds a maintained surface before anyone has asked for one.
     If unanswered  B applies from the first public release, and the DM asks again the
                    first time a user reports the copy-and-run step as a problem.
-    Your answer    A / B / defer / other
+    Your answer    A / B / defer / other — answer in your own words; an answer
+                   outside the options is recorded as given and closes the request
+
+### 11.3 Every question to a person is asked as options plus free text
+
+Anything left for a person to resolve — a Red-tier approval, a decision request, or any
+other question a profile cannot settle from the project itself — reaches them as a
+question with **enumerated answer options** and, always, a **free-text option**. A
+question rendered as prose, a note, a TODO or an open-ended "what would you like to do?"
+is not a Guild question: the DM returns it to the asking profile rather than putting it
+to a person.
+
+`human_interaction.answer_options` in `policies/default-policies.yaml` fixes the shape:
+
+| | Approval request | Decision request |
+|---|---|---|
+| Enumerated options | `approve`, `reject`, `request changes` | one key per stated option (`A`, `B`, …), plus `defer` |
+| Free-text option | `other`, recorded verbatim | `other`, recorded verbatim |
+| What a free-text answer may do | explain, constrain or ask for changes | answer the question outside the listed options |
+| What it may never do | stand in for the explicit approval a Red-tier action requires | be treated as no answer, and leave the default to apply |
+
+The free-text option is not a courtesy. The option set is written by the profile that
+could not decide; it is the best it could enumerate, not the set of answers that exist.
+Without a way out of that list, a person whose answer is not on it can only stay silent
+— and silence resolves nothing, it just re-runs the default the profile already chose.
+That is the same failure as never asking.
+
+So a free-text answer is a real answer:
+
+- On a **decision request** it is recorded verbatim in `answer` with
+  `answer_kind: free_text`, closes the request, and becomes a decision record like any
+  other. If it invalidates the options themselves, the DM says so in the record rather
+  than forcing it into the nearest option key.
+- On an **approval request** it is recorded verbatim in the gate result's `notes`. The
+  gate reaches `pass` only on an explicit approval; a free-text answer that is not one
+  leaves the Red-tier action blocked, per section 11.1.
 
 ## 12. Adapter model
 

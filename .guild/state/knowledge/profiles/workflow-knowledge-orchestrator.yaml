@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: workflow-knowledge-orchestrator
 project: guild
-version: 2
-updated_at: "2026-09-01"
+version: 3
+updated_at: "2026-09-07"
 updated_by: workflow-knowledge-orchestrator
 
 owned_areas:
@@ -78,6 +78,34 @@ entries:
       - .guild/core/skills/consolidate-knowledge/SKILL.yaml
       - .guild/state/knowledge/ownership.yaml
     recorded_at: "2026-09-01"
+  - id: KN-workflow-knowledge-orchestrator-006
+    area: AREA-guild-spec
+    status: verified
+    statement: >
+      Section 11.3 fixes the shape of every question Guild puts to a person:
+      enumerated options, always plus a free-text option. The reason it is
+      mandatory rather than courteous is that the option set is written by the
+      profile that could not decide — without a way out of it, a person whose
+      answer is not listed can only stay silent, and silence re-runs that
+      profile's own default, which is the same outcome as never asking.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml
+    recorded_at: "2026-09-07"
+  - id: KN-workflow-knowledge-orchestrator-007
+    area: AREA-schemas-and-templates
+    status: verified
+    statement: >
+      decision-request.schema.json records how a request was answered through
+      answer_kind (option | free_text | deferral), so a free-text answer cannot
+      be quietly filed as a listed option; policies.schema.json now requires the
+      human_interaction.answer_options contract, with always_enumerated,
+      always_offer_free_text and free_text_is_recorded_verbatim fixed to true.
+    evidence:
+      - .guild/core/schemas/decision-request.schema.json
+      - .guild/core/schemas/policies.schema.json
+      - .guild/core/templates/decision-request.template.yaml
+    recorded_at: "2026-09-07"
 
 open_questions:
   - id: KNQ-workflow-knowledge-orchestrator-001

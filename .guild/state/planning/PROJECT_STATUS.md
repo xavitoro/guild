@@ -1,13 +1,14 @@
 # Guild Project Status
 
-Updated: 1 September 2026
+Updated: 7 September 2026
 
 ## Overall status
 
 Milestones M1 (declarative foundation), M2 (provider adapters), M3
 (evaluation and first real-project pilot), M4 (repository layout
 hardening), M5 (distributed ownership and knowledge) and M6 (nothing stays
-pending) are all complete. WI-001 through WI-008 are done. `.guild/` splits into `core/` (the Guild
+pending) and M7 (every question is answerable) are all complete. WI-001 through
+WI-009 are done. `.guild/` splits into `core/` (the Guild
 framework, replaceable wholesale on upgrade) and `state/` (this project's
 own knowledge, planning and run history, never touched by an upgrade) —
 see `.guild/state/knowledge/decisions/DEC-001-core-state-split.yaml`. Every
@@ -19,7 +20,12 @@ owner knows — see
 `.guild/state/knowledge/OWNERSHIP.md`. Every decision no profile can make from
 the project itself is now a decision request with options, a recommendation and
 a stated default, presented to a person and listed by id below — see
-`.guild/state/knowledge/decisions/DEC-004-decision-requests.yaml`.
+`.guild/state/knowledge/decisions/DEC-004-decision-requests.yaml`. And whatever
+is left for a person to resolve now reaches them in a fixed answerable shape:
+enumerated options, always plus a free-text answer, because the option set is
+written by the profile that could not decide and is never the limit of what may
+be answered — see
+`.guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml`.
 
 ## Current objective
 
@@ -60,4 +66,6 @@ None. Every decision request raised in this project has been answered.
   rather than escalated, because it was answerable from the repository itself.
 
 Each `DR-*` file keeps its revisit trigger: none of these is sealed, but none of
-them is pending either.
+them is pending either. Each also now records `answer_kind`, which distinguishes
+an answer chosen from the options from one given in the human's own words; all
+four were option answers.

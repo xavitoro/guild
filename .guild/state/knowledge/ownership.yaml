@@ -3,8 +3,8 @@
 # owner knows is in its ledger, not here.
 schema: guild.ownership-map/v1
 project: guild
-version: 3
-updated_at: "2026-09-01"
+version: 4
+updated_at: "2026-09-07"
 updated_by: workflow-knowledge-orchestrator
 
 areas:
@@ -20,8 +20,8 @@ areas:
     claimed_at: "2026-09-01"
     paths:
       - .guild/core/spec/
-    last_entry: KN-workflow-knowledge-orchestrator-001
-    last_entry_at: "2026-09-01"
+    last_entry: KN-workflow-knowledge-orchestrator-006
+    last_entry_at: "2026-09-07"
     related_areas:
       - AREA-schemas-and-templates
       - AREA-agent-profiles
@@ -40,8 +40,8 @@ areas:
     paths:
       - .guild/core/schemas/
       - .guild/core/templates/
-    last_entry: KN-workflow-knowledge-orchestrator-002
-    last_entry_at: "2026-09-01"
+    last_entry: KN-workflow-knowledge-orchestrator-007
+    last_entry_at: "2026-09-07"
     related_areas:
       - AREA-structural-validation
       - AREA-guild-spec
@@ -77,8 +77,8 @@ areas:
     paths:
       - .guild/core/skills/
       - .guild/core/workflows/
-    last_entry: KN-business-analyst-003
-    last_entry_at: "2026-09-01"
+    last_entry: KN-business-analyst-004
+    last_entry_at: "2026-09-07"
     related_areas:
       - AREA-agent-profiles
       - AREA-policies-and-gates
@@ -99,8 +99,8 @@ areas:
       - .claude/agents/
       - .claude/skills/
       - .claude/settings.json
-    last_entry: KN-product-software-engineer-004
-    last_entry_at: "2026-09-01"
+    last_entry: KN-product-software-engineer-005
+    last_entry_at: "2026-09-07"
     related_areas:
       - AREA-agent-profiles
       - AREA-skills-and-workflows
@@ -118,8 +118,8 @@ areas:
     claimed_at: "2026-09-01"
     paths:
       - .guild/core/evals/
-    last_entry: KN-quality-assurance-engineer-003
-    last_entry_at: "2026-09-01"
+    last_entry: KN-quality-assurance-engineer-004
+    last_entry_at: "2026-09-07"
     related_areas:
       - AREA-schemas-and-templates
       - AREA-provider-adapters
@@ -137,8 +137,8 @@ areas:
     claimed_at: "2026-09-01"
     paths:
       - .guild/core/policies/
-    last_entry: KN-product-security-engineer-002
-    last_entry_at: "2026-09-01"
+    last_entry: KN-product-security-engineer-003
+    last_entry_at: "2026-09-07"
     related_areas:
       - AREA-guild-spec
       - AREA-skills-and-workflows

@@ -5,7 +5,10 @@
 # Every field below exists to stop a decision from stalling silently: options
 # so the human can choose, a recommendation so the analysis is not pushed back
 # onto them, and a default so work continues if they do not answer — a default
-# they were shown before it applied.
+# they were shown before it applied. The rendered request always offers the
+# listed option keys, `defer`, and `other` for an answer in the human's own
+# words: the options below are the best a profile could enumerate, not the
+# limit of what may be answered (GUILD_MASTER_SPEC.md section 11.3).
 schema: guild.decision-request/v1
 id: DR-000
 question: >
@@ -16,7 +19,7 @@ area: AREA-replace-with-slug          # optional
 source_question: KNQ-replace-with-profile-id-001   # optional
 blocks:
   - replace-with-profile-id-work-item-or-run
-options:
+options:                              # rendered as A / B / defer / other
   - option: A
     label: First option
     consequence: What choosing this causes, in the project's own terms.
@@ -34,6 +37,7 @@ status: open                          # open | presented | answered | deferred |
 presented_at: "2026-09-01"            # set when the human has actually seen it
 answered_at: "2026-09-01"
 answered_by: human
-answer: A
+answer: A                             # an option key, or the human's own words verbatim
+answer_kind: option                   # option | free_text | deferral — required once answered or deferred
 resulting_decision: DEC-000
 notes: ""

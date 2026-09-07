@@ -36,6 +36,15 @@ a recommendation and the default that applies if nobody answers — which the DM
 a person and records. A default never applies before the human has seen it, and
 Red-tier actions remain approvals that block outright.
 
+Whatever is put to a person is asked as enumerated options and always offers an answer
+in their own words (`other`), because the options are only what the asking subagent could
+enumerate: without a way out of them, a person whose answer is not listed can only stay
+silent, and silence just re-runs the default. A free-text answer is recorded verbatim and
+closes a decision request; on a Red-tier approval it is recorded but never approves. The DM
+presents a decision request with the `AskUserQuestion` tool — one option per stated option
+plus `defer`, and its automatic "Other" choice as the free-text answer. Red-tier approvals
+stay explicit approval requests. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.3.
+
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).
 `.claude/settings.json` additionally denies one deterministic, policy-derived pattern

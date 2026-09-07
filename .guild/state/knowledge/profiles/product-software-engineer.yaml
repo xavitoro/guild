@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: product-software-engineer
 project: guild
-version: 2
-updated_at: "2026-09-01"
+version: 3
+updated_at: "2026-09-07"
 updated_by: product-software-engineer
 
 owned_areas:
@@ -66,6 +66,28 @@ entries:
       - .guild/core/adapters/INSTALL.md
     learned_from: DR-003
     recorded_at: "2026-09-01"
+  - id: KN-product-software-engineer-005
+    area: AREA-provider-adapters
+    status: verified
+    statement: >
+      The generated Codex and Claude Code skills for request-human-decision and
+      grant-human-approval were regenerated from their canonical manifests after
+      the free-text answer contract landed; the drift check in
+      smoke_test_add_feature.py caught them stale first, which is the intended
+      behaviour of generating adapters at install time (DEC-007). The managed
+      blocks generate_adapters.py appends to AGENTS.md and CLAUDE.md also state
+      the rule now, so the first surface any assistant reads says how a question
+      may be answered. Provider-neutrality is kept by splitting the two: the spec
+      fixes the shape of a question, the adapter fixes its rendering — only the
+      Claude Code layer names AskUserQuestion, and only in the DM's subagent,
+      since no other profile presents a request.
+    evidence:
+      - .claude/skills/request-human-decision/SKILL.md
+      - .agents/skills/grant-human-approval/SKILL.md
+      - .guild/core/adapters/generate_adapters.py
+      - .claude/agents/workflow-knowledge-orchestrator.md
+      - .guild/core/evals/smoke_test_add_feature.py
+    recorded_at: "2026-09-07"
 
 open_questions:
   - id: KNQ-product-software-engineer-001

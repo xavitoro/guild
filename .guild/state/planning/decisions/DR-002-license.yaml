@@ -42,6 +42,7 @@ presented_at: "2026-09-01"
 answered_at: "2026-09-01"
 answered_by: human
 answer: B
+answer_kind: option
 resulting_decision: DEC-006
 notes: >
   This default is deliberately the uncomfortable one: silence here blocks

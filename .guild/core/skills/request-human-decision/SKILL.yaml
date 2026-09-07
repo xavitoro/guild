@@ -20,6 +20,10 @@ steps:
 - 'State the question in the project''s own terms, so it can be answered without reading the repository,
   and name what it blocks: profiles, work items or runs.'
 - Give at least two options, each with the consequence of choosing it.
+- 'Offer the answer as explicit options plus a way out of them: every option key, ''defer'', and
+  ''other'' for an answer in the human''s own words. The options are the best the asking profile
+  could enumerate, not the limit of what may be answered — without the free-text option, a person
+  whose answer is not on the list can only stay silent, and the default applies as if nobody asked.'
 - Give the asking profile's own recommendation and why. A request without one pushes the analysis back
   onto the person being asked.
 - 'State the default that applies if nobody answers: which option, from when, and what brings the question
@@ -27,7 +31,9 @@ steps:
 - Present it to the human with every field in human_interaction.decision_request_required_fields, naming
   the asking and blocked profiles by alias, and mark the request presented.
 - Never apply a default the human has not been shown. An unshown default is a profile deciding by assumption.
-- Record the answer as a decision record linked to the request in both directions, or record an explicit
-  deferral naming the default now in force — silence is not a deferral.
+- 'Record the answer as a decision record linked to the request in both directions, or record an
+  explicit deferral naming the default now in force — silence is not a deferral. Record a free-text
+  answer verbatim with answer_kind: free_text, never mapped onto the nearest option key, and say in
+  the record when it invalidates the options themselves.'
 - Remove the request from the project status's open decisions only once it is answered, deferred with its
   default recorded, or withdrawn.

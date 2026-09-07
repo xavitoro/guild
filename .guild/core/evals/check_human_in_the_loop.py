@@ -19,15 +19,24 @@ Canonical half — always runs, over .guild/core/ only:
   5. Every workflow declares step_protocol.on_blocked_decision, and every
      profile escalates what it cannot decide to a person instead of
      assuming — with only the orchestrator allowed to present a request.
+  6. Whatever is put to a person is answerable as options plus free text
+     (section 11.3): the policies declare an answer_options contract with a
+     free-text key in both the approval and the decision answer sets, the
+     schema can record that a human answered outside the options, the two
+     human-facing skills say so, and both rendered shapes in the spec offer
+     the free-text answer rather than only a closed list.
 
 State half — runs only when .guild/state/planning/decisions/ exists:
-  6. Every id in project-status open_decisions resolves to a request that is
+  7. Every id in project-status open_decisions resolves to a request that is
      genuinely still open, and every still-open request is listed there and
      named in PROJECT_STATUS.md, where a person will actually see it.
-  7. Every request is internally coherent: real asking profile, recommended
+  8. Every request is internally coherent: real asking profile, recommended
      and default options that exist, presented/answered/deferred states
      carrying the fields those states require.
-  8. Every ledger open question blocked on the human has been escalated into
+  9. Every closed request records how it was answered — answer_kind option,
+     free_text or deferral — and an option answer names an option that
+     exists, so a free-text answer is never quietly filed as a listed one.
+ 10. Every ledger open question blocked on the human has been escalated into
      a request — nothing blocked on a person stays a private note.
 
 Usage:
@@ -63,7 +72,12 @@ REQUIRED_RULES = {
     "a_run_does_not_close_with_a_decision_it_needs_unpresented",
     "every_open_decision_is_listed_by_id_in_project_status",
     "red_tier_actions_are_approvals_not_decision_requests_and_never_carry_a_default",
+    "every_request_is_answerable_as_a_listed_option_or_as_a_free_text_answer",
+    "a_free_text_answer_is_recorded_verbatim_and_closes_the_request",
 }
+FREE_TEXT_PRINCIPLE = "every_question_to_a_person_is_asked_as_options_plus_a_free_text_answer"
+APPROVAL_SKILL = "grant-human-approval"
+SPEC_PATH = CORE_ROOT / "spec" / "GUILD_MASTER_SPEC.md"
 REQUIRED_REQUEST_FIELDS = {
     "options_with_consequences",
     "recommendation",
@@ -72,6 +86,8 @@ REQUIRED_REQUEST_FIELDS = {
     "what_brings_it_back",
 }
 OPEN_STATES = {"open", "presented", "deferred"}
+CLOSED_STATES = {"answered", "deferred"}
+ANSWER_KINDS = {"option", "free_text", "deferral"}
 
 
 def load_all(base: Path, glob_pattern: str) -> dict[str, dict]:
@@ -113,6 +129,7 @@ def main() -> int:
     for principle in (
         "no_decision_is_left_pending_without_an_owner_a_default_and_a_person_asked",
         "ambiguity_is_escalated_to_a_person_never_resolved_by_assumption",
+        FREE_TEXT_PRINCIPLE,
     ):
         if principle not in policies.get("principles", []):
             errors.append(f"[policy] default-policies.yaml does not declare principle '{principle}'")
@@ -181,6 +198,68 @@ def main() -> int:
             errors.append(f"[presentation-not-exclusive] {profile_id}: does not forbid "
                           f"'present_decision_request'")
 
+    # 6. whatever is put to a person is answerable as options plus free text
+    answer_options = policies.get("human_interaction", {}).get("answer_options")
+    if not answer_options:
+        errors.append("[policy] human_interaction declares no answer_options block, so nothing "
+                      "fixes how a question put to a person may be answered")
+        answer_options = {}
+    else:
+        free_text_key = answer_options.get("free_text_option_key")
+        if not free_text_key:
+            errors.append("[closed-question] human_interaction.answer_options names no "
+                          "free_text_option_key")
+        for flag in ("always_enumerated", "always_offer_free_text",
+                     "free_text_is_recorded_verbatim"):
+            if answer_options.get(flag) is not True:
+                errors.append(f"[closed-question] human_interaction.answer_options.{flag} is not true")
+        if answer_options.get("free_text_never_counts_as_approval") is not True:
+            errors.append("[free-text-approves] human_interaction.answer_options does not declare "
+                          "that a free-text answer never counts as approval — a Red-tier action "
+                          "could then be approved by something that is not an approval")
+        for key in ("approval_request_answers", "decision_request_answers"):
+            answers = answer_options.get(key) or []
+            if not answers:
+                errors.append(f"[closed-question] human_interaction.answer_options.{key} is empty")
+            elif free_text_key and free_text_key not in answers:
+                errors.append(f"[closed-question] human_interaction.answer_options.{key} does not "
+                              f"offer the free-text answer '{free_text_key}', so a person whose "
+                              f"answer is not on the list cannot give it")
+        deferral = answer_options.get("decision_request_answers") or []
+        if deferral and "defer" not in deferral:
+            errors.append("[closed-question] human_interaction.answer_options.decision_request_answers "
+                          "does not offer 'defer', so an explicit deferral is not an available answer")
+
+    kind = schema.get("properties", {}).get("answer_kind", {})
+    if "free_text" not in kind.get("enum", []):
+        errors.append("[unrecordable-free-text] decision-request.schema.json: answer_kind cannot record "
+                      "'free_text', so an answer outside the options can only be filed as an option")
+
+    for skill_id, tokens in ((DECISION_SKILL, ("free-text", "own words")),
+                             (APPROVAL_SKILL, ("free-text", "own words"))):
+        target = skills.get(skill_id)
+        if not target:
+            errors.append(f"[missing-skill] '{skill_id}' does not exist under .guild/core/skills/")
+            continue
+        body = " ".join(target["steps"] + target["inputs"] + target["outputs"]).lower()
+        if not any(token in body for token in tokens):
+            errors.append(f"[closed-question] {skill_id}: never offers the human an answer in their "
+                          f"own words, so the listed options are the only way to answer")
+
+    spec = SPEC_PATH.read_text(encoding="utf-8") if SPEC_PATH.exists() else ""
+    if spec:
+        rendered = [line for line in spec.splitlines() if line.strip().startswith("Your answer")]
+        if len(rendered) < 2:
+            errors.append("[spec] GUILD_MASTER_SPEC.md renders fewer than two 'Your answer' lines — "
+                          "the approval and decision request shapes should both show one")
+        for line in rendered:
+            if "other" not in line:
+                errors.append(f"[closed-question] GUILD_MASTER_SPEC.md renders a closed answer line "
+                              f"with no free-text option: '{line.strip()}'")
+        if "### 11.3" not in spec:
+            errors.append("[spec] GUILD_MASTER_SPEC.md has no section 11.3 defining how a question "
+                          "reaches a person as options plus free text")
+
     # ---------------------------------------------------------------- state
     state_checked = REQUESTS_DIR.exists()
     requests: dict[str, dict] = {}
@@ -204,11 +283,23 @@ def main() -> int:
             if status in ("presented", "answered", "deferred") and not data.get("presented_at"):
                 errors.append(f"[unshown] {rel}: status '{status}' but it was never presented — a "
                               f"default may not apply before the human has been shown it")
-            if status in ("answered", "deferred"):
+            if status in CLOSED_STATES:
                 for field in ("answered_at", "answer", "answered_by"):
                     if not data.get(field):
                         errors.append(f"[silent-close] {rel}: status '{status}' without '{field}' — "
                                       f"silence is not an answer")
+                answer_kind = data.get("answer_kind")
+                if answer_kind not in ANSWER_KINDS:
+                    errors.append(f"[unrecorded-answer-kind] {rel}: status '{status}' without a valid "
+                                  f"answer_kind — an answer given in the human's own words would be "
+                                  f"indistinguishable from one of the listed options")
+                elif answer_kind == "option" and data.get("answer") not in option_ids:
+                    errors.append(f"[mislabelled-answer] {rel}: answer_kind 'option' but the answer "
+                                  f"'{data.get('answer')}' is not one of its options — a free-text "
+                                  f"answer is recorded verbatim as answer_kind 'free_text'")
+                elif answer_kind == "deferral" and status != "deferred":
+                    errors.append(f"[mislabelled-answer] {rel}: answer_kind 'deferral' but status is "
+                                  f"'{status}'")
 
         status_yaml = yaml.safe_load(STATUS_YAML.read_text(encoding="utf-8")) if STATUS_YAML.exists() else {}
         listed = list(status_yaml.get("open_decisions", []))
@@ -256,7 +347,8 @@ def main() -> int:
         print(f"\nFAILED with {len(errors)} error(s).")
         return 1
 
-    print("\nOK: nothing is pending without an owner, a default and a person actually asked.")
+    print("\nOK: nothing is pending without an owner, a default and a person actually asked, "
+          "and every question reaches them as options plus an answer in their own words.")
     return 0
 
 
