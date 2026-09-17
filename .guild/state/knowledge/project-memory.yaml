@@ -1,7 +1,7 @@
 schema: guild.project-memory/v1
 project: guild
-version: 13
-updated_at: 2026-09-07
+version: 14
+updated_at: 2026-09-17
 updated_by: workflow-knowledge-orchestrator
 
 entries:
@@ -322,3 +322,34 @@ entries:
       - .guild/core/schemas/decision-request.schema.json
       - .guild/core/evals/check_human_in_the_loop.py
       - .guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml
+  - id: MEM-015
+    category: architecture
+    status: verified
+    statement: >
+      WI-010 is complete, closing milestone M8. DEC-004 and DEC-009 covered what
+      nobody could decide; nothing covered what a profile already knew should be
+      done and was not doing. Section 8.1 of the master spec now makes that a
+      planning artifact: a change found outside the current step's scope, which
+      blocks nothing, becomes a work item with kind technical_debt and a TD- id
+      before the step closes — stating who found it, where, and with what
+      evidence, and assigned to the profile that owns the area it was found in.
+      It is recorded unscheduled, and only the product owner may schedule it,
+      through schedule_technical_debt, which every other profile forbids;
+      unscheduled debt is excluded from milestone progress, so recording
+      something never commits the project to doing it. Work that blocks the
+      current step is not debt — it is part of the task, an escalation, or a
+      decision request. The rule is carried by the skill record-technical-debt,
+      applicable to all fourteen profiles and declared per workflow as
+      step_protocol.on_found_work, and enforced by check_found_work.py, whose
+      state half also fails a TODO or FIXME note anywhere under .guild/state/.
+      Replacing the plan schema's inline work-item copy with a reference to
+      task.schema.json closed an existing drift: the copy had never gained the
+      description field. The rule was applied to its own construction — TD-001
+      to TD-004 were found while building M8 and recorded rather than fixed.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/policies/default-policies.yaml
+      - .guild/core/schemas/task.schema.json
+      - .guild/core/skills/record-technical-debt/SKILL.yaml
+      - .guild/core/evals/check_found_work.py
+      - .guild/state/knowledge/decisions/DEC-010-found-work-becomes-a-task.yaml

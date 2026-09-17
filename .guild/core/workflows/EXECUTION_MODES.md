@@ -38,8 +38,10 @@ step schemas are declarative rather than expressed as code.
 
 Every workflow declares a `step_protocol`: each step is bracketed by
 `claim-ownership` before its own work and `record-profile-knowledge` after it
-(`GUILD_MASTER_SPEC.md` section 7). It is declared once per workflow rather than
-as extra steps precisely so it survives every execution mode:
+(`GUILD_MASTER_SPEC.md` section 7), routes what it cannot decide through
+`request-human-decision` (section 11.2), and records what it found but is not
+going to do through `record-technical-debt` (section 8.1). It is declared once per
+workflow rather than as extra steps precisely so it survives every execution mode:
 
 - **Mode 1** — the single assistant claims the area at each role switch, works as
   that profile, then appends what the step verified to *that profile's* ledger
@@ -57,7 +59,10 @@ as extra steps precisely so it survives every execution mode:
 
 In all three, the ownership map is the only thing the orchestrator needs to route
 any part of the project to its owner, and no profile writes another profile's
-ledger.
+ledger. And in all three, a change a profile noticed but did not make
+leaves the step as a `technical_debt` work item in the plan — with an origin, its
+evidence and the owner of the area it was found in — rather than as a note in
+whatever the mode happens to use for prose.
 
 ## Speaking to the human
 

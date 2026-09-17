@@ -14,3 +14,8 @@ steps:
     completed_at: ""
     artifacts_produced: []
     gate_results: []
+
+# Ids of the technical-debt items this run recorded, if it found any
+# (GUILD_MASTER_SPEC.md section 8.1). A run does not close with a change a
+# profile noticed left as a note.
+discovered_work: []

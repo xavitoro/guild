@@ -54,11 +54,12 @@
     "step_protocol": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Optional. The ownership/knowledge protocol every step of this workflow follows, independent of which profile runs it: the responsible profile claims its area before the step's work and records what the step verified afterwards. Declared once per workflow rather than as extra steps, so it applies in every execution mode.",
+      "description": "Optional. The ownership/knowledge protocol every step of this workflow follows, independent of which profile runs it: the responsible profile claims its area before the step's work, records what the step verified afterwards, routes what it cannot decide to a person, and records what it found but did not do as work in the plan. Declared once per workflow rather than as extra steps, so it applies in every execution mode.",
       "required": [
         "on_step_entry",
         "on_step_exit",
-        "on_blocked_decision"
+        "on_blocked_decision",
+        "on_found_work"
       ],
       "properties": {
         "on_step_entry": {
@@ -80,6 +81,11 @@
           "type": "string",
           "minLength": 1,
           "description": "Canonical skill id the responsible profile routes through when a step needs a decision no profile can make from the project itself. Declared per workflow so a blocked step reaches a person instead of stalling or being resolved by assumption."
+        },
+        "on_found_work": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical skill id the responsible profile runs when a step finds a change it is not going to make and which blocks nothing. Declared per workflow so found work becomes an owned work item in the plan instead of a TODO comment or a line in a summary. See GUILD_MASTER_SPEC.md section 8.1."
         }
       }
     },

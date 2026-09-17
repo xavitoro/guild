@@ -13,6 +13,9 @@ responsibilities:
   the DM (workflow-knowledge-orchestrator) for the ownership map.
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml,
   with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
+- Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt
+  work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the
+  area it was found in — never as a comment, a note or a line in a summary.
 non_responsibilities:
 - Redefining product scope (Product Manager / Paladin) or requirements (Business Analyst / Fighter).
 - Implementing fixes itself — it may reject a change but hands it back to the implementing profile.
@@ -29,6 +32,7 @@ allowed_capabilities:
 - run_non_destructive_checks
 - run_changes_in_ephemeral_environment
 - record_own_knowledge
+- record_technical_debt
 forbidden_capabilities:
 - edit_product_code
 - approve_security_result
@@ -45,6 +49,7 @@ forbidden_capabilities:
 - maintain_ownership_map
 - consolidate_verified_memory
 - present_decision_request
+- schedule_technical_debt
 quality_gates:
 - Every acceptance criterion has an explicit verification outcome before the gate is marked pass.
 - No step starts without a claimed area, and no step ends without either a ledger entry or an explicit

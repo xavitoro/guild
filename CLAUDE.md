@@ -45,6 +45,16 @@ presents a decision request with the `AskUserQuestion` tool — one option per s
 plus `defer`, and its automatic "Other" choice as the free-text answer. Red-tier approvals
 stay explicit approval requests. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.3.
 
+Nothing a subagent finds is dropped either: a change it notices while doing something
+else, which blocks nothing and which it is not going to make, becomes a work item in
+`.guild/state/planning/project-plan.yaml` with `kind: technical_debt`, an origin naming
+who found it and with what evidence, and the owner of the area it was found in as its
+assignee — recorded unscheduled, listed by id in `PROJECT_STATUS.md`, and scheduled only
+by the Paladin (`product-owner`). It never stays a `TODO` comment or a line in a summary,
+and recording it never turns into doing it. Something that blocks the step is not debt:
+it is part of the task, an escalation, or a decision request. See
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 8.1.
+
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).
 `.claude/settings.json` additionally denies one deterministic, policy-derived pattern

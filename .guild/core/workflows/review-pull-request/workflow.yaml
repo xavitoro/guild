@@ -9,6 +9,7 @@ step_protocol:
   on_step_entry: claim-ownership
   on_step_exit: record-profile-knowledge
   on_blocked_decision: request-human-decision
+  on_found_work: record-technical-debt
   index: .guild/state/knowledge/ownership.yaml
 steps:
 - id: review-pr-01-triage

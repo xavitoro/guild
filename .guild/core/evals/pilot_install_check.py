@@ -51,6 +51,7 @@ OTHER_CHECKS = [
     "check_alias_presence.py",
     "check_ownership_model.py",
     "check_human_in_the_loop.py",
+    "check_found_work.py",
 ]
 
 

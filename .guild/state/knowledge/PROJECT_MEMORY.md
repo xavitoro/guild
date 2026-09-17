@@ -94,6 +94,17 @@
   answer is recorded verbatim and closes a decision request
   (`answer_kind: free_text`); on an approval it is recorded but never approves.
   See DEC-009 and section 11.3 of the master spec.
+- The opposite case had no home: a change a profile noticed while doing
+  something else, which blocked nothing and which it was not going to make,
+  could only become a `TODO` comment or a line in a summary. Such a change is
+  now a work item in the plan with `kind: technical_debt` and a `TD-` id,
+  recorded before the step that found it closes — stating who found it, where,
+  and with what evidence, assigned to the owner of the area it was found in, and
+  unscheduled until the Paladin (`product-owner`) gives it a milestone, so
+  recording something never commits the project to doing it and never enlarges
+  the current step. Work that blocks the step is not debt: it is part of the
+  task, an escalation, or a decision request. See DEC-010, section 8.1 of the
+  master spec and `check_found_work.py`.
 
 ## Decisions
 
@@ -108,6 +119,10 @@
   none is sealed.
 - Every question put to a person is enumerated and always offers a free-text
   answer; free text never counts as a Red-tier approval (DEC-009).
+- Work a profile finds but does not do is recorded as an owned, evidenced
+  technical-debt item in the plan, unscheduled until the product owner
+  prioritizes it; recording is open to every profile, scheduling is not
+  (DEC-010).
 
 ## Current constraints
 

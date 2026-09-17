@@ -132,59 +132,9 @@
     "work_items": {
       "type": "array",
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "title",
-          "status",
-          "milestone",
-          "assigned_profile",
-          "weight"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "pattern": "^[A-Z]+-[0-9]+$"
-          },
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "proposed",
-              "planned",
-              "ready",
-              "in_progress",
-              "blocked",
-              "in_review",
-              "completed",
-              "cancelled"
-            ]
-          },
-          "milestone": {
-            "type": "string",
-            "minLength": 1
-          },
-          "assigned_profile": {
-            "type": "string",
-            "minLength": 1
-          },
-          "depends_on": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "weight": {
-            "type": "number",
-            "exclusiveMinimum": 0
-          }
-        }
-      }
+        "$ref": "https://schemas.guild.dev/task/v1"
+      },
+      "description": "Every work item in the plan, planned or found. A technical_debt item is work a profile found and did not do (GUILD_MASTER_SPEC.md section 8.1); it carries no milestone until the product owner schedules it, and is excluded from milestone progress until then."
     }
   }
 }

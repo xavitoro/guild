@@ -216,6 +216,65 @@
           }
         }
       }
+    },
+    "found_work_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How a change a profile finds while doing something else, which it is not going to make now and which blocks nothing, becomes a technical-debt work item in the plan instead of a note, per GUILD_MASTER_SPEC.md section 8.1.",
+      "required": [
+        "plan_file",
+        "status_field",
+        "item_kind",
+        "id_series",
+        "recorded_by",
+        "assigned_to",
+        "scheduled_by",
+        "rules"
+      ],
+      "properties": {
+        "plan_file": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Plan file found work is appended to as a work item."
+        },
+        "status_field": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Field of the project status listing open technical-debt items by id."
+        },
+        "item_kind": {
+          "const": "technical_debt",
+          "description": "The task kind found work is recorded as."
+        },
+        "id_series": {
+          "type": "string",
+          "pattern": "^[A-Z]+$",
+          "description": "Id prefix of the found-work series, e.g. TD."
+        },
+        "recorded_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Who may record found work. Any profile may: the one that found it is the one that knows the evidence."
+        },
+        "assigned_to": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Who a found item is assigned to \u2014 the owner of the area it was found in, so found work never lands on a communal pile."
+        },
+        "scheduled_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id allowed to schedule found work into a milestone. Recording is open to every profile; prioritizing is not."
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     }
   }
 }

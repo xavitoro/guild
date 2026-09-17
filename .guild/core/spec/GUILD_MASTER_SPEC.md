@@ -31,6 +31,7 @@ Guild defines how agents collaborate. It does not own the target project and doe
 11. **Upgradeable core, persistent state** — `.guild/core/` is the Guild framework itself and can be replaced wholesale when Guild improves; `.guild/state/` is a project's own knowledge, planning and run history and is never overwritten by a core upgrade.
 12. **Distributed ownership, indexed coordination** — every part of a project has exactly one owning profile, which accumulates that part's knowledge in its own ledger. The orchestrator holds an index of who owns what and where their knowledge lives, not the knowledge itself: it connects pieces by pointer, and is never the bottleneck that must know everything.
 13. **Nothing stays pending** — a decision no profile can make from the project itself is put to a person, with options, a recommendation and a stated default; it is never resolved by assumption, never applied as a silent default, and never left as an unanswered note. Deferring is an answer a person gives, not something that happens by itself.
+14. **Nothing found is dropped** — a change a profile finds while doing something else, which it is not going to make now and which blocks nothing, becomes a technical-debt work item in the plan before the step closes: with an owner, an origin and evidence, unscheduled until the Paladin prioritizes it. It is never a `TODO` comment, a note in a ledger or a line in a summary.
 
 ## 3. D&D mnemonic roster
 
@@ -438,6 +439,86 @@ Vision
 → Workflow steps
 ```
 
+### 8.1 Found work becomes a task, never a note
+
+A profile working on one thing constantly sees another: a duplicated helper, a
+missing test, a schema that drifted from the template beside it, a dependency
+nobody has upgraded. Almost none of it blocks what the profile is doing, and
+that is exactly why it disappears — into a `TODO` comment, a sentence in a
+handoff, a paragraph of a final summary nobody reads twice.
+
+Guild does not allow that. Work a profile finds but does not do becomes a
+**technical-debt work item in the project plan**, recorded before the step it
+was found in closes.
+
+What counts as found work:
+
+- It is a **change to the project**, not a question. A question nobody can
+  answer from the project itself is a decision request (section 11.2); found
+  work is something a profile already knows should be done.
+- It is **outside the current step's scope**. Work inside the scope is simply
+  done, not recorded.
+- It **does not block the current step**. Something that blocks is not debt: it
+  is either part of the task, an escalation to the area's owner, or a decision
+  request.
+
+The recording rules:
+
+1. The finding profile appends a work item to
+   `.guild/state/planning/project-plan.yaml` with `kind: technical_debt`, an id
+   in the `TD-` series, and an `origin` stating who found it, in which run,
+   step or work item, and the evidence a reader can check — the same evidence
+   standard as a ledger entry (section 7.2).
+2. The item is assigned to the **profile that owns the area it was found in**,
+   read from the ownership map (section 7.1). Found work arrives with an owner,
+   never on a communal pile.
+3. The item is recorded **unscheduled**: `status: proposed` and no milestone.
+   Recording found work never authorizes doing it, and never silently enlarges
+   the current run.
+4. **Only the Paladin (`product-owner`) schedules it** — assigning a milestone
+   and moving it beyond `proposed` — because scheduling is prioritization, and
+   prioritization is that profile's boundary. A profile that scheduled its own
+   findings would be setting the project's priorities from inside whatever it
+   happened to be doing.
+5. Unscheduled debt is **excluded from milestone progress** until it is
+   scheduled. Weighted progress measures committed work; found work is not
+   committed work until someone commits to it.
+6. **Every open technical-debt item appears by id** in the project status, the
+   same way an open decision does, so found work is something a person can read
+   in one place rather than something scattered across ledgers and comments.
+7. **A run does not close leaving found work unrecorded.** The DM sweeps for it
+   when consolidating a run, exactly as it sweeps for unpresented decisions.
+8. A `TODO`/`FIXME` comment, a ledger note or a line in a handoff is **not** a
+   record. The ledger entry that observed the problem and the work item that
+   will fix it are different artifacts with different lifetimes: the entry says
+   what is true, the item says what will change.
+
+Canonical shape of a found work item:
+
+```yaml
+- id: TD-001
+  title: Replace the duplicated work-item shape in project-plan.schema.json
+  kind: technical_debt
+  status: proposed          # unscheduled: no milestone until the Paladin gives it one
+  assigned_profile: workflow-knowledge-orchestrator   # the owner of the area it was found in
+  weight: 1
+  description: >
+    The schema restates the task shape instead of referencing it, so the two
+    definitions can drift apart silently.
+  origin:
+    discovered_by: product-software-engineer
+    discovered_in: RUN-ADD-FEATURE-014 / add-feature-07-implement-backend
+    evidence:
+      - .guild/core/schemas/project-plan.schema.json
+      - .guild/core/schemas/task.schema.json
+    recorded_at: "2026-09-17"
+```
+
+This is the planning counterpart of section 11.2. A decision nobody can make
+reaches a person; a change nobody is making right now reaches the plan. Between
+them, the two rules close the ways in which something a profile already noticed
+can quietly stop existing.
+
 ## 9. Initial workflows
 
 The first release must define:
@@ -626,6 +707,10 @@ Rules:
   them is the right answer, the person must be able to say so without the request
   becoming unanswerable. See section 11.3.
 - **Red-tier actions are never decision requests.** They block, per section 11.
+- **Work a profile found is not a decision request either.** A change nobody is
+  making right now, which blocks nothing, is a technical-debt work item in the plan,
+  per section 8.1. A decision request is for a question that cannot be answered from
+  the project; found work is an answer nobody has acted on yet.
 
 Canonical shape of the rendered request:
 
@@ -748,3 +833,7 @@ The foundation is complete when:
     actually asked: every open question blocked on the human is a decision request
     with options, a recommendation and a default, listed by id in the project
     status (section 11.2).
+14. No change a profile found is left as a note: non-blocking work discovered
+    during a step is a technical-debt work item in the plan, with an owner, an
+    origin and evidence, unscheduled until the Paladin prioritizes it, and
+    listed by id in the project status (section 8.1).

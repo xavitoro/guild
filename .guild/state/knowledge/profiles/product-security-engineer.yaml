@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: product-security-engineer
 project: guild
-version: 2
-updated_at: "2026-09-07"
+version: 3
+updated_at: "2026-09-17"
 updated_by: product-security-engineer
 
 owned_areas:
@@ -51,3 +51,19 @@ entries:
       - .guild/core/schemas/policies.schema.json
       - .guild/core/spec/GUILD_MASTER_SPEC.md
     recorded_at: "2026-09-07"
+  - id: KN-product-security-engineer-004
+    area: AREA-policies-and-gates
+    status: verified
+    statement: >
+      found_work_protocol in default-policies.yaml fixes where found work goes,
+      what it becomes, who records it, who it is assigned to and who may schedule
+      it, with ten rules including that blocking work is not debt and that
+      recording never authorizes doing. Scheduling is a capability boundary rather
+      than an approval gate: found work carries no Red-tier risk, so it needs an
+      owner and a prioritizer, not a human approval.
+    evidence:
+      - .guild/core/policies/default-policies.yaml
+      - .guild/core/schemas/policies.schema.json
+      - .guild/core/evals/check_found_work.py
+    learned_from: WI-010
+    recorded_at: "2026-09-17"

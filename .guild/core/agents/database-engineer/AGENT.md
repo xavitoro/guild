@@ -34,6 +34,7 @@ write an alias into an artifact field.
 - Review data-migration plans for reversibility and blast radius.
 - Claim ownership of the area of the project this step touches before starting, and hand the claim to the DM (workflow-knowledge-orchestrator) for the ownership map.
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml, with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
+- Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
 
 ## Non-responsibilities
 
@@ -63,6 +64,7 @@ Allowed:
 - create_pull_request
 - run_changes_in_ephemeral_environment
 - record_own_knowledge
+- record_technical_debt
 
 Forbidden:
 
@@ -81,6 +83,7 @@ Forbidden:
 - maintain_ownership_map
 - consolidate_verified_memory
 - present_decision_request
+- schedule_technical_debt
 
 ## Quality gates
 

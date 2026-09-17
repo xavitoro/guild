@@ -15,6 +15,7 @@ principles:
   - no_decision_is_left_pending_without_an_owner_a_default_and_a_person_asked
   - ambiguity_is_escalated_to_a_person_never_resolved_by_assumption
   - every_question_to_a_person_is_asked_as_options_plus_a_free_text_answer
+  - found_non_blocking_work_becomes_a_recorded_task_never_a_note
 
 approval_required:
   - merge_protected_branch
@@ -105,3 +106,25 @@ decision_protocol:
     - red_tier_actions_are_approvals_not_decision_requests_and_never_carry_a_default
     - every_request_is_answerable_as_a_listed_option_or_as_a_free_text_answer
     - a_free_text_answer_is_recorded_verbatim_and_closes_the_request
+
+# How a change a profile finds, but is not going to make now, stops being a note
+# and becomes work in the plan. See GUILD_MASTER_SPEC.md section 8.1.
+found_work_protocol:
+  plan_file: .guild/state/planning/project-plan.yaml
+  status_field: open_technical_debt
+  item_kind: technical_debt
+  id_series: TD
+  recorded_by: any_profile
+  assigned_to: the_owner_of_the_area_it_was_found_in
+  scheduled_by: product-owner
+  rules:
+    - work_found_outside_the_current_step_that_blocks_nothing_is_recorded_as_a_technical_debt_item
+    - work_that_blocks_the_current_step_is_not_debt_it_is_escalated_or_decided
+    - every_found_item_states_who_found_it_where_and_with_what_evidence
+    - a_found_item_is_assigned_to_the_owner_of_the_area_it_was_found_in
+    - a_found_item_is_recorded_unscheduled_and_recording_it_never_authorizes_doing_it
+    - only_the_product_owner_schedules_found_work_into_a_milestone
+    - unscheduled_found_work_is_excluded_from_milestone_progress
+    - every_open_technical_debt_item_is_listed_by_id_in_project_status
+    - a_run_does_not_close_with_found_work_left_unrecorded
+    - a_todo_comment_or_a_ledger_note_is_not_a_record_of_found_work

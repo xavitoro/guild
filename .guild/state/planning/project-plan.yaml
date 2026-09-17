@@ -1,18 +1,21 @@
 schema: guild.project-plan/v1
 project: guild
-version: 10
-updated_at: 2026-09-07
+version: 11
+updated_at: 2026-09-17
 updated_by: workflow-knowledge-orchestrator
 
 vision:
   summary: Create a portable framework that gives AI agents consistent roles, workflows and safeguards for software development.
 
 current_focus:
-  milestone: M7
+  milestone: M8
   objective: >
-    M1–M7 are complete. Every question Guild puts to a person is now enumerated
-    and always carries a free-text answer. Remaining work is human-owned:
-    piloting Guild on a genuine external project.
+    M1–M8 are complete. A change a profile finds while doing something else, and
+    is not going to make, now becomes an owned technical-debt work item in this
+    plan instead of a note. Four such items (TD-001 to TD-004) were found while
+    building that rule and are recorded unscheduled, waiting for the Paladin to
+    prioritize them. Remaining planned work is human-owned: piloting Guild on a
+    genuine external project.
   status: completed
 
 milestones:
@@ -50,6 +53,11 @@ milestones:
     status: completed
     weight: 1
     depends_on: [M6]
+  - id: M8
+    name: Nothing found is dropped
+    status: completed
+    weight: 1
+    depends_on: [M7]
 
 work_items:
   - id: WI-001
@@ -114,3 +122,94 @@ work_items:
     assigned_profile: workflow-knowledge-orchestrator
     depends_on: [WI-008]
     weight: 1
+  - id: WI-010
+    title: Turn non-blocking work a profile finds into a recorded technical-debt task
+    status: completed
+    milestone: M8
+    assigned_profile: workflow-knowledge-orchestrator
+    depends_on: [WI-008, WI-009]
+    weight: 1
+
+  # Found work (GUILD_MASTER_SPEC.md section 8.1): recorded where it was found,
+  # unscheduled, and excluded from milestone progress until the Paladin
+  # (product-owner) gives it a milestone.
+  - id: TD-001
+    title: Create the planning and knowledge directories the specification promises
+    kind: technical_debt
+    status: proposed
+    assigned_profile: workflow-knowledge-orchestrator
+    weight: 1
+    description: >
+      GUILD_MASTER_SPEC.md sections 7 and 8 list roadmap.yaml, milestones/,
+      backlog/ and archive/ under .guild/state/planning/, and discoveries/,
+      patterns/ and archive/ under .guild/state/knowledge/. None of them exists.
+      Either the directories are created with their conventions stated, or the
+      specification stops promising them — a canonical path that resolves to
+      nothing teaches every installed project the wrong layout.
+    origin:
+      discovered_by: workflow-knowledge-orchestrator
+      discovered_in: WI-010
+      evidence:
+        - .guild/core/spec/GUILD_MASTER_SPEC.md
+        - .guild/state/planning/
+        - .guild/state/knowledge/
+      recorded_at: "2026-09-17"
+  - id: TD-002
+    title: Derive PROJECT_PLAN.md and PROJECT_STATUS.md from their canonical YAML
+    kind: technical_debt
+    status: proposed
+    assigned_profile: workflow-knowledge-orchestrator
+    weight: 2
+    description: >
+      Both Markdown files restate project-plan.yaml and project-status.yaml by
+      hand, and nothing compares them. The only cross-checks are that open
+      decision and technical-debt ids appear somewhere in PROJECT_STATUS.md, so
+      a milestone, a work item or a status sentence can drift from the canonical
+      file without any check noticing — in the two files a person actually reads.
+    origin:
+      discovered_by: workflow-knowledge-orchestrator
+      discovered_in: WI-010
+      evidence:
+        - .guild/state/planning/PROJECT_PLAN.md
+        - .guild/state/planning/project-plan.yaml
+        - .guild/core/evals/check_human_in_the_loop.py
+        - .guild/core/evals/check_found_work.py
+      recorded_at: "2026-09-17"
+  - id: TD-003
+    title: Link a run record to the work items it advanced
+    kind: technical_debt
+    status: proposed
+    assigned_profile: workflow-knowledge-orchestrator
+    weight: 1
+    description: >
+      guild.run-record/v1 names the workflow and its steps but nothing in the
+      plan, so a run cannot say which work item it advanced. WI-010 added
+      discovered_work for the found work a run records; the planned-work link is
+      still missing, which leaves progress impossible to derive from run history.
+    origin:
+      discovered_by: workflow-knowledge-orchestrator
+      discovered_in: WI-010
+      evidence:
+        - .guild/core/schemas/run-record.schema.json
+        - .guild/core/schemas/project-plan.schema.json
+        - .guild/state/runs/run-example-fix-bug-001.yaml
+      recorded_at: "2026-09-17"
+  - id: TD-004
+    title: Keep the required-check list in one place
+    kind: technical_debt
+    status: proposed
+    assigned_profile: quality-assurance-engineer
+    weight: 1
+    description: >
+      The list of required checks exists twice — as a command block in
+      .guild/core/evals/README.md and as OTHER_CHECKS in pilot_install_check.py.
+      Adding check_found_work.py meant editing both; a future check added to one
+      and not the other would silently drop out of the pilot's coverage while the
+      documentation still claimed it ran.
+    origin:
+      discovered_by: workflow-knowledge-orchestrator
+      discovered_in: WI-010
+      evidence:
+        - .guild/core/evals/README.md
+        - .guild/core/evals/pilot_install_check.py
+      recorded_at: "2026-09-17"

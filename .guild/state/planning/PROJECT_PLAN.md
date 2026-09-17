@@ -47,3 +47,20 @@ Create a portable framework that gives AI agents consistent roles, workflows, ar
      still an answer rather than silence — see
      `.guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml`
 
+8. **M8 — Nothing found is dropped** (complete)
+   - A change a profile finds while doing something else, which blocks nothing
+     and which it is not going to make, becomes a technical-debt work item in
+     `project-plan.yaml` — with an origin, evidence and the owner of the area it
+     was found in — instead of a `TODO` comment or a line in a summary
+   - Found work is recorded unscheduled and stays out of milestone progress until
+     the Paladin (`product-owner`) gives it a milestone, so recording something
+     never commits the project to doing it — see
+     `.guild/state/knowledge/decisions/DEC-010-found-work-becomes-a-task.yaml`
+
+## Found work
+
+Technical-debt items live in `project-plan.yaml` beside the planned work items,
+with `kind: technical_debt` and ids in the `TD-` series. They carry no milestone
+until they are scheduled, which is why they do not distort weighted milestone
+progress. The open ones are listed in
+[`PROJECT_STATUS.md`](PROJECT_STATUS.md#open-technical-debt).

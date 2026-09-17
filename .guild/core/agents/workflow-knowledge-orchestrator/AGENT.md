@@ -43,6 +43,8 @@ write an alias into an artifact field.
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml, with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
 - Maintain the ownership map at .guild/state/knowledge/ownership.yaml — area, single owner, ledger location, newest entry, open questions and related areas — and route by those pointers rather than by holding every owner's knowledge.
 - Turn every open question blocked on the human into a decision request with options, a recommendation and a stated default, present it in the canonical format, and record the answer or the explicit deferral.
+- Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
+- Sweep each run for found work before consolidating it, so no run closes with a change a profile noticed left unrecorded, and every open technical-debt item is listed by id in the project status.
 
 ## Non-responsibilities
 
@@ -76,6 +78,7 @@ Allowed:
 - record_own_knowledge
 - maintain_ownership_map
 - present_decision_request
+- record_technical_debt
 
 Forbidden:
 
@@ -92,6 +95,7 @@ Forbidden:
 - send_external_communication
 - provision_material_cost
 - write_another_profiles_ledger
+- schedule_technical_debt
 
 ## Quality gates
 

@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: business-analyst
 project: guild
-version: 2
-updated_at: "2026-09-07"
+version: 3
+updated_at: "2026-09-17"
 updated_by: business-analyst
 
 owned_areas:
@@ -67,6 +67,23 @@ entries:
       - .guild/core/skills/request-human-decision/SKILL.yaml
       - .guild/core/skills/grant-human-approval/SKILL.yaml
     recorded_at: "2026-09-07"
+  - id: KN-business-analyst-005
+    area: AREA-skills-and-workflows
+    status: verified
+    statement: >
+      record-technical-debt is the third protocol skill: applicable to all
+      fourteen profiles and declared once per workflow as
+      step_protocol.on_found_work, beside on_step_entry, on_step_exit and
+      on_blocked_decision. Declaring it in the protocol rather than as a step is
+      what makes it survive every execution mode — a single assistant, a subagent
+      or an external runtime all record found work at the same moment.
+    evidence:
+      - .guild/core/skills/record-technical-debt/SKILL.yaml
+      - .guild/core/workflows/
+      - .guild/core/schemas/workflow.schema.json
+      - .guild/core/workflows/EXECUTION_MODES.md
+    learned_from: WI-010
+    recorded_at: "2026-09-17"
 
 open_questions:
   - id: KNQ-business-analyst-001

@@ -50,18 +50,20 @@ flowchart TD
 ## Step protocol
 
 Every step below follows the same protocol, whichever profile runs it
-(`GUILD_MASTER_SPEC.md` sections 7 and 11.2):
+(`GUILD_MASTER_SPEC.md` sections 7, 8.1 and 11.2):
 
 | When | Skill | What the responsible profile does |
 |---|---|---|
 | Before the step's own work | `claim-ownership` | Claims — or confirms — the area of the project this step touches, records it in its own ledger, and hands the claim to the DM (workflow-knowledge-orchestrator) for the ownership map. Work belonging to another profile's area goes back to the DM to route. |
 | After the step's own work | `record-profile-knowledge` | Appends what this step verified to its own ledger with evidence, raises what it could not resolve as an open question, and hands the DM the entry ids — pointers, not copies. |
 | When a step needs a decision no profile can make | `request-human-decision` | Raises it as a decision request with options, a recommendation and a stated default, and the DM presents it to the human. The step never proceeds on an assumption, and never on a default the human has not been shown. |
+| When a step finds work it is not going to do | `record-technical-debt` | Records the change as a technical-debt work item in `.guild/state/planning/project-plan.yaml` — with an origin, evidence and the owner of the area it was found in — unscheduled until the Paladin (`product-owner`) prioritizes it. It never stays a `TODO` comment or a line in a summary, and recording it never enlarges the current step. |
 
 This is why the DM can sequence the steps below without holding what each profile
 knows: it routes by the ownership map, follows a pointer only when a decision needs
 that detail, and puts what nobody can decide from the project itself to a person
-rather than letting it stall.
+rather than letting it stall — and why nothing a step noticed on the way is lost:
+what it found but did not do is in the plan, owned, rather than in a comment.
 
 ## Steps
 

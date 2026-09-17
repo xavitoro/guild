@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: product-software-engineer
 project: guild
-version: 3
-updated_at: "2026-09-07"
+version: 4
+updated_at: "2026-09-17"
 updated_by: product-software-engineer
 
 owned_areas:
@@ -88,6 +88,24 @@ entries:
       - .claude/agents/workflow-knowledge-orchestrator.md
       - .guild/core/evals/smoke_test_add_feature.py
     recorded_at: "2026-09-07"
+  - id: KN-product-software-engineer-006
+    area: AREA-provider-adapters
+    status: verified
+    statement: >
+      The generator maps record_technical_debt and schedule_technical_debt to
+      Edit/Write, and every Claude Code subagent now carries a "When you find work
+      you are not going to do" section derived from the same rule — with the
+      product owner's scheduling clause and the orchestrator's sweep-before-
+      consolidating clause added per profile, exactly as the decision note already
+      did. The managed AGENTS.md and CLAUDE.md blocks gained a found-work
+      paragraph, and the drift check passes against the regenerated output.
+    evidence:
+      - .guild/core/adapters/generate_adapters.py
+      - .claude/agents/product-owner.md
+      - .claude/skills/record-technical-debt/SKILL.md
+      - .agents/skills/record-technical-debt/SKILL.md
+    learned_from: WI-010
+    recorded_at: "2026-09-17"
 
 open_questions:
   - id: KNQ-product-software-engineer-001

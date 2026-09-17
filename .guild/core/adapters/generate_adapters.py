@@ -70,6 +70,13 @@ CAP_TOOLS = {
     "record_own_knowledge": ["Write"],
     "maintain_ownership_map": ["Edit", "Write"],
     "present_decision_request": ["Edit", "Write"],
+    # Appending a technical-debt work item to the project plan when a step finds a
+    # change it is not going to make (GUILD_MASTER_SPEC.md section 8.1). Every profile
+    # gets it: the one that found the problem is the one that holds its evidence.
+    # Scheduling that item into a milestone is a different capability, and only the
+    # product owner has it.
+    "record_technical_debt": ["Edit", "Write"],
+    "schedule_technical_debt": ["Edit", "Write"],
 }
 TOOL_ORDER = ["Read", "Grep", "Glob", "Edit", "Write", "Bash"]
 
@@ -231,6 +238,35 @@ def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
             "recommendation. A Red-tier approval is not asked this way: it stays an explicit "
             "approval request, and only an explicit approval approves."
         )
+    found_work_note = (
+        "While doing a step you will notice changes you are not going to make: a duplicated helper, a "
+        "missing test, a definition that drifted from the one beside it. If it blocks this step, it is "
+        "not found work — it is part of the task, an escalation to the area's owner, or a decision "
+        "request. If it blocks nothing, record it before the step closes (skill "
+        "`record-technical-debt`): append a work item to .guild/state/planning/project-plan.yaml with "
+        "`kind: technical_debt`, an id in the TD- series, `status: proposed` and no milestone, an "
+        "`origin` naming you, the run or step you found it in and evidence anyone can check, and "
+        "`assigned_profile` set to the owner of the area it was found in — read from the ownership "
+        "map, not from who happened to find it. Then list its id in the project status's "
+        "`open_technical_debt`. Never leave it as a TODO or FIXME comment, a ledger note or a line in "
+        "a summary, never schedule it yourself, and never let recording it turn into doing it: the "
+        "current step does not grow because you found something. See "
+        ".guild/core/spec/GUILD_MASTER_SPEC.md section 8.1."
+    )
+    if agent["id"] == "product-owner":
+        found_work_note += (
+            " You are the only profile that schedules found work: giving a technical-debt item a "
+            "milestone and a status beyond `proposed` is prioritization, and it is yours. Until you "
+            "do, that work is recorded but not committed, and it does not count toward milestone "
+            "progress."
+        )
+    if agent["id"] == "workflow-knowledge-orchestrator":
+        found_work_note += (
+            " Before consolidating a run, sweep it for found work the same way you sweep for "
+            "unpresented decisions: a run does not close with a change someone noticed left as a "
+            "note, and every open technical-debt item is listed by id in PROJECT_STATUS.md where a "
+            "person will actually read it."
+        )
     gates_note = (
         "This profile can never approve its own QA or security result. Every Red-tier action "
         "(merge to a protected branch, production deployment, destructive migration, production "
@@ -263,6 +299,10 @@ You are the {agent['alias']} — {agent['name']} (Guild profile `{agent['id']}`)
 ## When you cannot decide it yourself
 
 {decision_note}
+
+## When you find work you are not going to do
+
+{found_work_note}
 
 ## Responsibilities
 
@@ -343,6 +383,22 @@ def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: d
         width=88,
         break_on_hyphens=False,
     )
+    found_work = textwrap.fill(
+        "A change a profile finds while doing something else — a duplicated helper, a missing test, a "
+        "definition that drifted — and which blocks nothing is never a `TODO` comment, a ledger note or "
+        "a line in a summary. Before the step closes it becomes a work item in "
+        "`.guild/state/planning/project-plan.yaml` with `kind: technical_debt`, an id in the `TD-` "
+        "series, an `origin` naming who found it, where, and the evidence, and `assigned_profile` set "
+        "to the owner of the area it was found in. It is recorded unscheduled — `status: proposed`, no "
+        "milestone — because recording found work never commits the project to doing it and never "
+        "enlarges the current step; only the product owner schedules it, and unscheduled debt is "
+        "excluded from milestone progress. Every open item is listed by id in `PROJECT_STATUS.md`, and "
+        "no run closes with found work left unrecorded. Work that *blocks* the step is not debt: it is "
+        "part of the task, an escalation to the area's owner, or a decision request. "
+        "See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 8.1.",
+        width=88,
+        break_on_hyphens=False,
+    )
     return f"""## Guild adapter (generated — do not edit this section by hand)
 
 This project has [Guild](.guild/core/spec/GUILD_MASTER_SPEC.md) installed. `.guild/core/`
@@ -368,6 +424,10 @@ upgrades.
 ### Pending decisions
 
 {decisions}
+
+### Found work
+
+{found_work}
 
 Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 
@@ -417,6 +477,16 @@ closes a decision request; on a Red-tier approval it is recorded but never appro
 presents a decision request with the `AskUserQuestion` tool — one option per stated option
 plus `defer`, and its automatic "Other" choice as the free-text answer. Red-tier approvals
 stay explicit approval requests. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.3.
+
+Nothing a subagent finds is dropped either: a change it notices while doing something
+else, which blocks nothing and which it is not going to make, becomes a work item in
+`.guild/state/planning/project-plan.yaml` with `kind: technical_debt`, an origin naming
+who found it and with what evidence, and the owner of the area it was found in as its
+assignee — recorded unscheduled, listed by id in `PROJECT_STATUS.md`, and scheduled only
+by the Paladin (`product-owner`). It never stays a `TODO` comment or a line in a summary,
+and recording it never turns into doing it. Something that blocks the step is not debt:
+it is part of the task, an escalation, or a decision request. See
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 8.1.
 
 No subagent is granted unrestricted tool access; each gets only the tools its
 `allowed_capabilities` imply (see `.guild/core/adapters/generate_adapters.py`).

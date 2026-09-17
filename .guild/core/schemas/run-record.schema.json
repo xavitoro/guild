@@ -95,6 +95,14 @@
           }
         }
       }
+    },
+    "discovered_work": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TD-[0-9]+$"
+      },
+      "description": "Optional. Ids of the technical-debt items this run recorded. A run does not close with found work left as a note (GUILD_MASTER_SPEC.md section 8.1)."
     }
   }
 }

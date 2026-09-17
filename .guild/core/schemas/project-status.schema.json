@@ -13,7 +13,8 @@
     "current_objective",
     "ready_work",
     "planned_next",
-    "open_decisions"
+    "open_decisions",
+    "open_technical_debt"
   ],
   "properties": {
     "schema": {
@@ -58,6 +59,14 @@
         "pattern": "^DR-[0-9]{3}$"
       },
       "description": "Ids of open decision requests (guild.decision-request/v1). Free text is not accepted: an open decision that is only a sentence has no owner, no options, no default and no way to be closed."
+    },
+    "open_technical_debt": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TD-[0-9]{3}$"
+      },
+      "description": "Ids of open technical-debt work items (guild.task/v1 with kind: technical_debt). Free text is not accepted, for the same reason open_decisions does not accept it: found work that is only a sentence has no owner, no origin and no way to be closed."
     }
   }
 }

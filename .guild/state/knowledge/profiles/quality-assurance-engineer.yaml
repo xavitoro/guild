@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: quality-assurance-engineer
 project: guild
-version: 2
-updated_at: "2026-09-07"
+version: 3
+updated_at: "2026-09-17"
 updated_by: quality-assurance-engineer
 
 owned_areas:
@@ -61,3 +61,21 @@ entries:
       - .guild/core/evals/check_human_in_the_loop.py
       - .guild/state/planning/decisions/
     recorded_at: "2026-09-07"
+  - id: KN-quality-assurance-engineer-005
+    area: AREA-structural-validation
+    status: verified
+    statement: >
+      check_found_work.py proves the found-work rule structurally: the policy
+      protocol, a universal skill, a task schema that cannot express unsourced
+      debt and does not force a milestone on it, a status field restricted to
+      TD- ids, a plan schema that references the task schema instead of copying
+      it, on_found_work in every workflow, and recording open to all while
+      scheduling is not. Its state half additionally fails a TODO or FIXME note
+      anywhere under .guild/state/ — the check has teeth only because the rule it
+      enforces names the thing it replaces.
+    evidence:
+      - .guild/core/evals/check_found_work.py
+      - .guild/core/evals/README.md
+      - .guild/core/evals/pilot_install_check.py
+    learned_from: WI-010
+    recorded_at: "2026-09-17"

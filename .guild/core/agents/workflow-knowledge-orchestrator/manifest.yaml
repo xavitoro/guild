@@ -25,6 +25,11 @@ responsibilities:
   every owner's knowledge.
 - Turn every open question blocked on the human into a decision request with options, a recommendation
   and a stated default, present it in the canonical format, and record the answer or the explicit deferral.
+- Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt
+  work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the
+  area it was found in — never as a comment, a note or a line in a summary.
+- Sweep each run for found work before consolidating it, so no run closes with a change a profile noticed
+  left unrecorded, and every open technical-debt item is listed by id in the project status.
 non_responsibilities:
 - Judging implementation quality — owned by the Quality Assurance Engineer (Barbarian).
 - Judging security posture — owned by the Product Security Engineer (Rogue).
@@ -48,6 +53,7 @@ allowed_capabilities:
 - record_own_knowledge
 - maintain_ownership_map
 - present_decision_request
+- record_technical_debt
 forbidden_capabilities:
 - edit_product_code
 - approve_qa_result
@@ -62,6 +68,7 @@ forbidden_capabilities:
 - send_external_communication
 - provision_material_cost
 - write_another_profiles_ledger
+- schedule_technical_debt
 quality_gates:
 - Every workflow step has a responsible profile, invoked skill and completion criteria before it starts.
 - No workflow advances past a gate without a recorded gate result.

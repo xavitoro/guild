@@ -1,0 +1,62 @@
+schema: guild.decision/v1
+id: DEC-010
+title: Work a profile finds but does not do becomes a technical-debt task in the plan
+status: accepted
+context: >
+  DEC-004 and DEC-009 closed the path for things nobody could decide: they reach a
+  person, in a fixed answerable shape. Nothing covered the opposite case, which is
+  far more common. A profile working on one thing constantly notices another — a
+  duplicated helper, a missing test, a definition that drifted from the one beside
+  it. Almost none of it blocks the step in progress, and nothing in Guild said
+  what happened to it. In practice such a finding became a TODO comment, a
+  sentence in a handoff or a paragraph of a summary nobody read twice, which is
+  the same failure as never noticing. The gap was visible in this repository:
+  task.schema.json could only express planned work, project-status.yaml had a
+  field for open decisions and none for found work, and no workflow step protocol
+  named a route for a change a step was not going to make.
+decision: >
+  Section 8.1 of GUILD_MASTER_SPEC.md now makes found work a first-class planning
+  artifact, as design principle "Nothing found is dropped". A change found outside
+  the current step's scope, which blocks nothing, becomes a work item in
+  .guild/state/planning/project-plan.yaml with kind: technical_debt and an id in
+  the TD- series, before the step it was found in closes. It states an origin —
+  who found it, in which run, step or work item, and evidence anyone can check —
+  and it is assigned to the profile that owns the area it was found in, read from
+  the ownership map, so found work never lands on a communal pile. It is recorded
+  unscheduled: status proposed, no milestone. Only the Paladin (product-owner)
+  schedules it, through the new schedule_technical_debt capability that every
+  other profile forbids, because scheduling is prioritization; unscheduled debt is
+  excluded from milestone progress. Work that blocks the current step is not debt:
+  it is part of the task, an escalation to the area's owner, or a decision
+  request. The rule is carried by the new canonical skill record-technical-debt,
+  applicable to all fourteen profiles, and declared per workflow as
+  step_protocol.on_found_work.
+consequences: >
+  task.schema.json gained kind, origin and scheduled_by, and no longer requires a
+  milestone unconditionally — a technical_debt item requires an origin instead, so
+  found work with no traceable source cannot be written at all.
+  project-plan.schema.json now references the task schema for its work items
+  rather than restating the shape, which also closed an existing drift: the plan's
+  inline copy had never gained the description field. project-status.schema.json
+  requires open_technical_debt and accepts only TD- ids, so found work can no more
+  be a bare sentence than an open decision can. run-record.schema.json gained an
+  optional discovered_work list, and workflow.schema.json requires
+  step_protocol.on_found_work. Every profile manifest allows
+  record_technical_debt; only the product owner allows schedule_technical_debt.
+  check_found_work.py enforces the canonical half and, where state exists, that
+  every item has a finder, evidence and a real owner, that a scheduled item was
+  scheduled by the product owner, that every open item is named in
+  PROJECT_STATUS.md, and that nothing under .guild/state/ parks found work in a
+  TODO or FIXME note. The Codex and Claude Code adapters were regenerated.
+
+  The rule was applied to the work that created it: four items, TD-001 to TD-004,
+  were found while building M8 and recorded rather than fixed in passing — the
+  directories sections 7 and 8 promise but that do not exist, the two Markdown
+  planning views nothing compares against their canonical YAML, the missing link
+  from a run record to the work item it advanced, and the required-check list kept
+  in two places. None of them is scheduled; that is the Paladin's call, not the
+  DM's.
+decided_by: human
+decided_at: "2026-09-17"
+related_work_items:
+  - WI-010

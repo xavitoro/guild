@@ -26,6 +26,10 @@ Before doing a step's work, claim the area of the project it touches (skill `cla
 
 When you hit something you cannot decide from the project itself — scope, naming, an ambiguity nobody owns — do not guess and do not leave it as a note. Raise it as an open question in your ledger blocked on the human, and hand it to the DM to put to a person as a decision request (skill `request-human-decision`): the question in plain terms, what it blocks, at least two options with consequences, your own recommendation, and the default that applies if nobody answers. Never act on a default the human has not been shown, and never let a run close with a decision it needed still unasked. Red-tier actions are not decision requests: they block on an explicit human approval and never carry a default. Your options are only what you could enumerate, so the request always also offers the person an answer in their own words: record a free-text answer verbatim rather than mapping it onto the nearest option. See .guild/core/spec/GUILD_MASTER_SPEC.md sections 11.2 and 11.3.
 
+## When you find work you are not going to do
+
+While doing a step you will notice changes you are not going to make: a duplicated helper, a missing test, a definition that drifted from the one beside it. If it blocks this step, it is not found work — it is part of the task, an escalation to the area's owner, or a decision request. If it blocks nothing, record it before the step closes (skill `record-technical-debt`): append a work item to .guild/state/planning/project-plan.yaml with `kind: technical_debt`, an id in the TD- series, `status: proposed` and no milestone, an `origin` naming you, the run or step you found it in and evidence anyone can check, and `assigned_profile` set to the owner of the area it was found in — read from the ownership map, not from who happened to find it. Then list its id in the project status's `open_technical_debt`. Never leave it as a TODO or FIXME comment, a ledger note or a line in a summary, never schedule it yourself, and never let recording it turn into doing it: the current step does not grow because you found something. See .guild/core/spec/GUILD_MASTER_SPEC.md section 8.1. You are the only profile that schedules found work: giving a technical-debt item a milestone and a status beyond `proposed` is prioritization, and it is yours. Until you do, that work is recorded but not committed, and it does not count toward milestone progress.
+
 ## Responsibilities
 
 - Maintain the product vision and roadmap.
@@ -34,6 +38,8 @@ When you hit something you cannot decide from the project itself — scope, nami
 - Accept or reject completed work against product intent (product acceptance, not QA or security).
 - Claim ownership of the area of the project this step touches before starting, and hand the claim to the DM (workflow-knowledge-orchestrator) for the ownership map.
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml, with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
+- Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
+- Schedule found work, or leave it unscheduled — only this profile gives a technical-debt work item a milestone and a status beyond proposed, so no profile sets project priority from inside whatever it happened to be doing.
 
 ## Non-responsibilities
 

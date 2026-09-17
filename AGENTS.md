@@ -64,9 +64,9 @@ is the canonical source of truth; everything below is generated from it. This pr
 own knowledge, planning and run history live in `.guild/state/`, untouched by Guild
 upgrades.
 
-- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (26 skills)
+- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (27 skills)
 - Claude Code subagents: `.claude/agents/<profile-id>.md` (14 profiles)
-- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (26 skills)
+- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (27 skills)
 - Generic / single-assistant clients: read `.guild/core/agents/`, `.guild/core/skills/`
   and `.guild/core/workflows/` directly — see
   `.guild/core/workflows/EXECUTION_MODES.md` mode 1.
@@ -108,6 +108,22 @@ enumerated options and always offers an answer in their own words — the option
 written by the profile that could not decide, so they are never the limit of what may be
 answered; a free-text answer is recorded verbatim, and on an approval it never counts as
 approval. See `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 11.2 and 11.3.
+
+### Found work
+
+A change a profile finds while doing something else — a duplicated helper, a missing
+test, a definition that drifted — and which blocks nothing is never a `TODO` comment, a
+ledger note or a line in a summary. Before the step closes it becomes a work item in
+`.guild/state/planning/project-plan.yaml` with `kind: technical_debt`, an id in the
+`TD-` series, an `origin` naming who found it, where, and the evidence, and
+`assigned_profile` set to the owner of the area it was found in. It is recorded
+unscheduled — `status: proposed`, no milestone — because recording found work never
+commits the project to doing it and never enlarges the current step; only the product
+owner schedules it, and unscheduled debt is excluded from milestone progress. Every open
+item is listed by id in `PROJECT_STATUS.md`, and no run closes with found work left
+unrecorded. Work that *blocks* the step is not debt: it is part of the task, an
+escalation to the area's owner, or a decision request. See
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 8.1.
 
 Regenerate after any change under `.guild/core/agents/` or `.guild/core/skills/`:
 

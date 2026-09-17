@@ -11,6 +11,7 @@ python3 .guild/core/evals/check_language_neutrality.py
 python3 .guild/core/evals/check_alias_presence.py
 python3 .guild/core/evals/check_ownership_model.py
 python3 .guild/core/evals/check_human_in_the_loop.py
+python3 .guild/core/evals/check_found_work.py
 python3 .guild/core/adapters/generate_adapters.py --target . --check
 ```
 
@@ -121,6 +122,28 @@ exist, that an answered or deferred request records who answered and what,
 that no request reached `presented`/`answered`/`deferred` without a
 `presented_at` — a default may not apply before it was shown — and that no
 ledger question blocked on the human was left un-escalated.
+
+## check_found_work.py
+
+Proves that nothing a profile found is dropped (`GUILD_MASTER_SPEC.md`
+principle 14 and section 8.1). The canonical half always runs:
+`default-policies.yaml` declares the principle and a `found_work_protocol`
+naming where found work goes, what it becomes, who records it, who it is
+assigned to and who may schedule it; `record-technical-debt` exists and applies
+to all fourteen profiles; `task.schema.json` can express a `technical_debt`
+item, requires an origin with a finder, a place and checkable evidence, and does
+*not* require a milestone, so found work is recorded unscheduled;
+`project-status.schema.json` requires `open_technical_debt` and accepts only
+work-item ids in it; `project-plan.schema.json` references the task schema
+instead of restating it; every workflow declares `step_protocol.on_found_work`;
+and every profile may record found work while only the product owner may
+schedule it. The state half runs when `.guild/state/planning/project-plan.yaml`
+exists and checks that every found item carries a `TD-` id, a real finder,
+evidence and an owner that actually owns an area; that a scheduled item was
+scheduled by the product owner and an unscheduled one carries no milestone (so
+it cannot inflate milestone progress); that every open item is listed in the
+status file *and* named in `PROJECT_STATUS.md`; and that nothing under
+`.guild/state/` parks found work in a `TODO` or `FIXME` note.
 
 ## generate_adapters.py --check
 

@@ -1,14 +1,14 @@
 # Guild Project Status
 
-Updated: 7 September 2026
+Updated: 17 September 2026
 
 ## Overall status
 
 Milestones M1 (declarative foundation), M2 (provider adapters), M3
 (evaluation and first real-project pilot), M4 (repository layout
-hardening), M5 (distributed ownership and knowledge) and M6 (nothing stays
-pending) and M7 (every question is answerable) are all complete. WI-001 through
-WI-009 are done. `.guild/` splits into `core/` (the Guild
+hardening), M5 (distributed ownership and knowledge), M6 (nothing stays
+pending), M7 (every question is answerable) and M8 (nothing found is dropped)
+are all complete. WI-001 through WI-010 are done. `.guild/` splits into `core/` (the Guild
 framework, replaceable wholesale on upgrade) and `state/` (this project's
 own knowledge, planning and run history, never touched by an upgrade) —
 see `.guild/state/knowledge/decisions/DEC-001-core-state-split.yaml`. Every
@@ -25,12 +25,20 @@ is left for a person to resolve now reaches them in a fixed answerable shape:
 enumerated options, always plus a free-text answer, because the option set is
 written by the profile that could not decide and is never the limit of what may
 be answered — see
-`.guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml`.
+`.guild/state/knowledge/decisions/DEC-009-options-plus-free-text.yaml`. And a
+change a profile finds while doing something else, which blocks nothing and
+which it is not going to make, is now a technical-debt work item in the plan —
+with an origin, evidence and the owner of the area it was found in, unscheduled
+until the Paladin (`product-owner`) prioritizes it — instead of a `TODO` comment
+or a line in a summary; see
+`.guild/state/knowledge/decisions/DEC-010-found-work-becomes-a-task.yaml`.
 
 ## Current objective
 
-No decision is pending. `DR-001` to `DR-004` were answered on 1 September 2026
-and recorded as `DEC-005` to `DEC-008`. The only remaining work is piloting Guild
+No decision is pending, and nothing found is unrecorded. `DR-001` to `DR-004`
+were answered on 1 September 2026 and recorded as `DEC-005` to `DEC-008`; the
+four technical-debt items below are recorded and unscheduled, and none of them
+blocks anything. The only remaining planned work is piloting Guild
 on a genuine external project — now unblocked, since the licensing question that
 held it is answered. The automated pilot in
 `.guild/core/evals/pilot_install_check.py` proves the install steps work against
@@ -46,6 +54,19 @@ usage.
 
 - Install Guild into a real external project and run an actual workflow
   end to end with a human in the loop.
+
+## Open technical debt
+
+Found while building M8, all outside the scope of the step that found them and
+blocking nothing. Each is recorded unscheduled: the Paladin (`product-owner`)
+decides whether and when any of them is worth a milestone.
+
+| Item | What was found | Owner |
+|---|---|---|
+| [`TD-001`](project-plan.yaml) | `GUILD_MASTER_SPEC.md` sections 7 and 8 promise `roadmap.yaml`, `milestones/`, `backlog/`, `archive/`, `discoveries/` and `patterns/` under `.guild/state/`; none of them exists | DM (`workflow-knowledge-orchestrator`) |
+| [`TD-002`](project-plan.yaml) | `PROJECT_PLAN.md` and this file restate their canonical YAML by hand, and nothing compares the two | DM (`workflow-knowledge-orchestrator`) |
+| [`TD-003`](project-plan.yaml) | A run record names its workflow and steps but no work item, so progress cannot be derived from run history | DM (`workflow-knowledge-orchestrator`) |
+| [`TD-004`](project-plan.yaml) | The required-check list lives both in `evals/README.md` and in `pilot_install_check.py`, so a future check can drop out of the pilot silently | Barbarian (`quality-assurance-engineer`) |
 
 ## Open decisions
 

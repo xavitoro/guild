@@ -34,6 +34,7 @@ several skills across different workflow steps.
 | [Grant human approval](grant-human-approval/SKILL.md) | `grant-human-approval` | the human |
 | [Put a pending decision to the human](request-human-decision/SKILL.md) | `request-human-decision` | DM (workflow-knowledge-orchestrator), the human |
 | [Consolidate knowledge](consolidate-knowledge/SKILL.md) | `consolidate-knowledge` | DM (workflow-knowledge-orchestrator) |
+| [Record found work as technical debt](record-technical-debt/SKILL.md) | `record-technical-debt` | DM (workflow-knowledge-orchestrator), Paladin (product-owner), Fighter (business-analyst), Druid (product-experience-designer), Bard (ux-content-designer), Ranger (web-experience-engineer), Artificer (product-software-engineer), Wizard (database-engineer), Warlock (integration-engineer), Barbarian (quality-assurance-engineer), Rogue (product-security-engineer), Cleric (cloud-devops-engineer), Sorcerer (product-data-analyst), Monk (data-analytics-engineer) |
 
 `claim-ownership` and `record-profile-knowledge` are the two protocol skills every
 profile runs, and they are not numbered workflow steps: each workflow declares them
@@ -41,8 +42,10 @@ once as its `step_protocol`, and every step is bracketed by them — the respons
 profile claims the area it is about to work in, does the step's own skill, then
 records what that interaction verified in its own ledger. The same `step_protocol`
 names `request-human-decision` as the route for a step blocked on something no
-profile can decide from the project itself. See `GUILD_MASTER_SPEC.md` sections 7
-and 11.2.
+profile can decide from the project itself, and `record-technical-debt` as the route
+for the opposite case: a change the step found, which blocks nothing and which it is
+not going to make, and which becomes a technical-debt work item in the plan instead
+of a note. See `GUILD_MASTER_SPEC.md` sections 7, 8.1 and 11.2.
 
 See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 5 and
 `.guild/core/templates/skill-manifest.template.yaml` for the manifest shape, and

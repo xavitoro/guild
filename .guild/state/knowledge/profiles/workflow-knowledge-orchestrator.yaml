@@ -2,8 +2,8 @@
 schema: guild.profile-knowledge/v1
 profile: workflow-knowledge-orchestrator
 project: guild
-version: 3
-updated_at: "2026-09-07"
+version: 4
+updated_at: "2026-09-17"
 updated_by: workflow-knowledge-orchestrator
 
 owned_areas:
@@ -106,6 +106,72 @@ entries:
       - .guild/core/schemas/policies.schema.json
       - .guild/core/templates/decision-request.template.yaml
     recorded_at: "2026-09-07"
+  - id: KN-workflow-knowledge-orchestrator-008
+    area: AREA-guild-spec
+    status: verified
+    statement: >
+      Section 8.1 makes found work a planning artifact rather than prose: a change
+      found outside the current step's scope, which blocks nothing, becomes a
+      technical_debt work item with an origin and an owner before the step closes,
+      and is recorded unscheduled. It is the planning counterpart of 11.2 — a
+      decision nobody can make reaches a person, a change nobody is making reaches
+      the plan — and it is declared as design principle 14, "Nothing found is
+      dropped", with definition-of-done item 14.
+    evidence:
+      - .guild/core/spec/GUILD_MASTER_SPEC.md
+      - .guild/core/policies/default-policies.yaml
+    learned_from: WI-010
+    recorded_at: "2026-09-17"
+  - id: KN-workflow-knowledge-orchestrator-009
+    area: AREA-schemas-and-templates
+    status: verified
+    statement: >
+      task.schema.json now carries kind, origin and scheduled_by, and requires a
+      milestone only of ordinary work — a technical_debt item requires an origin
+      with a finder, a place and at least one piece of evidence instead, so
+      unsourced found work cannot be written. project-plan.schema.json references
+      the task schema for its work items instead of restating the shape; the
+      inline copy it replaced had already drifted, never having gained the
+      description field the task schema and task.template.yaml both document.
+    evidence:
+      - .guild/core/schemas/task.schema.json
+      - .guild/core/schemas/project-plan.schema.json
+      - .guild/core/schemas/project-status.schema.json
+      - .guild/core/schemas/run-record.schema.json
+      - .guild/core/templates/task.template.yaml
+    learned_from: WI-010
+    recorded_at: "2026-09-17"
+  - id: KN-workflow-knowledge-orchestrator-010
+    area: AREA-agent-profiles
+    status: verified
+    statement: >
+      Recording found work and scheduling it are separate capabilities in every
+      manifest: all fourteen profiles allow record_technical_debt, because the
+      profile that found a problem is the one holding its evidence, and only the
+      product owner allows schedule_technical_debt while the other thirteen forbid
+      it — the same shape as present_decision_request, and for the same reason.
+    evidence:
+      - .guild/core/agents/
+      - .guild/core/evals/check_found_work.py
+    learned_from: WI-010
+    recorded_at: "2026-09-17"
+  - id: KN-workflow-knowledge-orchestrator-011
+    area: AREA-project-planning
+    status: verified
+    statement: >
+      Building M8 produced four findings of its own, recorded as TD-001 to TD-004
+      rather than fixed in passing, and all left unscheduled for the Paladin:
+      sections 7 and 8 promise state directories that do not exist; the two
+      Markdown planning views restate their canonical YAML with nothing comparing
+      them; a run record cannot name the work item it advanced; and the
+      required-check list is maintained in two places. They are listed by id in
+      project-status.yaml and named in PROJECT_STATUS.md.
+    evidence:
+      - .guild/state/planning/project-plan.yaml
+      - .guild/state/planning/project-status.yaml
+      - .guild/state/planning/PROJECT_STATUS.md
+    learned_from: WI-010
+    recorded_at: "2026-09-17"
 
 open_questions:
   - id: KNQ-workflow-knowledge-orchestrator-001

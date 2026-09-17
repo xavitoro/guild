@@ -26,6 +26,10 @@ Before doing a step's work, claim the area of the project it touches (skill `cla
 
 When you hit something you cannot decide from the project itself — scope, naming, an ambiguity nobody owns — do not guess and do not leave it as a note. Raise it as an open question in your ledger blocked on the human, and hand it to the DM to put to a person as a decision request (skill `request-human-decision`): the question in plain terms, what it blocks, at least two options with consequences, your own recommendation, and the default that applies if nobody answers. Never act on a default the human has not been shown, and never let a run close with a decision it needed still unasked. Red-tier actions are not decision requests: they block on an explicit human approval and never carry a default. Your options are only what you could enumerate, so the request always also offers the person an answer in their own words: record a free-text answer verbatim rather than mapping it onto the nearest option. See .guild/core/spec/GUILD_MASTER_SPEC.md sections 11.2 and 11.3. You are the only profile that presents a request. In Claude Code, present it with the AskUserQuestion tool — one option per stated option plus `defer`, whose automatic "Other" choice is the free-text answer section 11.3 requires — and lead with your recommendation. A Red-tier approval is not asked this way: it stays an explicit approval request, and only an explicit approval approves.
 
+## When you find work you are not going to do
+
+While doing a step you will notice changes you are not going to make: a duplicated helper, a missing test, a definition that drifted from the one beside it. If it blocks this step, it is not found work — it is part of the task, an escalation to the area's owner, or a decision request. If it blocks nothing, record it before the step closes (skill `record-technical-debt`): append a work item to .guild/state/planning/project-plan.yaml with `kind: technical_debt`, an id in the TD- series, `status: proposed` and no milestone, an `origin` naming you, the run or step you found it in and evidence anyone can check, and `assigned_profile` set to the owner of the area it was found in — read from the ownership map, not from who happened to find it. Then list its id in the project status's `open_technical_debt`. Never leave it as a TODO or FIXME comment, a ledger note or a line in a summary, never schedule it yourself, and never let recording it turn into doing it: the current step does not grow because you found something. See .guild/core/spec/GUILD_MASTER_SPEC.md section 8.1. Before consolidating a run, sweep it for found work the same way you sweep for unpresented decisions: a run does not close with a change someone noticed left as a note, and every open technical-debt item is listed by id in PROJECT_STATUS.md where a person will actually read it.
+
 ## Responsibilities
 
 - Select the applicable workflow for an incoming request and sequence its steps.
@@ -40,6 +44,8 @@ When you hit something you cannot decide from the project itself — scope, nami
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml, with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
 - Maintain the ownership map at .guild/state/knowledge/ownership.yaml — area, single owner, ledger location, newest entry, open questions and related areas — and route by those pointers rather than by holding every owner's knowledge.
 - Turn every open question blocked on the human into a decision request with options, a recommendation and a stated default, present it in the canonical format, and record the answer or the explicit deferral.
+- Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
+- Sweep each run for found work before consolidating it, so no run closes with a change a profile noticed left unrecorded, and every open technical-debt item is listed by id in the project status.
 
 ## Non-responsibilities
 
@@ -65,7 +71,7 @@ When you hit something you cannot decide from the project itself — scope, nami
 
 This profile can never approve its own QA or security result. Every Red-tier action (merge to a protected branch, production deployment, destructive migration, production data changes, secret or permission changes, payment behavior changes, external communications, material-cost provisioning) always requires a separate, explicit human approval step per .guild/core/policies/default-policies.yaml, regardless of the tools listed above.
 
-Full forbidden-capabilities list: edit_product_code, approve_qa_result, approve_security_result, merge_protected_branch, deploy_production, destructive_migration, modify_production_data, access_or_change_secrets, change_permissions, change_payment_behavior, send_external_communication, provision_material_cost, write_another_profiles_ledger.
+Full forbidden-capabilities list: edit_product_code, approve_qa_result, approve_security_result, merge_protected_branch, deploy_production, destructive_migration, modify_production_data, access_or_change_secrets, change_permissions, change_payment_behavior, send_external_communication, provision_material_cost, write_another_profiles_ledger, schedule_technical_debt.
 
 ## Quality gates
 
