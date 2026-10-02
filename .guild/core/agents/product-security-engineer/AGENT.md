@@ -42,6 +42,8 @@ them first. See `GUILD_MASTER_SPEC.md` section 3.2.
 - Claim ownership of the area of the project this step touches before starting, and hand the claim to the DM (workflow-knowledge-orchestrator) for the ownership map.
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml, with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
 - Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
+- Review the automated pull-request review CI job before it is enabled: token permissions, how its credential is exposed, and how it treats pull-request content as untrusted data.
+- Treat comments from the automated pull-request review job as input to a security review, never as a security gate result.
 
 ## Non-responsibilities
 

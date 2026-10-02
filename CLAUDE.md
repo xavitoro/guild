@@ -28,6 +28,14 @@ chose for conversation, state prose and git, recorded under `languages` in
 question per setting, before any other onboarding question — and no subagent picks or
 infers one itself. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.
 
+Whether the Barbarian (`quality-assurance-engineer`) and/or the Rogue
+(`product-security-engineer`) also run on every pull request as a CI job on the
+repository host is asked by the DM right after the languages, with the agent client that
+runs them. The job only comments — each comment with findings ending with a recommended
+prompt to resolve them — and never stands in for their gates; the Cleric
+(`cloud-devops-engineer`) writes it, the Rogue reviews it, and its secret and cost are
+Red-tier approvals. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.4.
+
 Each subagent owns a declared part of the project and keeps its own knowledge ledger
 under `.guild/state/knowledge/profiles/<profile-id>.yaml`, claiming its area before a
 step and recording what the step verified afterwards. The DM

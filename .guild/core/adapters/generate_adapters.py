@@ -224,6 +224,13 @@ def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
             "else the same as conversation) and English as an option, the automatic \"Other\" choice "
             "being the free-text answer. Record the answers in .guild/state/project.yaml and speak in "
             "the chosen conversation language from then on."
+            " Right after the languages, ask whether the Barbarian and/or the Rogue should also run "
+            "automatically on every pull request as a CI job on the repository host — one AskUserQuestion "
+            "question for the profiles (recommended: neither), and, if any is chosen, one for the agent "
+            "client that runs them (recommended: the client this run is in) — and record it under "
+            "`pull_request_review_automation` in .guild/state/project.yaml. That job only ever comments; "
+            "its secret and its running cost reach the human as Red-tier approvals before it is enabled. "
+            "See .guild/core/spec/GUILD_MASTER_SPEC.md section 11.4."
         )
     ledger_note = (
         f"Before doing a step's work, claim the area of the project it touches (skill "
@@ -389,6 +396,21 @@ def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: d
         width=88,
         break_on_hyphens=False,
     )
+    pr_review = textwrap.fill(
+        "Whether the Barbarian and/or the Rogue also run automatically on every pull request, as a CI "
+        "job on the repository host (a GitHub Actions workflow on GitHub), is the human's choice: the "
+        "orchestrator asks right after the languages, together with which agent client runs them, and "
+        "records it under `pull_request_review_automation` in `.guild/state/project.yaml`. When at least "
+        "one is chosen, the Cleric writes the job (`set-up-pull-request-review-automation`), the Rogue "
+        "reviews it, and the human approves its secret and its cost before it is enabled. Every comment "
+        "with findings ends with a recommended prompt the author can use to resolve them, built from the "
+        "findings and never from pull-request content. The job only "
+        "comments — it never approves, requests changes, writes a gate result or blocks a merge — so the "
+        "QA and security gates stay with the `review-pull-request` workflow. See "
+        "`.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.4.",
+        width=88,
+        break_on_hyphens=False,
+    )
     ownership = textwrap.fill(
         "Every part of the project has exactly one owning profile. A profile claims its area "
         "before working (`claim-ownership`) and appends what each interaction verified to its own "
@@ -456,6 +478,10 @@ upgrades.
 
 {languages}
 
+### Automated pull-request review
+
+{pr_review}
+
 ### Ownership and knowledge
 
 {ownership}
@@ -499,6 +525,14 @@ chose for conversation, state prose and git, recorded under `languages` in
 `.guild/state/project.yaml`. The DM asks for them with the `AskUserQuestion` tool — one
 question per setting, before any other onboarding question — and no subagent picks or
 infers one itself. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.
+
+Whether the Barbarian (`quality-assurance-engineer`) and/or the Rogue
+(`product-security-engineer`) also run on every pull request as a CI job on the
+repository host is asked by the DM right after the languages, with the agent client that
+runs them. The job only comments — each comment with findings ending with a recommended
+prompt to resolve them — and never stands in for their gates; the Cleric
+(`cloud-devops-engineer`) writes it, the Rogue reviews it, and its secret and cost are
+Red-tier approvals. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 11.4.
 
 Each subagent owns a declared part of the project and keeps its own knowledge ledger
 under `.guild/state/knowledge/profiles/<profile-id>.yaml`, claiming its area before a

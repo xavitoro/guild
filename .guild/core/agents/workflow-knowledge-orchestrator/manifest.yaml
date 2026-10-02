@@ -34,6 +34,10 @@ responsibilities:
   language Guild converses in, the language state prose is written in and the language of git history —
   one question each, as options plus free text, before any other question — and record them in
   .guild/state/project.yaml.
+- Ask the human, right after the languages, whether the Barbarian and/or the Rogue run automatically on
+  every pull request and which agent client runs them, as options plus free text, and record it in
+  .guild/state/project.yaml; put the job's secret and cost to the human as Red-tier approvals before it is
+  enabled.
 non_responsibilities:
 - Judging implementation quality — owned by the Quality Assurance Engineer (Barbarian).
 - Judging security posture — owned by the Product Security Engineer (Rogue).

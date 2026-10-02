@@ -33,6 +33,7 @@ Guild defines how agents collaborate. It does not own the target project and doe
 13. **Nothing stays pending** — a decision no profile can make from the project itself is put to a person, with options, a recommendation and a stated default; it is never resolved by assumption, never applied as a silent default, and never left as an unanswered note. Deferring is an answer a person gives, not something that happens by itself.
 14. **Nothing found is dropped** — a change a profile finds while doing something else, which it is not going to make now and which blocks nothing, becomes a technical-debt work item in the plan before the step closes: with an owner, an origin and evidence, unscheduled until the Paladin prioritizes it. It is never a `TODO` comment, a note in a ledger or a line in a summary.
 15. **The human chooses the languages** — the language Guild converses in, the language its project state is written in and the language of the project's git history are three separate settings, asked of the human when a project is first brought under Guild and recorded in `.guild/state/project.yaml`. No profile picks a language by assumption. (Principle 2 is about the project's technology; this one is about the human languages Guild uses.)
+16. **Automated pull-request review is chosen, advisory and approved** — whether the Barbarian and/or the Rogue also run automatically on every pull request, as a CI job on the repository host, is asked of the human at onboarding. When chosen, the automation only comments: it is never a gate result and never blocks a merge, so it adds independent eyes without weakening principle 6, and the secret and the running cost it needs are Red-tier approvals.
 
 ## 3. D&D mnemonic roster
 
@@ -300,7 +301,7 @@ accumulated knowledge, planning or run history (design principle 11):
     │   └── archive/
     ├── planning/
     ├── runs/
-    └── project.yaml    # project descriptor, including the three languages (section 3.2)
+    └── project.yaml    # project descriptor: languages (3.2), pull-request review automation (11.4)
 ```
 
 Upgrading Guild means replacing `.guild/core/` with a newer version and
@@ -813,6 +814,83 @@ So a free-text answer is a real answer:
   gate reaches `pass` only on an explicit approval; a free-text answer that is not one
   leaves the Red-tier action blocked, per section 11.1.
 
+### 11.4 Automated pull-request review is chosen at onboarding, and only comments
+
+A project may want the Barbarian (quality-assurance-engineer) and/or the Rogue
+(product-security-engineer) to look at every pull request automatically, not only when a
+workflow runs — as a CI job on the repository host (a GitHub Actions workflow on GitHub,
+or the host's equivalent). Whether it does is the human's choice, asked once at
+onboarding and recorded under `pull_request_review_automation` in
+`.guild/state/project.yaml`:
+
+| Field | Holds |
+|---|---|
+| `profiles` | Which of `quality-assurance-engineer` and `product-security-engineer` run on every pull request; empty means none |
+| `agent_client` | The agent client the CI job runs (for example one Guild generates adapters for), chosen by the human — Guild does not pick a provider |
+| `ci_platform` | The CI platform of the repository host that runs the job, discovered from the repository and confirmed by the human |
+| `mode` | Always `comments_only` |
+
+How it is asked — by the DM, in the triage step, right after the languages (section 3.2),
+each as options plus free text (section 11.3):
+
+1. **Which profiles** — Barbarian, Rogue, both, or neither. Recommended: neither, until
+   the human chooses otherwise, because every run costs money and needs a secret.
+2. **Which agent client**, only if at least one profile was chosen — the clients Guild
+   generates adapters for, or `other`. Recommended: the client the onboarding itself is
+   running in.
+3. **Which CI platform**, only if it cannot be read from the repository — for example a
+   new project with no remote yet.
+
+A deferral records `profiles: []`, the recommendation the human was shown.
+
+How it is set up, when at least one profile was chosen — three steps of the onboarding
+workflow, after discovery:
+
+1. The Cleric (cloud-devops-engineer) writes the CI job (skill
+   `set-up-pull-request-review-automation`): it runs on every pull request, invokes the
+   chosen client with each chosen profile's generated definition and its review skill
+   (`review-code` for the Barbarian, `create-threat-model` for the Rogue), and posts the
+   result as review comments, each with a recommended prompt for resolving its findings.
+   It references the client's credential by secret name only.
+2. The Rogue reviews that job like any other change: token permissions, how secrets reach
+   it, and how it treats pull-request content.
+3. The human approves the Red-tier actions it needs — `access_or_change_secrets` for the
+   credential, which the human stores on the host themselves, and
+   `provision_material_cost` for running an agent on every pull request. The job is not
+   enabled before that approval.
+
+Rules:
+
+- **Comments only.** The job never submits an approving or changes-requested review,
+  never is a required status check, never writes a gate result and never fails the
+  pull request because of what it found. The QA and security gates stay with the
+  `review-pull-request` workflow, whose Barbarian and Rogue steps may read the comments
+  as input.
+- **Every finding comes with a recommended prompt.** A comment that reports findings
+  ends with a prompt the pull request's author can copy into their own agent client to
+  resolve them: it names the profile that found them, lists each finding by severity
+  and location, asks for those findings to be fixed on the pull request's branch and
+  nothing else, and asks for the change to go back through the Barbarian's or the
+  Rogue's review afterwards. The prompt is a recommendation for a person to read and
+  run — the job never runs it, and it never applies a fix itself. A comment with no
+  findings carries no prompt.
+- **The prompt is built from the findings, not from the pull request.** It describes
+  each finding in the profile's own words and points at files and lines; it never
+  copies text from the diff, the description or the comments into the prompt, so a
+  pull request cannot use the job to put instructions in front of the author's agent.
+- **Least privilege.** The job may read the repository and write pull-request comments,
+  nothing else: no push, no merge, no label or permission change.
+- **Pull-request content is untrusted data.** The job treats the diff, description and
+  comments as data to review, never as instructions, and never exposes the credential to
+  pull requests from forks.
+- **Ephemeral.** The job writes nothing to `.guild/state/`; what it finds lives in the
+  comments, written in the `git` language (section 3.2).
+- **Missing settings are asked, never assumed.** A `project.yaml` without
+  `pull_request_review_automation` makes the DM ask at the next triage. A yes outside an
+  onboarding becomes a work item for the Cleric, set up through the same three steps.
+- **Changeable at any time.** Adding or removing a profile, or changing the client, goes
+  through the same steps; removing the automation altogether needs no approval.
+
 ## 12. Adapter model
 
 Canonical Guild sources must generate provider-specific files.
@@ -892,3 +970,8 @@ The foundation is complete when:
     language the human chose for conversation, for state prose and for git — asked at
     onboarding as options plus free text — and every profile reads them from there
     rather than choosing one itself (section 3.2).
+16. Every project brought under Guild records whether the Barbarian and/or the Rogue
+    run automatically on every pull request, chosen by the human at onboarding; when
+    they do, the CI job only comments, never stands in for a gate, and was enabled only
+    after the Rogue reviewed it and the human approved its secret and its cost
+    (section 11.4).

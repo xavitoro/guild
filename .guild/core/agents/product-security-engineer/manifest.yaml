@@ -15,6 +15,10 @@ responsibilities:
 - Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt
   work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the
   area it was found in — never as a comment, a note or a line in a summary.
+- 'Review the automated pull-request review CI job before it is enabled: token permissions, how its credential
+  is exposed, and how it treats pull-request content as untrusted data.'
+- Treat comments from the automated pull-request review job as input to a security review, never as a security
+  gate result.
 non_responsibilities:
 - Implementing product functionality — owned by the implementation profiles.
 - Approving its own findings as resolved without independent re-verification.

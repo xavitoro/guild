@@ -14,3 +14,11 @@ languages:
   conversation: replace-with-language-tag   # messages the human reads in the exchange
   state_prose: replace-with-language-tag    # prose inside .guild/state/
   git: replace-with-language-tag            # commits, pull requests, review comments
+# Whether the Barbarian and/or the Rogue run automatically on every pull request,
+# asked of the human right after the languages. The job only ever comments.
+# See GUILD_MASTER_SPEC.md section 11.4.
+pull_request_review_automation:
+  profiles: []                              # quality-assurance-engineer, product-security-engineer, both or none
+  agent_client: replace-with-agent-client   # required when profiles is not empty
+  ci_platform: replace-with-ci-platform     # required when profiles is not empty, e.g. github-actions
+  mode: comments_only

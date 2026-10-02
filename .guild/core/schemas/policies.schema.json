@@ -340,6 +340,103 @@
           }
         }
       }
+    },
+    "pull_request_review_automation_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How the human chooses whether the Barbarian and/or the Rogue run automatically on every pull request, and what that automation may and may not do, per GUILD_MASTER_SPEC.md section 11.4.",
+      "required": [
+        "settings_file",
+        "settings_field",
+        "eligible_profiles",
+        "mode",
+        "asked_by",
+        "chosen_by",
+        "asked_in_steps",
+        "set_up_by",
+        "set_up_skill",
+        "reviewed_by",
+        "approvals_required",
+        "rules"
+      ],
+      "properties": {
+        "settings_file": {
+          "type": "string",
+          "minLength": 1,
+          "description": "State file the choice is recorded in."
+        },
+        "settings_field": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Field of the settings file that holds it."
+        },
+        "eligible_profiles": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "quality-assurance-engineer",
+              "product-security-engineer"
+            ]
+          },
+          "description": "Profiles that may run automatically on pull requests."
+        },
+        "mode": {
+          "const": "comments_only",
+          "description": "The automation only comments; it never stands in for a gate."
+        },
+        "asked_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id that asks and records the choice."
+        },
+        "chosen_by": {
+          "const": "human",
+          "description": "Only the human chooses whether the automation runs."
+        },
+        "asked_in_steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Workflow step ids that ask for the choice."
+        },
+        "set_up_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id that writes the CI job."
+        },
+        "set_up_skill": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Skill id the CI job is written with."
+        },
+        "reviewed_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id that reviews the CI job before it is enabled."
+        },
+        "approvals_required": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Red-tier policy keys the human approves before the job is enabled."
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     }
   }
 }

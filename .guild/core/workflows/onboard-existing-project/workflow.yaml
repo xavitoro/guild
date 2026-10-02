@@ -3,7 +3,8 @@ id: onboard-existing-project
 name: Onboard an existing project
 description: 'Bring an existing repository under Guild governance: discover its stack, structure and conventions,
   establish a baseline security posture, and initialize planning and project memory from verified evidence.
-  Read-only against the target codebase; makes no product change.'
+  Read-only against the target codebase and makes no product change; the one file it may add is the automated
+  pull-request review CI job, when the human chooses one.'
 status: ready
 step_protocol:
   on_step_entry: claim-ownership
@@ -21,12 +22,16 @@ steps:
   expected_output_artifacts:
   - Scoped onboarding brief
   - 'Language settings in .guild/state/project.yaml: conversation, state prose and git'
+  - 'Automated pull-request review choice in .guild/state/project.yaml: profiles, agent client and CI platform'
   preconditions:
   - Repository is accessible for read-only inspection.
   completion_criteria:
   - 'The human has chosen, before any other question, the language for conversation, for state prose
     and for git, each asked as options plus free text, and the DM has recorded them in .guild/state/project.yaml
     (GUILD_MASTER_SPEC.md section 3.2).'
+  - 'Right after the languages, the human has chosen whether the Barbarian and/or the Rogue run automatically
+    on every pull request and, if so, which agent client runs them, asked as options plus free text, and the
+    DM has recorded it in .guild/state/project.yaml (GUILD_MASTER_SPEC.md section 11.4).'
   - Scope of onboarding (whole repository or a subset) is confirmed.
   gates: []
   on_return: If scope is unclear, return to the requester for clarification before proceeding.
@@ -76,7 +81,72 @@ steps:
     outside the normal sequence.
   optional: true
   condition: when discovery finds authentication, payment, secret-handling or personal-data code
-- id: onboard-05-consolidate-knowledge
+- id: onboard-05-set-up-pr-review-automation
+  name: Set up automated pull-request review
+  responsible_profile: cloud-devops-engineer
+  invoked_skill: set-up-pull-request-review-automation
+  required_input_artifacts:
+  - pull_request_review_automation in .guild/state/project.yaml
+  - Operational discovery notes, if produced
+  - Generated definitions of the chosen profiles for the chosen agent client
+  expected_output_artifacts:
+  - CI job definition that comments on every pull request, disabled until approved
+  - Secret name the job expects and estimated cost per run
+  preconditions:
+  - The human chose at least one profile for automated pull-request review in onboard-01-triage.
+  completion_criteria:
+  - 'The job only comments: it never approves, requests changes, writes a gate result, is a required status
+    check, or fails because of what it found (GUILD_MASTER_SPEC.md section 11.4).'
+  - The job can read the repository and write pull-request comments, and nothing else.
+  - The credential is referenced by secret name only and is never exposed to pull requests from forks.
+  - Every comment that reports findings ends with a recommended prompt to resolve them, built from the
+    findings and never from pull-request content; a comment with no findings carries none.
+  gates: []
+  optional: true
+  condition: when the human chose the Barbarian and/or the Rogue for automated pull-request review in onboard-01-triage
+- id: onboard-06-review-pr-review-automation
+  name: Review the automated pull-request review job
+  responsible_profile: product-security-engineer
+  invoked_skill: create-threat-model
+  required_input_artifacts:
+  - CI job definition from onboard-05-set-up-pr-review-automation
+  expected_output_artifacts:
+  - Security review of the CI job
+  preconditions:
+  - The CI job definition exists and is not yet enabled.
+  completion_criteria:
+  - Token permissions, how the credential reaches the job (including from fork pull requests) and how the
+    job treats pull-request content as untrusted data each have an explicit finding or an explicit none.
+  - The recommended prompt is checked to be built only from the findings, so a pull request cannot place
+    instructions in front of the author's agent through it.
+  gates: []
+  on_return: Findings return to the Cleric (cloud-devops-engineer) at onboard-05-set-up-pr-review-automation
+    before the human approval is requested.
+  optional: true
+  condition: when the human chose the Barbarian and/or the Rogue for automated pull-request review in onboard-01-triage
+- id: onboard-07-human-approval-pr-review-automation
+  name: Approve the automated pull-request review job
+  responsible_profile: human
+  invoked_skill: grant-human-approval
+  required_input_artifacts:
+  - Reviewed CI job definition and its security review
+  - Approval request from the DM in the canonical format — the Red-tier policy keys, the profile blocked on
+    the answer named by alias and canonical id, the secret name, the estimated cost per run, and the effect
+    of approving and of rejecting
+  expected_output_artifacts:
+  - Approval record / gate result
+  preconditions:
+  - The Rogue's review of the CI job has no unresolved critical or high finding.
+  completion_criteria:
+  - The human has explicitly approved or rejected the job's secret and its running cost.
+  - On approval, the human stores the credential on the repository host themselves; no profile handles its
+    value.
+  gates:
+  - access_or_change_secrets
+  - provision_material_cost
+  optional: true
+  condition: when the human chose the Barbarian and/or the Rogue for automated pull-request review in onboard-01-triage
+- id: onboard-08-consolidate-knowledge
   name: Consolidate initial project knowledge
   responsible_profile: workflow-knowledge-orchestrator
   invoked_skill: consolidate-knowledge
@@ -94,11 +164,13 @@ steps:
   gates:
   - memory_entries_evidence_backed
 failure_paths:
+- If the human rejects the automated pull-request review job, it is removed rather than left disabled, and the DM records the rejection and sets the recorded choice back to no profiles.
 - If the repository cannot be read or access is denied, the workflow halts at triage and the DM escalates to
   the human, naming the access it needs.
 - If discovery evidence is insufficient to support an evidence-backed memory entry, the entry is left
   unrecorded rather than guessed.
 return_paths:
+- Findings from the Rogue on the automated pull-request review job return to the Cleric before the human approval is requested.
 - Ambiguous or contradictory discovery findings return to the Artificer or the Cleric for a narrower
   discovery scope.
 escalation_paths:

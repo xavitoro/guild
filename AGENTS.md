@@ -64,9 +64,9 @@ is the canonical source of truth; everything below is generated from it. This pr
 own knowledge, planning and run history live in `.guild/state/`, untouched by Guild
 upgrades.
 
-- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (27 skills)
+- Codex skills: `.agents/skills/<skill-id>/SKILL.md` (28 skills)
 - Claude Code subagents: `.claude/agents/<profile-id>.md` (14 profiles)
-- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (27 skills)
+- Claude Code skills: `.claude/skills/<skill-id>/SKILL.md` (28 skills)
 - Generic / single-assistant clients: read `.guild/core/agents/`, `.guild/core/skills/`
   and `.guild/core/workflows/` directly — see
   `.guild/core/workflows/EXECUTION_MODES.md` mode 1.
@@ -94,6 +94,21 @@ project that has none recorded. No profile picks or infers a language. Ids, alia
 keys, schema fields, file names, recorded answer keys and quoted evidence are never
 translated, and `.guild/core/` stays as it is. See
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.
+
+### Automated pull-request review
+
+Whether the Barbarian and/or the Rogue also run automatically on every pull request, as
+a CI job on the repository host (a GitHub Actions workflow on GitHub), is the human's
+choice: the orchestrator asks right after the languages, together with which agent
+client runs them, and records it under `pull_request_review_automation` in
+`.guild/state/project.yaml`. When at least one is chosen, the Cleric writes the job
+(`set-up-pull-request-review-automation`), the Rogue reviews it, and the human approves
+its secret and its cost before it is enabled. Every comment with findings ends with a
+recommended prompt the author can use to resolve them, built from the findings and never
+from pull-request content. The job only comments — it never approves, requests changes,
+writes a gate result or blocks a merge — so the QA and security gates stay with the
+`review-pull-request` workflow. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section
+11.4.
 
 ### Ownership and knowledge
 

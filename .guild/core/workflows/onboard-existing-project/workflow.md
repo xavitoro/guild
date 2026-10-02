@@ -8,10 +8,10 @@ assistant switching roles, native subagents, or a future external runtime.
 
 ## Description
 
-Bring an existing repository under Guild governance: discover its stack, structure and conventions, establish a baseline security posture, and initialize planning and project memory from verified evidence. Read-only against the target codebase; makes no product change.
+Bring an existing repository under Guild governance: discover its stack, structure and conventions, establish a baseline security posture, and initialize planning and project memory from verified evidence. Read-only against the target codebase and makes no product change; the one file it may add is the automated pull-request review CI job, when the human chooses one.
 
 
-## Languages come first
+## Languages and pull-request review come first
 
 The triage step asks the human for three languages before any other question, and the
 DM records them in `.guild/state/project.yaml`: the language Guild converses in, the
@@ -19,6 +19,14 @@ language the project's state prose is written in, and the language of its git hi
 (commits, pull requests, review comments). Each is asked as options plus free text;
 until they are answered the DM speaks in the language the request was written in. Every
 later step reads them from `project.yaml` — see `GUILD_MASTER_SPEC.md` section 3.2.
+
+Right after the languages, the DM asks whether the Barbarian and/or the Rogue should also
+run automatically on every pull request as a CI job on the repository host (a GitHub
+Actions workflow on GitHub), and which agent client runs them. When at least one is
+chosen, the Cleric writes the job, the Rogue reviews it and the human approves its secret
+and its cost before it is enabled. The job only comments, and every comment with findings ends with a recommended prompt
+the author can use to resolve them; it never stands in for a gate
+— see `GUILD_MASTER_SPEC.md` section 11.4.
 
 ## Diagram
 
@@ -30,11 +38,17 @@ flowchart TD
     onboard-02-discover-codebase["Artificer — Discover the codebase"]
     onboard-03-discover-infra{{"Cleric — Discover CI/CD and infrastructure"}}
     onboard-04-baseline-threat-model{{"Rogue — Assess baseline security posture"}}
-    onboard-05-consolidate-knowledge["DM — Consolidate initial project knowledge"]
+    onboard-05-set-up-pr-review-automation{{"Cleric — Set up automated pull-request review"}}
+    onboard-06-review-pr-review-automation{{"Rogue — Review the automated pull-request review job"}}
+    onboard-07-human-approval-pr-review-automation{{"Human — Approve the automated pull-request review job"}}
+    onboard-08-consolidate-knowledge["DM — Consolidate initial project knowledge"]
     onboard-01-triage --> onboard-02-discover-codebase
     onboard-02-discover-codebase --> onboard-03-discover-infra
     onboard-03-discover-infra --> onboard-04-baseline-threat-model
-    onboard-04-baseline-threat-model --> onboard-05-consolidate-knowledge
+    onboard-04-baseline-threat-model --> onboard-05-set-up-pr-review-automation
+    onboard-05-set-up-pr-review-automation --> onboard-06-review-pr-review-automation
+    onboard-06-review-pr-review-automation --> onboard-07-human-approval-pr-review-automation
+    onboard-07-human-approval-pr-review-automation --> onboard-08-consolidate-knowledge
 ```
 
 ## Step protocol
@@ -63,15 +77,20 @@ what it found but did not do is in the plan, owned, rather than in a comment.
 | `onboard-02-discover-codebase` | Discover the codebase | **Artificer** (`product-software-engineer`) | `discover-project` | discovery_report_evidence_backed |
 | `onboard-03-discover-infra` | Discover CI/CD and infrastructure *(optional — when the repository includes CI/CD pipelines or infrastructure-as-code configuration)* | **Cleric** (`cloud-devops-engineer`) | `discover-project` | — |
 | `onboard-04-baseline-threat-model` | Assess baseline security posture *(optional — when discovery finds authentication, payment, secret-handling or personal-data code)* | **Rogue** (`product-security-engineer`) | `create-threat-model` | — |
-| `onboard-05-consolidate-knowledge` | Consolidate initial project knowledge | **DM** (`workflow-knowledge-orchestrator`) | `consolidate-knowledge` | memory_entries_evidence_backed |
+| `onboard-05-set-up-pr-review-automation` | Set up automated pull-request review *(optional — when the human chose the Barbarian and/or the Rogue for automated pull-request review in `onboard-01-triage`)* | **Cleric** (`cloud-devops-engineer`) | `set-up-pull-request-review-automation` | — |
+| `onboard-06-review-pr-review-automation` | Review the automated pull-request review job *(optional — when the human chose the Barbarian and/or the Rogue for automated pull-request review in `onboard-01-triage`)* | **Rogue** (`product-security-engineer`) | `create-threat-model` | — |
+| `onboard-07-human-approval-pr-review-automation` | Approve the automated pull-request review job *(optional — when the human chose the Barbarian and/or the Rogue for automated pull-request review in `onboard-01-triage`)* | **Human** | `grant-human-approval` | access_or_change_secrets, provision_material_cost |
+| `onboard-08-consolidate-knowledge` | Consolidate initial project knowledge | **DM** (`workflow-knowledge-orchestrator`) | `consolidate-knowledge` | memory_entries_evidence_backed |
 
 ## Failure paths
 
+- If the human rejects the automated pull-request review job, it is removed rather than left disabled, and the DM records the rejection and sets the recorded choice back to no profiles.
 - If the repository cannot be read or access is denied, the workflow halts at triage and the DM escalates to the human, naming the access it needs.
 - If discovery evidence is insufficient to support an evidence-backed memory entry, the entry is left unrecorded rather than guessed.
 
 ## Return paths
 
+- Findings from the Rogue on the automated pull-request review job return to the Cleric before the human approval is requested.
 - Ambiguous or contradictory discovery findings return to the Artificer or the Cleric for a narrower discovery scope.
 
 ## Escalation paths

@@ -69,6 +69,55 @@
           "description": "Language tag for commit messages, pull request titles and descriptions, and review comments posted to the repository host."
         }
       }
+    },
+    "pull_request_review_automation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Whether the Barbarian and/or the Rogue also run automatically on every pull request as a CI job on the repository host, chosen by the human at onboarding (GUILD_MASTER_SPEC.md section 11.4). The job only comments. Not required by the schema so that state created before section 11.4 stays valid across a core upgrade; when it is missing, the DM asks at the next triage.",
+      "required": [
+        "profiles",
+        "mode"
+      ],
+      "properties": {
+        "profiles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "quality-assurance-engineer",
+              "product-security-engineer"
+            ]
+          },
+          "description": "Canonical ids of the profiles that run on every pull request; empty means no automation."
+        },
+        "agent_client": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The agent client the CI job runs, as chosen by the human."
+        },
+        "ci_platform": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The CI platform of the repository host that runs the job, e.g. github-actions."
+        },
+        "mode": {
+          "const": "comments_only",
+          "description": "The job posts review comments only: it is never a gate result and never blocks a merge."
+        }
+      },
+      "if": {
+        "properties": {
+          "profiles": {
+            "minItems": 1
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "agent_client",
+          "ci_platform"
+        ]
+      }
     }
   }
 }

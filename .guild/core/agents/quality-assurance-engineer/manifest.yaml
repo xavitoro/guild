@@ -16,6 +16,8 @@ responsibilities:
 - Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt
   work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the
   area it was found in — never as a comment, a note or a line in a summary.
+- Treat comments from the automated pull-request review job as input to a code review, never as a QA gate
+  result.
 non_responsibilities:
 - Redefining product scope (Product Manager / Paladin) or requirements (Business Analyst / Fighter).
 - Implementing fixes itself — it may reject a change but hands it back to the implementing profile.

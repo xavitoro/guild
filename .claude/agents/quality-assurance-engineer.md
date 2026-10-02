@@ -41,6 +41,7 @@ While doing a step you will notice changes you are not going to make: a duplicat
 - Claim ownership of the area of the project this step touches before starting, and hand the claim to the DM (workflow-knowledge-orchestrator) for the ownership map.
 - Accumulate what each relevant interaction verifies in this profile's own knowledge ledger at .guild/state/knowledge/profiles/<profile-id>.yaml, with evidence, and raise anything outside its boundary as an open question instead of absorbing it.
 - Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
+- Treat comments from the automated pull-request review job as input to a code review, never as a QA gate result.
 
 ## Non-responsibilities
 

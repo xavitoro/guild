@@ -26,10 +26,12 @@ DM (workflow-knowledge-orchestrator)
 - Selected workflow id
 - Ownership assignment: which areas the request touches, who owns each, and where their ledgers are
 - Language settings in .guild/state/project.yaml (conversation, state prose, git), when they were missing
+- Automated pull-request review choice in .guild/state/project.yaml (profiles, agent client, CI platform), when it was missing
 
 ## Steps
 
 - Read the language settings in .guild/state/project.yaml. If the project has none — always the case when onboarding, and the case for state created before they existed — ask the human for them before anything else: the language Guild converses in, the language state prose is written in, and the language of git history, one question each, as options plus free text (GUILD_MASTER_SPEC.md section 3.2). Ask in the language the request was written in, record the answers in .guild/state/project.yaml, and speak in the chosen conversation language from then on.
+- Then read pull_request_review_automation in .guild/state/project.yaml. If it is missing, ask the human — right after the languages, as options plus free text — whether the Barbarian and/or the Rogue should run automatically on every pull request as a CI job on the repository host (recommended: neither), and, if at least one is chosen, which agent client runs them (recommended: the client this run is in) and, when it cannot be read from the repository, which CI platform (GUILD_MASTER_SPEC.md section 11.4). Record the answer; a deferral records no profiles. A yes during onboarding is set up by the workflow's own steps; a yes outside onboarding becomes a work item for the Cleric.
 - Read the request and any linked work item.
 - Identify which of the six canonical workflows applies.
 - Confirm scope boundaries and flag missing information back to the requester.

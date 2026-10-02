@@ -29,6 +29,7 @@ several skills across different workflow steps.
 | [Analyze product data](analyze-product-data/SKILL.md) | `analyze-product-data` | Sorcerer (product-data-analyst) |
 | [Plan and execute a deployment](plan-and-execute-deployment/SKILL.md) | `plan-and-execute-deployment` | Cleric (cloud-devops-engineer) |
 | [Roll back a deployment](rollback-deployment/SKILL.md) | `rollback-deployment` | Cleric (cloud-devops-engineer) |
+| [Set up automated pull-request review](set-up-pull-request-review-automation/SKILL.md) | `set-up-pull-request-review-automation` | Cleric (cloud-devops-engineer) |
 | [Prepare a pull request](prepare-pull-request/SKILL.md) | `prepare-pull-request` | DM (workflow-knowledge-orchestrator), Artificer (product-software-engineer), Ranger (web-experience-engineer), Wizard (database-engineer), Warlock (integration-engineer), Monk (data-analytics-engineer) |
 | [Review code in a pull request](review-code/SKILL.md) | `review-code` | Barbarian (quality-assurance-engineer) |
 | [Grant human approval](grant-human-approval/SKILL.md) | `grant-human-approval` | the human |

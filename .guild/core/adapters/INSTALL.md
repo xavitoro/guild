@@ -30,7 +30,15 @@ run the generator there.
    Guild should converse with you in, the language for the prose of
    `.guild/state/`, and the language for git commits and pull requests. The
    answers are recorded in `.guild/state/project.yaml` (see
-   `GUILD_MASTER_SPEC.md` section 3.2).
+   `GUILD_MASTER_SPEC.md` section 3.2). Right after, it asks whether the
+   Barbarian and/or the Rogue should also review every pull request
+   automatically as a CI job (a GitHub Actions workflow on GitHub), and
+   with which agent client. If you say yes, the Cleric writes the job,
+   the Rogue reviews it, and you approve its secret — which you store on
+   the host yourself — and its running cost before it is enabled. The job
+   only comments — each comment with findings ends with a recommended
+   prompt you can give your agent to resolve them — and it never blocks a
+   merge (section 11.4).
 4. Commit the result, including the generated files — they are meant to be
    checked in, not regenerated on every clone. Regenerate only after
    changing something under `.guild/core/agents/` or `.guild/core/skills/`.

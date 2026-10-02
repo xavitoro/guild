@@ -13,6 +13,7 @@ python3 .guild/core/evals/check_ownership_model.py
 python3 .guild/core/evals/check_human_in_the_loop.py
 python3 .guild/core/evals/check_found_work.py
 python3 .guild/core/evals/check_language_settings.py
+python3 .guild/core/evals/check_pr_review_automation.py
 python3 .guild/core/adapters/generate_adapters.py --target . --check
 ```
 
@@ -161,6 +162,25 @@ the adapter generator carries the rule into the generated files. The state half
 runs when `.guild/state/project.yaml` exists: recorded languages must validate,
 and missing ones are a warning — state that predates section 3.2 stays valid, and
 the DM asks at the next triage.
+
+## check_pr_review_automation.py
+
+Proves that automated pull-request review is the human's choice and only
+comments (`GUILD_MASTER_SPEC.md` principle 16 and section 11.4). The canonical
+half always runs: `default-policies.yaml` declares the principle and a
+`pull_request_review_automation_protocol` — the Barbarian and the Rogue as the
+only eligible profiles, `comments_only`, the DM asking, the human choosing, the
+Cleric setting up, the Rogue reviewing and `access_or_change_secrets` and
+`provision_material_cost` as the approvals it needs; `project.schema.json` fixes
+the mode and requires an agent client and a CI platform once a profile is chosen;
+every workflow that asks also has, before its last step and conditional on the
+choice, a Cleric set-up step, a Rogue review and a human approval carrying both
+gates, in that order; `set-up-pull-request-review-automation` applies to the
+Cleric only and states the comments-only, secret-by-name, fork and
+untrusted-input rules, and that every comment with findings ends with a
+recommended prompt built from the findings alone, which the job never runs; and the adapter generator carries the rule. The state
+half runs when `.guild/state/project.yaml` exists: a recorded choice must
+validate, and a missing one is a warning — the DM asks at the next triage.
 
 ## generate_adapters.py --check
 
