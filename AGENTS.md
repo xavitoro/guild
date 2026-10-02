@@ -5,12 +5,7 @@
 Before planning or modifying this repository, read:
 
 1. `.guild/core/spec/GUILD_MASTER_SPEC.md`
-2. `.guild/state/planning/PROJECT_STATUS.md`
-3. `.guild/state/planning/project-plan.yaml`
-4. `.guild/state/knowledge/PROJECT_MEMORY.md`
-5. `.guild/state/knowledge/OWNERSHIP.md` — who owns which part of this
-   repository, and where each owner's knowledge ledger lives
-6. `.guild/core/policies/default-policies.yaml`
+2. `.guild/core/policies/default-policies.yaml`
 
 ## Repository purpose
 
@@ -26,6 +21,20 @@ This repository defines a provider-neutral Agentic SDLC framework composed of:
 
 It is not initially a SaaS product, IDE, autonomous coding runtime or language-specific framework.
 
+## This repository is Guild itself
+
+This repository is Guild's own source, not a project under Guild governance. A request
+here to change the framework changes `.guild/core/` and the files generated from it
+(`.agents/`, `.claude/`, and the generated blocks of `AGENTS.md` and `CLAUDE.md`) —
+nothing else.
+
+- Do not offer onboarding here. The not-yet-onboarded check
+  (`.guild/core/spec/GUILD_MASTER_SPEC.md` section 9.1) is for projects that install
+  Guild; in this repository a missing `.guild/state/project.yaml` is expected, not a
+  signal.
+- A framework change never creates or modifies anything under `.guild/state/`: no
+  decision records, ledger entries, plan or status updates.
+
 ## Working rules
 
 - Keep the canonical definitions provider-neutral.
@@ -38,11 +47,6 @@ It is not initially a SaaS product, IDE, autonomous coding runtime or language-s
 - Every workflow step must declare its inputs, outputs, responsible profile and gates.
 - Never let an implementation profile approve its own QA or security result.
 - Destructive, production, credential, payment and permission changes require explicit human approval.
-- Claim the area you are about to work in before changing it, and record what
-  the change verified in that area's owner ledger under
-  `.guild/state/knowledge/profiles/`.
-- Update `.guild/state/knowledge/` when stable knowledge is verified.
-- Update `.guild/state/planning/` when project scope or status changes.
 - Do not record private chain-of-thought or unverified opinions as project memory.
 
 ## Change protocol
