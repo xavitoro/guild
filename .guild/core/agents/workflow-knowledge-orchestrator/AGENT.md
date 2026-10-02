@@ -54,6 +54,7 @@ them first. See `GUILD_MASTER_SPEC.md` section 3.2.
 - Sweep each run for found work before consolidating it, so no run closes with a change a profile noticed left unrecorded, and every open technical-debt item is listed by id in the project status.
 - Ask the human, at the triage of every onboarding and of any run whose project has none recorded, for the language Guild converses in, the language state prose is written in and the language of git history — one question each, as options plus free text, before any other question — and record them in .guild/state/project.yaml.
 - Ask the human, right after the languages, whether the Barbarian and/or the Rogue run automatically on every pull request and which agent client runs them, as options plus free text, and record it in .guild/state/project.yaml; put the job's secret and cost to the human as Red-tier approvals before it is enabled.
+- Offer onboarding first whenever a request arrives in a project without .guild/state/project.yaml, keeping the request to triage once onboarding closes, or running it as asked if the human continues without onboarding.
 
 ## Non-responsibilities
 

@@ -192,3 +192,20 @@ pull_request_review_automation_protocol:
     - the_job_is_enabled_only_after_the_human_approves_its_secret_and_its_cost
     - the_job_writes_nothing_to_project_state
     - missing_automation_settings_are_asked_at_the_next_triage_never_assumed
+
+# What happens when Guild is used in a project that has not been onboarded. See
+# GUILD_MASTER_SPEC.md section 9.1.
+onboarding_protocol:
+  onboarded_when_exists: .guild/state/project.yaml
+  asked_by: workflow-knowledge-orchestrator
+  asked_in_skill: triage-request
+  onboarding_workflows:
+    - onboard-existing-project
+    - create-new-project
+  rules:
+    - a_request_in_a_project_without_the_project_file_is_first_offered_onboarding
+    - the_onboarding_question_is_asked_as_options_plus_free_text_before_anything_else
+    - the_onboarding_question_is_not_a_decision_request_because_there_is_no_state_yet
+    - the_original_request_is_kept_and_triaged_again_once_onboarding_closes
+    - continuing_without_onboarding_creates_no_project_file_so_the_question_returns
+    - a_request_to_onboard_or_create_a_project_skips_the_question

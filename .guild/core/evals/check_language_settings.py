@@ -13,7 +13,8 @@ Canonical half — always runs, over .guild/core/ only:
      asking profile, invokes triage-request, and is the first step of its
      workflow — the languages are asked before any other question — and outputs
      the language settings.
-  4. The triage-request skill asks for the languages before anything else.
+  4. The triage-request skill asks for the languages before anything else, except
+     the not-yet-onboarded check of section 9.1.
   5. Every profile's AGENT.md tells it to read the languages from project.yaml.
   6. The adapter generator carries the rule into the generated subagents and into
      the AGENTS.md / CLAUDE.md blocks.
@@ -120,11 +121,16 @@ def main() -> int:
         if not any("project.yaml" in out for out in step.get("expected_output_artifacts", [])):
             errors.append(f"[workflow] {where} does not output the language settings in project.yaml")
 
-    # 4. Triage skill asks first
+    # 4. Triage skill asks first — only the not-yet-onboarded check (section 9.1) may precede it
     triage = _load_yaml(CORE_ROOT / "skills" / TRIAGE_SKILL / "SKILL.yaml")
-    first = (triage.get("steps") or [""])[0]
-    if "project.yaml" not in first or not all(word in first for word in ("converses", "state prose", "git")):
-        errors.append(f"[skill] {TRIAGE_SKILL}'s first step does not ask for the three languages")
+    triage_steps = triage.get("steps") or []
+    asks = [i for i, text in enumerate(triage_steps)
+            if "project.yaml" in text and all(word in text for word in ("converses", "state prose", "git"))]
+    if not asks:
+        errors.append(f"[skill] {TRIAGE_SKILL} has no step asking for the three languages")
+    elif any("section 9.1" not in triage_steps[i] for i in range(asks[0])):
+        errors.append(f"[skill] {TRIAGE_SKILL} asks something other than the onboarding check before "
+                      f"the three languages")
 
     # 5. Every profile reads the languages
     agent_docs = sorted((CORE_ROOT / "agents").glob("*/AGENT.md"))

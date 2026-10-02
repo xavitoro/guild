@@ -437,6 +437,52 @@
           }
         }
       }
+    },
+    "onboarding_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What happens when Guild is used in a project that has not been onboarded, per GUILD_MASTER_SPEC.md section 9.1.",
+      "required": [
+        "onboarded_when_exists",
+        "asked_by",
+        "asked_in_skill",
+        "onboarding_workflows",
+        "rules"
+      ],
+      "properties": {
+        "onboarded_when_exists": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The file whose existence means the project has been onboarded."
+        },
+        "asked_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Canonical profile id that offers onboarding."
+        },
+        "asked_in_skill": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Skill id in which the question is asked."
+        },
+        "onboarding_workflows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Workflow ids that onboard a project."
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     }
   }
 }

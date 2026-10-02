@@ -216,6 +216,13 @@ def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
     )
     if agent["id"] == "workflow-knowledge-orchestrator":
         language_note += (
+            " Before that, if .guild/state/project.yaml does not exist and the request is not itself "
+            "to onboard or create a project, ask one AskUserQuestion question first: onboard now "
+            "(recommended — onboard-existing-project, or create-new-project for a repository with no "
+            "code yet — keeping the request to triage afterwards) or continue without onboarding this "
+            "time, which creates no project.yaml so the question returns next run. It is not a decision "
+            "request: there is no state to record one in yet. See "
+            ".guild/core/spec/GUILD_MASTER_SPEC.md section 9.1."
             " You are the profile that asks. At the triage of every onboarding — and of any run whose "
             "project.yaml has no `languages` — ask for the three settings before any other question, "
             "in the language the request was written in: one AskUserQuestion question per setting, "
@@ -383,6 +390,16 @@ def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: d
         "and 11.",
         width=88,
     )
+    onboarding = textwrap.fill(
+        "A project is onboarded once `.guild/state/project.yaml` exists. When any other request "
+        "arrives without it, the orchestrator first asks, as options plus free text, whether to "
+        "onboard now — `onboard-existing-project`, or `create-new-project` for a repository with no "
+        "code yet — keeping the request to triage afterwards, or to continue without onboarding this "
+        "time, in which case the question returns next run. See "
+        "`.guild/core/spec/GUILD_MASTER_SPEC.md` section 9.1.",
+        width=88,
+        break_on_hyphens=False,
+    )
     languages = textwrap.fill(
         "Guild uses three human languages in a project, each chosen by the human and recorded under "
         "`languages` in `.guild/state/project.yaml`: `conversation` for whatever a profile says to a "
@@ -474,6 +491,10 @@ upgrades.
 
 {addressing}
 
+### Not yet onboarded
+
+{onboarding}
+
 ### Languages
 
 {languages}
@@ -519,6 +540,10 @@ Druid, Bard, Ranger, Artificer, Wizard, Warlock, Barbarian, Rogue, Cleric, Sorce
 Monk) with its canonical id in parentheses on first mention, and names the other profiles
 the same way; canonical ids alone stay in artifact fields, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
+
+If Guild is used in a project with no `.guild/state/project.yaml`, the DM first asks
+whether to onboard it — keeping the request for afterwards — or to continue without
+onboarding this time. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 9.1.
 
 Every subagent speaks, writes state and writes git history in the languages the human
 chose for conversation, state prose and git, recorded under `languages` in

@@ -17,6 +17,13 @@ outputs:
 - Automated pull-request review choice in .guild/state/project.yaml (profiles, agent client, CI platform),
   when it was missing
 steps:
+- 'Check whether .guild/state/project.yaml exists. If it does not, and the request is not itself to onboard
+  or create a project, ask the human before anything else — in the language the request was written in,
+  as options plus free text — whether to onboard the project first (GUILD_MASTER_SPEC.md section 9.1):
+  onboard now (recommended), through onboard-existing-project, or create-new-project when the repository
+  has no code yet, keeping the request to triage once onboarding closes; or continue without onboarding
+  this time, which creates no project.yaml so the question comes back next run. It is a question, not
+  a decision request: there is no state to record one in yet.'
 - 'Read the language settings in .guild/state/project.yaml. If the project has none — always the case
   when onboarding, and the case for state created before they existed — ask the human for them before
   anything else: the language Guild converses in, the language state prose is written in, and the language

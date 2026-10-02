@@ -601,6 +601,36 @@ Intake by DM
 → handoff or pull request preparation by DM
 ```
 
+### 9.1 A project not yet onboarded is offered onboarding first
+
+A project is onboarded once `.guild/state/project.yaml` exists — the onboarding
+workflows write it in their first step. When any other request arrives and that file
+does not exist, the DM's triage asks one question before anything else, in the language
+the request was written in, as options plus free text (section 11.3):
+
+    Guild question
+    Asked by       DM (workflow-knowledge-orchestrator)
+    Question       This project has not been onboarded to Guild yet. Onboard it first?
+    Options        A  Onboard now (recommended) → onboard-existing-project, or
+                      create-new-project when the repository has no code yet; your
+                      request is kept and triaged once onboarding closes
+                   B  Continue without onboarding this time → the request runs as
+                      asked, and this question comes back next time
+    Your answer    A / B / other — answer in your own words
+
+Rules:
+
+- **The condition is the file, nothing else.** No other state is inspected to decide
+  whether a project was onboarded.
+- **It is a question, not a decision request.** There is no `.guild/state/` to record a
+  decision request in yet, so the DM asks it directly and records nothing until the
+  answer starts a workflow.
+- **The request is never dropped.** With A, the original request is triaged again when
+  onboarding closes. With B, it runs as asked; `project.yaml` is not created, so the
+  question returns at the next run rather than being settled by one refusal.
+- **Onboarding requests skip it.** A request that is itself to onboard — or to create a
+  new project — goes straight to that workflow.
+
 ## 10. Required schemas
 
 Create JSON Schemas for at least:
@@ -975,3 +1005,6 @@ The foundation is complete when:
     they do, the CI job only comments, never stands in for a gate, and was enabled only
     after the Rogue reviewed it and the human approved its secret and its cost
     (section 11.4).
+17. A project that has not been onboarded — no `.guild/state/project.yaml` — is
+    offered onboarding before any other request is triaged, and the request is kept
+    whatever the answer (section 9.1).

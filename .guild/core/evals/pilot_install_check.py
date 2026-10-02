@@ -54,6 +54,7 @@ OTHER_CHECKS = [
     "check_found_work.py",
     "check_language_settings.py",
     "check_pr_review_automation.py",
+    "check_onboarding_first.py",
 ]
 
 

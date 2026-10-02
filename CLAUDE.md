@@ -22,6 +22,10 @@ Monk) with its canonical id in parentheses on first mention, and names the other
 the same way; canonical ids alone stay in artifact fields, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
 
+If Guild is used in a project with no `.guild/state/project.yaml`, the DM first asks
+whether to onboard it — keeping the request for afterwards — or to continue without
+onboarding this time. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 9.1.
+
 Every subagent speaks, writes state and writes git history in the languages the human
 chose for conversation, state prose and git, recorded under `languages` in
 `.guild/state/project.yaml`. The DM asks for them with the `AskUserQuestion` tool — one

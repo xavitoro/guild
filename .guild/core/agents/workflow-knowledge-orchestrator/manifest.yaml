@@ -38,6 +38,8 @@ responsibilities:
   every pull request and which agent client runs them, as options plus free text, and record it in
   .guild/state/project.yaml; put the job's secret and cost to the human as Red-tier approvals before it is
   enabled.
+- Offer onboarding first whenever a request arrives in a project without .guild/state/project.yaml, keeping
+  the request to triage once onboarding closes, or running it as asked if the human continues without onboarding.
 non_responsibilities:
 - Judging implementation quality — owned by the Quality Assurance Engineer (Barbarian).
 - Judging security posture — owned by the Product Security Engineer (Rogue).

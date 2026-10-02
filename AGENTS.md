@@ -82,6 +82,15 @@ single-assistant mode, announce every role switch by alias before starting that 
 work. Red-tier actions reach the human as an approval request naming who is asking and
 who is blocked — see `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 3.1 and 11.
 
+### Not yet onboarded
+
+A project is onboarded once `.guild/state/project.yaml` exists. When any other request
+arrives without it, the orchestrator first asks, as options plus free text, whether to
+onboard now — `onboard-existing-project`, or `create-new-project` for a repository with
+no code yet — keeping the request to triage afterwards, or to continue without
+onboarding this time, in which case the question returns next run. See
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 9.1.
+
 ### Languages
 
 Guild uses three human languages in a project, each chosen by the human and recorded

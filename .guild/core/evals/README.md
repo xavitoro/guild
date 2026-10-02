@@ -14,6 +14,7 @@ python3 .guild/core/evals/check_human_in_the_loop.py
 python3 .guild/core/evals/check_found_work.py
 python3 .guild/core/evals/check_language_settings.py
 python3 .guild/core/evals/check_pr_review_automation.py
+python3 .guild/core/evals/check_onboarding_first.py
 python3 .guild/core/adapters/generate_adapters.py --target . --check
 ```
 
@@ -181,6 +182,17 @@ untrusted-input rules, and that every comment with findings ends with a
 recommended prompt built from the findings alone, which the job never runs; and the adapter generator carries the rule. The state
 half runs when `.guild/state/project.yaml` exists: a recorded choice must
 validate, and a missing one is a warning — the DM asks at the next triage.
+
+## check_onboarding_first.py
+
+Proves that a project not yet onboarded is offered onboarding before any other
+request is triaged (`GUILD_MASTER_SPEC.md` section 9.1). Canonical only, since
+the condition is that state does not exist yet: `default-policies.yaml` declares
+an `onboarding_protocol` whose condition is `.guild/state/project.yaml`, asked by
+the DM in `triage-request`, with the rules that keep the request and bring the
+question back; both onboarding workflows exist and write `project.yaml` in their
+first step, so the condition can stop being true; `triage-request`'s first step
+is the check; and the adapter generator carries the rule.
 
 ## generate_adapters.py --check
 
