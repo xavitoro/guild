@@ -35,3 +35,4 @@ DM (workflow-knowledge-orchestrator)
 - Update .guild/state/knowledge/project-memory.yaml and its Markdown view.
 - Refresh the ownership map: new or changed areas and boundaries, each owner's newest entry id, open questions and related areas — pointers only, never a copy of what an owner knows.
 - Update .guild/state/planning/ state to reflect the run's outcome.
+- Write the prose of every memory, planning and status artifact — and their Markdown views — in the state-prose language recorded in .guild/state/project.yaml (GUILD_MASTER_SPEC.md section 3.2); ids, keys, file names and quoted evidence are never translated.

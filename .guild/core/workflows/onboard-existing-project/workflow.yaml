@@ -20,9 +20,13 @@ steps:
   - Onboarding request
   expected_output_artifacts:
   - Scoped onboarding brief
+  - 'Language settings in .guild/state/project.yaml: conversation, state prose and git'
   preconditions:
   - Repository is accessible for read-only inspection.
   completion_criteria:
+  - 'The human has chosen, before any other question, the language for conversation, for state prose
+    and for git, each asked as options plus free text, and the DM has recorded them in .guild/state/project.yaml
+    (GUILD_MASTER_SPEC.md section 3.2).'
   - Scope of onboarding (whole repository or a subset) is confirmed.
   gates: []
   on_return: If scope is unclear, return to the requester for clarification before proceeding.

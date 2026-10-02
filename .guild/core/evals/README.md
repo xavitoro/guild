@@ -12,6 +12,7 @@ python3 .guild/core/evals/check_alias_presence.py
 python3 .guild/core/evals/check_ownership_model.py
 python3 .guild/core/evals/check_human_in_the_loop.py
 python3 .guild/core/evals/check_found_work.py
+python3 .guild/core/evals/check_language_settings.py
 python3 .guild/core/adapters/generate_adapters.py --target . --check
 ```
 
@@ -144,6 +145,22 @@ scheduled by the product owner and an unscheduled one carries no milestone (so
 it cannot inflate milestone progress); that every open item is listed in the
 status file *and* named in `PROJECT_STATUS.md`; and that nothing under
 `.guild/state/` parks found work in a `TODO` or `FIXME` note.
+
+## check_language_settings.py
+
+Proves that the human chooses the languages Guild uses in a project
+(`GUILD_MASTER_SPEC.md` principle 15 and section 3.2). The canonical half always
+runs: `default-policies.yaml` declares the principle and a `language_protocol`
+naming the settings file and field, the three settings (`conversation`,
+`state_prose`, `git`), the DM as the profile that asks and the human as the only
+one who chooses; `project.schema.json` can record all three as language tags;
+every step that asks is the first step of its workflow, run by the DM through
+`triage-request`, and outputs the settings; `triage-request` asks for them before
+anything else; every profile's `AGENT.md` points at the recorded languages; and
+the adapter generator carries the rule into the generated files. The state half
+runs when `.guild/state/project.yaml` exists: recorded languages must validate,
+and missing ones are a warning — state that predates section 3.2 stays valid, and
+the DM asks at the next triage.
 
 ## generate_adapters.py --check
 

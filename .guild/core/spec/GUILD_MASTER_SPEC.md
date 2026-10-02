@@ -32,6 +32,7 @@ Guild defines how agents collaborate. It does not own the target project and doe
 12. **Distributed ownership, indexed coordination** — every part of a project has exactly one owning profile, which accumulates that part's knowledge in its own ledger. The orchestrator holds an index of who owns what and where their knowledge lives, not the knowledge itself: it connects pieces by pointer, and is never the bottleneck that must know everything.
 13. **Nothing stays pending** — a decision no profile can make from the project itself is put to a person, with options, a recommendation and a stated default; it is never resolved by assumption, never applied as a silent default, and never left as an unanswered note. Deferring is an answer a person gives, not something that happens by itself.
 14. **Nothing found is dropped** — a change a profile finds while doing something else, which it is not going to make now and which blocks nothing, becomes a technical-debt work item in the plan before the step closes: with an owner, an origin and evidence, unscheduled until the Paladin prioritizes it. It is never a `TODO` comment, a note in a ledger or a line in a summary.
+15. **The human chooses the languages** — the language Guild converses in, the language its project state is written in and the language of the project's git history are three separate settings, asked of the human when a project is first brought under Guild and recorded in `.guild/state/project.yaml`. No profile picks a language by assumption. (Principle 2 is about the project's technology; this one is about the human languages Guild uses.)
 
 ## 3. D&D mnemonic roster
 
@@ -80,6 +81,56 @@ Rules:
 
 A human-facing message that names only a canonical ID is incomplete, and so is an artifact
 field that carries an alias instead of an ID.
+
+### 3.2 The human chooses three languages
+
+Guild uses human language on three surfaces, and a project may want a different language
+on each — a team that talks to Guild in one language can keep its project state in
+another and its git history in a third. Each is a separate setting under `languages` in
+`.guild/state/project.yaml` (schema `guild.project/v1`), holding a language tag (`en`,
+`es`, `pt-BR`, ...):
+
+| Setting | Governs | Read by |
+|---|---|---|
+| `conversation` | Every message a person reads in the exchange itself: questions, approval and decision requests as presented, escalations, role announcements, handoff summaries, finished results | Every profile, whenever it speaks to the human |
+| `state_prose` | The human-readable prose inside `.guild/state/`: ledger entries, memory statements, plan and work-item descriptions, decision requests and records, run records, and their Markdown views (`PROJECT_STATUS.md`, `PROJECT_MEMORY.md`, `OWNERSHIP.md`, ...) | Every profile that writes to `.guild/state/` |
+| `git` | Commit messages, pull request titles and descriptions, and review comments posted to the repository host | Every profile that commits or prepares a pull request |
+
+What never changes language, whatever the settings say:
+
+- canonical profile ids, aliases, skill, workflow, gate and policy keys, schema field
+  names and enum values, and file and directory names — they are the machine surface of
+  section 3.1, and an alias is a proper name;
+- the canonical answer keys (`approve`, `reject`, `request_changes`, `defer`, `other`,
+  and option keys `A`, `B`, ...) as recorded — the label shown to the person is in the
+  conversation language, the key written into the artifact is not;
+- anything quoted as evidence or recorded verbatim — file contents, command output and a
+  person's free-text answer stay exactly as they were;
+- `.guild/core/` itself, which is the framework and is shared by every project.
+
+Rules:
+
+1. **Asked at onboarding, first.** The triage step of `onboard-existing-project` and of
+   `create-new-project` asks for the three settings before any other question, so every
+   later question in that run is already in the chosen conversation language. Until
+   then the DM speaks in the language the human wrote the request in.
+2. **Asked as options plus free text** (section 11.3), one question per setting:
+   - `conversation` — the language of the request (recommended), English, or `other`;
+   - `state_prose` — the same as `conversation` (recommended), English, or `other`;
+   - `git` — the language the repository's existing history is written in, citing
+     recent commits as evidence, when there is a history (recommended); otherwise the
+     same as `conversation` (recommended); English; or `other`.
+   If the human defers a setting, the recommended option is recorded as its value — and
+   the human has seen it, so it is not an unshown default.
+3. **Recorded once, read everywhere.** The DM writes the answers to
+   `.guild/state/project.yaml`. Every profile reads them from there; none re-asks them
+   and none infers a language from the conversation once they are recorded.
+4. **Missing settings are asked, never assumed.** A `.guild/state/project.yaml` without
+   `languages` — state created before this rule, or by hand — makes the DM ask the three
+   questions at the triage of the next run, whatever its workflow, before anything else.
+5. **Changeable at any time, never retroactive.** The human may change any setting; the
+   DM updates `project.yaml`, and the new language applies from then on. Existing state
+   prose and git history are not rewritten to match.
 
 ## 4. Profile responsibilities
 
@@ -249,7 +300,7 @@ accumulated knowledge, planning or run history (design principle 11):
     │   └── archive/
     ├── planning/
     ├── runs/
-    └── project.yaml
+    └── project.yaml    # project descriptor, including the three languages (section 3.2)
 ```
 
 Upgrading Guild means replacing `.guild/core/` with a newer version and
@@ -837,3 +888,7 @@ The foundation is complete when:
     during a step is a technical-debt work item in the plan, with an owner, an
     origin and evidence, unscheduled until the Paladin prioritizes it, and
     listed by id in the project status (section 8.1).
+15. Every project brought under Guild records, in `.guild/state/project.yaml`, the
+    language the human chose for conversation, for state prose and for git — asked at
+    onboarding as options plus free text — and every profile reads them from there
+    rather than choosing one itself (section 3.2).

@@ -30,6 +30,10 @@ responsibilities:
   area it was found in — never as a comment, a note or a line in a summary.
 - Sweep each run for found work before consolidating it, so no run closes with a change a profile noticed
   left unrecorded, and every open technical-debt item is listed by id in the project status.
+- Ask the human, at the triage of every onboarding and of any run whose project has none recorded, for the
+  language Guild converses in, the language state prose is written in and the language of git history —
+  one question each, as options plus free text, before any other question — and record them in
+  .guild/state/project.yaml.
 non_responsibilities:
 - Judging implementation quality — owned by the Quality Assurance Engineer (Barbarian).
 - Judging security posture — owned by the Product Security Engineer (Rogue).
@@ -79,6 +83,9 @@ quality_gates:
   area exactly one owner.
 - No run is recorded complete while a decision it needed is still unpresented, and no default takes effect
   that the human has not been shown.
+- No onboarding run asks the human anything else before the three language settings are chosen and
+  recorded, and no message to the human after that is in a language other than the recorded conversation
+  language.
 escalation_conditions:
 - A gate result is missing, contradictory, or requires human approval.
 - An approval request cannot state who is asking, who is blocked, the evidence, or the effect of approving

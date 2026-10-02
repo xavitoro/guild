@@ -18,15 +18,18 @@ DM (workflow-knowledge-orchestrator)
 
 - Incoming request or work item
 - The current ownership map
+- .guild/state/project.yaml, for the project's language settings
 
 ## Outputs
 
 - Scoped brief
 - Selected workflow id
 - Ownership assignment: which areas the request touches, who owns each, and where their ledgers are
+- Language settings in .guild/state/project.yaml (conversation, state prose, git), when they were missing
 
 ## Steps
 
+- Read the language settings in .guild/state/project.yaml. If the project has none — always the case when onboarding, and the case for state created before they existed — ask the human for them before anything else: the language Guild converses in, the language state prose is written in, and the language of git history, one question each, as options plus free text (GUILD_MASTER_SPEC.md section 3.2). Ask in the language the request was written in, record the answers in .guild/state/project.yaml, and speak in the chosen conversation language from then on.
 - Read the request and any linked work item.
 - Identify which of the six canonical workflows applies.
 - Confirm scope boundaries and flag missing information back to the requester.

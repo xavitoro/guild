@@ -37,3 +37,7 @@ steps:
   the record when it invalidates the options themselves.'
 - Remove the request from the project status's open decisions only once it is answered, deferred with its
   default recorded, or withdrawn.
+- Present the request in the conversation language and write the decision request and record in the state-prose
+  language, both from .guild/state/project.yaml (GUILD_MASTER_SPEC.md section 3.2). Option keys, 'defer' and
+  'other' are recorded as canonical keys whatever language their labels were shown in, and a free-text answer
+  is recorded in the language it was given.

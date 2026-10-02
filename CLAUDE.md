@@ -22,6 +22,12 @@ Monk) with its canonical id in parentheses on first mention, and names the other
 the same way; canonical ids alone stay in artifact fields, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
 
+Every subagent speaks, writes state and writes git history in the languages the human
+chose for conversation, state prose and git, recorded under `languages` in
+`.guild/state/project.yaml`. The DM asks for them with the `AskUserQuestion` tool — one
+question per setting, before any other onboarding question — and no subagent picks or
+infers one itself. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.
+
 Each subagent owns a declared part of the project and keeps its own knowledge ledger
 under `.guild/state/knowledge/profiles/<profile-id>.yaml`, claiming its area before a
 step and recording what the step verified afterwards. The DM

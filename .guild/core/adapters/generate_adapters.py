@@ -205,6 +205,26 @@ def render_claude_agent(agent: dict, roster: dict[str, str]) -> str:
         f"{', '.join(others)}. Never hand a person a bare canonical id, and never write an "
         f"alias into an artifact field. See .guild/core/spec/GUILD_MASTER_SPEC.md section 3.1."
     )
+    language_note = (
+        "Use the languages the human chose, recorded under `languages` in .guild/state/project.yaml: "
+        "`conversation` for whatever you say to a person, `state_prose` for the prose you write into "
+        ".guild/state/, and `git` for commit messages, pull request titles and descriptions and review "
+        "comments. Ids, aliases, skill, workflow and policy keys, schema fields, file names, recorded "
+        "answer keys and quoted evidence are never translated. If no languages are recorded yet, do "
+        "not pick one and do not infer one from the conversation: the DM asks for them first. See "
+        ".guild/core/spec/GUILD_MASTER_SPEC.md section 3.2."
+    )
+    if agent["id"] == "workflow-knowledge-orchestrator":
+        language_note += (
+            " You are the profile that asks. At the triage of every onboarding — and of any run whose "
+            "project.yaml has no `languages` — ask for the three settings before any other question, "
+            "in the language the request was written in: one AskUserQuestion question per setting, "
+            "with the recommendation first (conversation: the request's language; state prose: the "
+            "same as conversation; git: the language of the existing commit history, citing it, or "
+            "else the same as conversation) and English as an option, the automatic \"Other\" choice "
+            "being the free-text answer. Record the answers in .guild/state/project.yaml and speak in "
+            "the chosen conversation language from then on."
+        )
     ledger_note = (
         f"Before doing a step's work, claim the area of the project it touches (skill "
         f"`claim-ownership`): confirm the area you already own in "
@@ -292,6 +312,8 @@ You are the {agent['alias']} — {agent['name']} (Guild profile `{agent['id']}`)
 
 {alias_note}
 
+{language_note}
+
 ## Owning your part and recording what you learn
 
 {ledger_note}
@@ -353,6 +375,19 @@ def render_agents_md_block(agent_ids: list[str], skill_ids: list[str], roster: d
         "asking and who is blocked — see `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 3.1 "
         "and 11.",
         width=88,
+    )
+    languages = textwrap.fill(
+        "Guild uses three human languages in a project, each chosen by the human and recorded under "
+        "`languages` in `.guild/state/project.yaml`: `conversation` for whatever a profile says to a "
+        "person, `state_prose` for the prose written into `.guild/state/`, and `git` for commit "
+        "messages, pull requests and review comments. The orchestrator asks for all three, as options "
+        "plus free text, before any other question in the triage of `onboard-existing-project` and "
+        "`create-new-project` — and at the next triage of any project that has none recorded. No "
+        "profile picks or infers a language. Ids, aliases, keys, schema fields, file names, recorded "
+        "answer keys and quoted evidence are never translated, and `.guild/core/` stays as it is. See "
+        "`.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.",
+        width=88,
+        break_on_hyphens=False,
     )
     ownership = textwrap.fill(
         "Every part of the project has exactly one owning profile. A profile claims its area "
@@ -417,6 +452,10 @@ upgrades.
 
 {addressing}
 
+### Languages
+
+{languages}
+
 ### Ownership and knowledge
 
 {ownership}
@@ -454,6 +493,12 @@ Druid, Bard, Ranger, Artificer, Wizard, Warlock, Barbarian, Rogue, Cleric, Sorce
 Monk) with its canonical id in parentheses on first mention, and names the other profiles
 the same way; canonical ids alone stay in artifact fields, per
 `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.1.
+
+Every subagent speaks, writes state and writes git history in the languages the human
+chose for conversation, state prose and git, recorded under `languages` in
+`.guild/state/project.yaml`. The DM asks for them with the `AskUserQuestion` tool — one
+question per setting, before any other onboarding question — and no subagent picks or
+infers one itself. See `.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.
 
 Each subagent owns a declared part of the project and keeps its own knowledge ledger
 under `.guild/state/knowledge/profiles/<profile-id>.yaml`, claiming its area before a

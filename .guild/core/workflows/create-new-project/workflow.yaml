@@ -19,8 +19,12 @@ steps:
   - New-project request
   expected_output_artifacts:
   - Scoped brief
+  - 'Language settings in .guild/state/project.yaml: conversation, state prose and git'
   preconditions: []
   completion_criteria:
+  - 'The human has chosen, before any other question, the language for conversation, for state prose
+    and for git, each asked as options plus free text, and the DM has recorded them in .guild/state/project.yaml
+    (GUILD_MASTER_SPEC.md section 3.2).'
   - Scope and constraints are confirmed.
   gates: []
 - id: new-project-02-define-vision

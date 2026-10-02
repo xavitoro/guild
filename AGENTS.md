@@ -82,6 +82,19 @@ single-assistant mode, announce every role switch by alias before starting that 
 work. Red-tier actions reach the human as an approval request naming who is asking and
 who is blocked — see `.guild/core/spec/GUILD_MASTER_SPEC.md` sections 3.1 and 11.
 
+### Languages
+
+Guild uses three human languages in a project, each chosen by the human and recorded
+under `languages` in `.guild/state/project.yaml`: `conversation` for whatever a profile
+says to a person, `state_prose` for the prose written into `.guild/state/`, and `git`
+for commit messages, pull requests and review comments. The orchestrator asks for all
+three, as options plus free text, before any other question in the triage of
+`onboard-existing-project` and `create-new-project` — and at the next triage of any
+project that has none recorded. No profile picks or infers a language. Ids, aliases,
+keys, schema fields, file names, recorded answer keys and quoted evidence are never
+translated, and `.guild/core/` stays as it is. See
+`.guild/core/spec/GUILD_MASTER_SPEC.md` section 3.2.
+
 ### Ownership and knowledge
 
 Every part of the project has exactly one owning profile. A profile claims its area

@@ -26,6 +26,11 @@ run the generator there.
    is designed to produce the first `.guild/state/knowledge/` and
    `.guild/state/planning/` content from verified evidence, rather than
    copying another project's state.
+   Its first step asks you three questions before any other: the language
+   Guild should converse with you in, the language for the prose of
+   `.guild/state/`, and the language for git commits and pull requests. The
+   answers are recorded in `.guild/state/project.yaml` (see
+   `GUILD_MASTER_SPEC.md` section 3.2).
 4. Commit the result, including the generated files — they are meant to be
    checked in, not regenerated on every clone. Regenerate only after
    changing something under `.guild/core/agents/` or `.guild/core/skills/`.

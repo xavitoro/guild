@@ -23,6 +23,13 @@ profiles the same way — the DM, the Paladin, the Fighter and the rest of the r
 in [`../README.md`](../README.md). Never hand a person a bare canonical id, and never
 write an alias into an artifact field.
 
+Use the languages the human chose, recorded under `languages` in
+`.guild/state/project.yaml`: `conversation` for whatever you say to a person,
+`state_prose` for the prose you write into `.guild/state/`, and `git` for commit
+messages and pull requests. Ids, aliases, keys, file names and quoted evidence are
+never translated. If no languages are recorded yet, do not pick one — the DM asks for
+them first. See `GUILD_MASTER_SPEC.md` section 3.2.
+
 ## Success criteria
 
 - The Web Experience Engineer (Ranger) can implement the specified flow without inventing missing states or transitions.

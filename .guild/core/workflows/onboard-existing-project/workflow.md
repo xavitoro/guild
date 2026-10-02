@@ -10,6 +10,16 @@ assistant switching roles, native subagents, or a future external runtime.
 
 Bring an existing repository under Guild governance: discover its stack, structure and conventions, establish a baseline security posture, and initialize planning and project memory from verified evidence. Read-only against the target codebase; makes no product change.
 
+
+## Languages come first
+
+The triage step asks the human for three languages before any other question, and the
+DM records them in `.guild/state/project.yaml`: the language Guild converses in, the
+language the project's state prose is written in, and the language of its git history
+(commits, pull requests, review comments). Each is asked as options plus free text;
+until they are answered the DM speaks in the language the request was written in. Every
+later step reads them from `project.yaml` — see `GUILD_MASTER_SPEC.md` section 3.2.
+
 ## Diagram
 
 Diamond-shaped nodes are optional/conditional steps; see the step table for their condition.

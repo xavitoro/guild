@@ -40,7 +40,35 @@
     },
     "language_policy": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "The project's stance on technology neutrality (GUILD_MASTER_SPEC.md principle 2). Not a human language: those are under `languages`."
+    },
+    "languages": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The human languages Guild uses in this project, chosen by the human at onboarding (GUILD_MASTER_SPEC.md section 3.2). Not required by the schema so that state created before section 3.2 stays valid across a core upgrade; when it is missing, the DM asks for it at the triage of the next run instead of assuming one.",
+      "required": [
+        "conversation",
+        "state_prose",
+        "git"
+      ],
+      "properties": {
+        "conversation": {
+          "type": "string",
+          "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+          "description": "Language tag for every message a person reads in the exchange: questions, requests as presented, escalations, role announcements, summaries and results."
+        },
+        "state_prose": {
+          "type": "string",
+          "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+          "description": "Language tag for the human-readable prose inside .guild/state/ and its Markdown views."
+        },
+        "git": {
+          "type": "string",
+          "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+          "description": "Language tag for commit messages, pull request titles and descriptions, and review comments posted to the repository host."
+        }
+      }
     }
   }
 }

@@ -16,6 +16,7 @@ principles:
   - ambiguity_is_escalated_to_a_person_never_resolved_by_assumption
   - every_question_to_a_person_is_asked_as_options_plus_a_free_text_answer
   - found_non_blocking_work_becomes_a_recorded_task_never_a_note
+  - the_human_chooses_the_conversation_state_prose_and_git_languages
 
 approval_required:
   - merge_protected_branch
@@ -128,3 +129,27 @@ found_work_protocol:
     - every_open_technical_debt_item_is_listed_by_id_in_project_status
     - a_run_does_not_close_with_found_work_left_unrecorded
     - a_todo_comment_or_a_ledger_note_is_not_a_record_of_found_work
+
+# Which human languages Guild uses in a project, and who chooses them. See
+# GUILD_MASTER_SPEC.md section 3.2.
+language_protocol:
+  settings_file: .guild/state/project.yaml
+  settings_field: languages
+  settings:
+    - conversation
+    - state_prose
+    - git
+  asked_by: workflow-knowledge-orchestrator
+  chosen_by: human
+  asked_in_steps:
+    - onboard-01-triage
+    - new-project-01-triage
+  rules:
+    - the_three_languages_are_asked_before_any_other_onboarding_question
+    - each_language_is_asked_as_options_plus_free_text
+    - until_answered_the_dm_speaks_in_the_language_of_the_request
+    - a_deferred_language_records_the_recommended_option_the_human_was_shown
+    - every_profile_reads_the_languages_from_the_settings_file_and_never_infers_one
+    - missing_language_settings_are_asked_at_the_next_triage_never_assumed
+    - ids_aliases_keys_file_names_answer_keys_and_verbatim_evidence_are_never_translated
+    - a_language_change_applies_from_then_on_and_never_rewrites_existing_state_or_history

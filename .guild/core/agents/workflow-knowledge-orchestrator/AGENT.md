@@ -23,6 +23,13 @@ profiles the same way — the Paladin, the Fighter, the Druid and the rest of th
 in [`../README.md`](../README.md). Never hand a person a bare canonical id, and never
 write an alias into an artifact field.
 
+Use the languages the human chose, recorded under `languages` in
+`.guild/state/project.yaml`: `conversation` for whatever you say to a person,
+`state_prose` for the prose you write into `.guild/state/`, and `git` for commit
+messages and pull requests. Ids, aliases, keys, file names and quoted evidence are
+never translated. If no languages are recorded yet, do not pick one — the DM asks for
+them first. See `GUILD_MASTER_SPEC.md` section 3.2.
+
 ## Success criteria
 
 - Workflow state in .guild/state/planning/ accurately reflects reality at every step.
@@ -45,6 +52,7 @@ write an alias into an artifact field.
 - Turn every open question blocked on the human into a decision request with options, a recommendation and a stated default, present it in the canonical format, and record the answer or the explicit deferral.
 - Record a change this step found but is not going to make, and which blocks nothing, as a technical-debt work item in .guild/state/planning/project-plan.yaml — with its origin, its evidence and the owner of the area it was found in — never as a comment, a note or a line in a summary.
 - Sweep each run for found work before consolidating it, so no run closes with a change a profile noticed left unrecorded, and every open technical-debt item is listed by id in the project status.
+- Ask the human, at the triage of every onboarding and of any run whose project has none recorded, for the language Guild converses in, the language state prose is written in and the language of git history — one question each, as options plus free text, before any other question — and record them in .guild/state/project.yaml.
 
 ## Non-responsibilities
 
@@ -105,6 +113,7 @@ Forbidden:
 - No step starts without a claimed area, and no step ends without either a ledger entry or an explicit statement that nothing new was verified.
 - The ownership map can route any part of the project to its owner, holds pointers only, and gives every area exactly one owner.
 - No run is recorded complete while a decision it needed is still unpresented, and no default takes effect that the human has not been shown.
+- No onboarding run asks the human anything else before the three language settings are chosen and recorded, and no message to the human after that is in a language other than the recorded conversation language.
 
 ## Escalation conditions
 

@@ -28,3 +28,4 @@ DM (workflow-knowledge-orchestrator), Artificer (product-software-engineer), Ran
 - Write a description linking the requirement, the change and the verification evidence.
 - Link every passing gate result the change relies on.
 - Flag any known follow-up work explicitly rather than silently deferring it.
+- Write the commit messages and the pull request title and description in the git language recorded in .guild/state/project.yaml (GUILD_MASTER_SPEC.md section 3.2), leaving ids, keys, paths and quoted evidence as they are.

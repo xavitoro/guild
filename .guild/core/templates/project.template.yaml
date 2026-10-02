@@ -1,0 +1,16 @@
+# Project descriptor, written to .guild/state/project.yaml by the DM during the
+# triage step of onboard-existing-project or create-new-project.
+# See GUILD_MASTER_SPEC.md sections 3.2 and 6.
+schema: guild.project/v1
+id: replace-with-project-id
+name: Replace with project name
+type: replace-with-project-type
+status: bootstrap
+canonical_root: .guild
+language_policy: provider-and-language-neutral
+# The three human languages, each asked of the human as options plus free text
+# before any other onboarding question. Language tags: en, es, pt-BR, ...
+languages:
+  conversation: replace-with-language-tag   # messages the human reads in the exchange
+  state_prose: replace-with-language-tag    # prose inside .guild/state/
+  git: replace-with-language-tag            # commits, pull requests, review comments
